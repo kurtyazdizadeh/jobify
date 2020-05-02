@@ -4,9 +4,9 @@ class Header extends React.Component {
   render() {
     return (
       <nav className="navbar fixed-top dark-green">
-        <i className="fas fa-bars"></i>
+        <i className="fas fa-bars pointer"></i>
         {this.props.title}
-        <i className="fas fa-user-circle"></i>
+        <i className="fas fa-user-circle pointer"></i>
       </nav>
     );
   }

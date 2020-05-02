@@ -1,7 +1,9 @@
-nav {
-  font-size: 1.25rem;
+nav, footer {
+  font-size: 1.5rem;
 }
-
+.pointer {
+  cursor: pointer;
+}
 .dark-green {
   background-color: #2F575D;
   color: #CACFCF;
@@ -14,4 +16,14 @@ nav {
 .dark-gray {
   background-color: #E0E0E0;
   color: #4F4F4F;
+}
+.grey {
+  color: #CACFCF;
+}
+.menu-circle {
+  height: 50px;
+  width: 50px;
+  background-color: #6D9197;
+  border-radius: 50%;
+
 }
