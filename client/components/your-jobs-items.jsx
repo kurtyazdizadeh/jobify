@@ -1,6 +1,6 @@
 import React from 'react';
 
-function SpreadsheetItem(props) {
+function YourJobsItem(props) {
   let title = props.info.results[0].title;
   title = title.toString();
   title = title.replace(/(<([^>]+)>)/ig, '');
@@ -14,4 +14,4 @@ function SpreadsheetItem(props) {
   );
 }
 
-export default SpreadsheetItem;
+export default YourJobsItem;

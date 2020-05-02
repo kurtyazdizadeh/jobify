@@ -1,7 +1,7 @@
 import React from 'react';
-import SpreadsheetItem from './spreadsheet-item';
+import YourJobsItem from './your-jobs-items';
 
-class Spreadsheet extends React.Component {
+class YourJobs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ class Spreadsheet extends React.Component {
           {
             this.state.savedJobs.map(job => {
               return (
-                <SpreadsheetItem
+                <YourJobsItem
                   key={job.user_job_id}
                   status={job.job_status}
                   priority={job.job_priority}
@@ -53,4 +53,4 @@ class Spreadsheet extends React.Component {
   }
 }
 
-export default Spreadsheet;
+export default YourJobs;
