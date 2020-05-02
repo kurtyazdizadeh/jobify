@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './header';
 import SearchJobs from './search-jobs';
 
 export default class App extends React.Component {

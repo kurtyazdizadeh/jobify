@@ -1,6 +1,0 @@
-diff a/client/components/search-jobs.jsx b/client/components/search-jobs.jsx	(rejected hunks)
-@@ -4,4 +3,0 @@ class SearchJobs extends React.Component {
--  constructor(props) {
--    super(props);
--  }
--
