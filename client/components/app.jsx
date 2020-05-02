@@ -26,6 +26,7 @@ export default class App extends React.Component {
     //   ? <h1>Testing connections...</h1>
     //   : <h1>{this.state.message.toUpperCase()}</h1>;
     return (
+
       <div>
         <Header title="Job Search"/>;
         <FooterMenu />
