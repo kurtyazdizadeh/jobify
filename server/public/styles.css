@@ -8,4 +8,10 @@ nav {
 }
 .light-green {
   background-color: #6D9197;
+  color: #C4CDC1;
+}
+
+.gray {
+  background-color: #E0E0E0;
+  color: #4F4F4F;
 }
