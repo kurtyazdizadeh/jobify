@@ -1,4 +1,5 @@
 import React from 'react';
+import YourJobs from './your-jobs';
 import ExpandedNotes from './expanded-notes';
 import Header from './header';
 import FooterMenu from './footer-menu';
