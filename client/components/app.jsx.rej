@@ -1,0 +1,4 @@
+diff a/client/components/app.jsx b/client/components/app.jsx	(rejected hunks)
+@@ -25 +25 @@ export default class App extends React.Component {
+-    return <SearchJobs />
++    return <SearchJobs />;
