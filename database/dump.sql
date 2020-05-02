@@ -382,6 +382,7 @@ COPY public."JobNotes" (job_note_id, job_id, note_id) FROM stdin;
 --
 
 COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_applied, job_priority, follow_up_date, files_id, interview_date, job_info) FROM stdin;
+4	1	applied	2020-05-02	5	\N	1	\N	{"results":[{"description":"...  Task Lead to provide leadership, supervision and management to a small team of <strong>web</strong> <strong>developers</strong>. The Website Maintenance and Design Task Lead will focus on ensuring the website stays ...  and Design Task Lead will oversee a small team of <strong>web</strong> <strong>developers</strong> responsible for maintaining and updating the content of an external facing government website, as well as the maintenance ...","created":"2020-04-16T17:47:21Z","location":{"__CLASS__":"Adzuna::API::Response::Location","display_name":"Washington, Montgomery County","area":["US","Ohio","Montgomery County","Washington"]},"company":{"display_name":"HighPoint Global","__CLASS__":"Adzuna::API::Response::Company"},"__CLASS__":"Adzuna::API::Response::Job","title":"<strong>Web</strong> <strong>Developer</strong>","category":{"tag":"it-jobs","label":"IT Jobs","__CLASS__":"Adzuna::API::Response::Category"},"id":"1522594859","latitude":38.906704,"adref":"eyJhbGciOiJIUzI1NiJ9.eyJpIjoiMTUyMjU5NDg1OSIsInMiOiJUdXltQUNpTTZoR3JvVmlqU0ZEcnVRIn0.8U-KlGOaVNtanVytP7oB8gHYYIxK_teO-3kNKGf2vck","redirect_url":"https://www.adzuna.com/land/ad/1522594859?se=TuymACiM6hGroVijSFDruQ&utm_medium=api&utm_source=e4056c10&v=FE67CA0D313B4B9BE1BC4F88C7394A31CE9C224A","salary_is_predicted":"0","longitude":-77.041912}]}
 \.
 
 
@@ -437,7 +438,7 @@ SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, false);
 -- Name: UserSelectedJob_user_job_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 4, true);
 
 
 --
