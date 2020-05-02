@@ -1,6 +1,7 @@
 import React from 'react';
 import ExpandedNotes from './expanded-notes';
 import Header from './header';
+import FooterMenu from './footer-menu';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,6 +24,11 @@ export default class App extends React.Component {
     // return this.state.isLoading
     //   ? <h1>Testing connections...</h1>
     //   : <h1>{this.state.message.toUpperCase()}</h1>;
-    return <Header title="Job Search"/>;
+    return (
+      <div>
+        <Header title="Job Search"/>;
+        <FooterMenu />
+      </div>
+    );
   }
 }
