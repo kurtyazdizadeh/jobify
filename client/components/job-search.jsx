@@ -9,9 +9,14 @@ class JobSearch extends React.Component {
       distance: '',
       jobType: ''
     };
+    this.getLocation = this.getLocation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetForm = this.resetForm.bind(this);
+  }
+
+  getLocation(event) {
+    console.log('geolocation function fired');
   }
 
   handleChange(event) {
@@ -80,6 +85,25 @@ class JobSearch extends React.Component {
             value={this.state.desiredPosition}
             onChange={this.handleChange}
           />
+        </div>
+        <div className={formRowClasses}>
+          <label htmlFor="location" className={labelClasses}>
+            Location
+          </label>
+          <div className="d-flex w-100">
+            <input
+              type="text"
+              className={inputClasses}
+              id="location"
+              name="location"
+              value={this.state.location}
+              onChange={this.handleChange}
+            />
+            <i
+              className="fas fa-location-arrow align-self-center mx-2 pointer"
+              onClick={this.getLocation}
+            ></i>
+          </div>
         </div>
       </form>
     );
