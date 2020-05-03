@@ -1,6 +1,7 @@
 import React from 'react';
 import YourJobs from './your-jobs';
 import ExpandedNotes from './expanded-notes';
+import JobSearch from './job-search';
 import Header from './header';
 import FooterMenu from './footer-menu';
 
@@ -28,7 +29,8 @@ export default class App extends React.Component {
     return (
 
       <div>
-        <Header title="Job Search"/>;
+        <Header title="Job Search"/>
+        <JobSearch />
         <FooterMenu />
       </div>
     );
