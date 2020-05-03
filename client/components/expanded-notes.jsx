@@ -26,7 +26,7 @@ class ExpandedNotes extends React.Component {
   render() {
     return (
       <>
-        <div className='d-flex justify-content-around mt-5 py-2 gray'>
+        <div className='d-flex justify-content-around mt-4 py-3 gray'>
           <div>
             <h4>Job Title</h4>
           </div>
