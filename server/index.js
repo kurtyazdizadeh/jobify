@@ -46,7 +46,13 @@ app.get('/api/specific-job/:id', (req, res, next) => {
   WHERE "user_job_id" = ${id}
   `;
   db.query(sql)
-    .then(result => res.status(200).json(result.rows[0]))
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(400).json({ error: `cannot find job id of ${id}` });
+      } else {
+        res.status(200).json(result.row[0]);
+      }
+    })
     .catch(err => next(err));
 });
 
