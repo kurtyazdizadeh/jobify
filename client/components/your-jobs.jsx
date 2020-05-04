@@ -5,16 +5,18 @@ class YourJobs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      savedJobs: []
+      savedJobs: [],
+      value: ''
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.getSavedJobs();
+    this.getSavedJobs('date_applied');
   }
 
-  getSavedJobs() {
-    fetch('/api/saved-job')
+  getSavedJobs(order) {
+    fetch(`/api/saved-job/${order}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -23,11 +25,31 @@ class YourJobs extends React.Component {
       });
   }
 
+  handleChange(event) {
+    event.preventDefault();
+    if (event.target.value === 'Date') {
+      this.getSavedJobs('date_applied');
+    }
+    if (event.target.value === 'Status') {
+      this.getSavedJobs('job_status');
+    }
+    if (event.target.value === 'Rating') {
+      this.getSavedJobs('job_priority');
+    }
+  }
+
   render() {
     return (
-      <div>
-        <div className="d-flex justify-content-around mt-5">
-          <button>Sort By</button>
+      <div className='mt-4'>
+        <div className="form-group d-flex justify-content-around mt-5">
+          <form>
+            <select className='form-control pointer' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
+              <option value="" disabled defaultValue>Sort By:</option>
+              <option value="date">Date</option>
+              <option value="Rating">Rating</option>
+              <option value="Status">Status</option>
+            </select>
+          </form>
           <button>Add</button>
         </div>
         <table className='table table-striped text-center text-capitalize mt-2 '>

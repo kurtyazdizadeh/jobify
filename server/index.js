@@ -19,10 +19,12 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/saved-job', (req, res, next) => {
+app.get('/api/saved-job/:sort', (req, res, next) => {
+  const { sort } = req.params;
   const sql = `
-    SELECT    "user_job_id", "job_status", "job_priority", "job_info"
+    SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_applied"
     FROM      "UserSelectedJob"
+    ORDER BY  ${sort}  DESC;
   `;
   db.query(sql)
     .then(result => res.json(result.rows))
