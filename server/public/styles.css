@@ -32,6 +32,7 @@ nav, footer {
 /* ********************* */
 
 
+
 .dark-gray {
   background-color: #E0E0E0;
   color: #4F4F4F;
@@ -40,6 +41,13 @@ nav, footer {
   color: #CACFCF;
 }
 
+/* ************************ */
+/*    Select Form      */
+/* ************************ */
+
+option:nth-child(odd) {
+  background-color: #6d9197;
+}
 
 /* ********************* */
 /*    Job Search Form    */
