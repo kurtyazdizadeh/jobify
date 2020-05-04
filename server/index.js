@@ -29,6 +29,24 @@ app.get('/api/saved-job', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/specific-job', (req, res, next) => {
+  // const id = req.params;
+  const sql = `
+  SELECT "job_status",
+         "date_applied",
+         "job_priority",
+         "files_id",
+         "interview_date",
+         "job_info"
+  FROM "UserSelectedJob"
+  WHERE "user_job_id" = 4
+  `;
+  db.query(sql)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
