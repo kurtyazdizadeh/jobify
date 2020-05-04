@@ -62,3 +62,22 @@ input[type="submit"]:hover {
   height: 100vh;
   justify-content: space-evenly;
 }
+
+/* ************************ */
+/*    Job Search Results    */
+/* ************************ */
+.job-listing {
+  background-color: #CFCFCF;
+}
+.like-button {
+  color: red;
+  font-size: 1.5rem;
+}
+.job-company {
+  font-size: .9rem;
+}
+.job-location,
+.job-contract,
+.job-link {
+  font-size: .75rem;
+}
