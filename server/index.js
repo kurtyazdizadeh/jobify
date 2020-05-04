@@ -29,8 +29,12 @@ app.get('/api/saved-job', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/specific-job', (req, res, next) => {
-  // const id = req.params;
+app.get('/api/specific-job/:id', (req, res, next) => {
+  const { id } = req.params;
+  if (id <= 0) {
+    res.status(400).send({ error: `cannot get user at id of ${id}` });
+    return;
+  }
   const sql = `
   SELECT "job_status",
          "date_applied",
@@ -39,12 +43,11 @@ app.get('/api/specific-job', (req, res, next) => {
          "interview_date",
          "job_info"
   FROM "UserSelectedJob"
-  WHERE "user_job_id" = 4
+  WHERE "user_job_id" = ${id}
   `;
   db.query(sql)
-    .then(result => res.json(result.rows[0]))
+    .then(result => res.status(200).json(result.rows[0]))
     .catch(err => next(err));
-
 });
 
 app.use('/api', (req, res, next) => {
