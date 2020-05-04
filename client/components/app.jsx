@@ -6,6 +6,7 @@ import JobSearch from './job-search';
 import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
+import UploadFiles from './upload-files';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -56,6 +57,12 @@ export default class App extends React.Component {
           setView={this.setView}
           searchQuery={params}
         />
+      );
+    }
+    if (name === 'Upload Files') {
+      return (
+        <UploadFiles
+          setView={this.setView}/>
       );
     }
 

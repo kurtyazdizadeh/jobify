@@ -89,3 +89,21 @@ input[type="submit"]:hover {
 .job-link {
   font-size: .75rem;
 }
+
+/* ************************ */
+/*       Upload Files       */
+/* ************************ */
+.container {
+  background-color: #E0E0E0;
+}
+.button{
+  margin: 10px;
+  border-radius: 5px;
+  width: 95px;
+  height: 35px;
+  background-color: #B1B4B5;
+  color: #2F575D ;
+}
+.title {
+  margin: 2rem;
+}
