@@ -5,6 +5,7 @@ class SearchResults extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      noResults: false,
       searchResults: [],
       resultsPage: 1
     };
@@ -23,7 +24,8 @@ class SearchResults extends React.Component {
       results_per_page: 10,
       title_only: desiredPosition,
       where: location,
-      distance: Math.round(distance * 1.60934)
+      distance: Math.round(distance * 1.60934),
+      sort_by: 'relevance'
     };
 
     switch (jobType) {
@@ -43,7 +45,6 @@ class SearchResults extends React.Component {
     fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${this.state.resultsPage}?` + new URLSearchParams(params))
       .then(res => res.json())
       .then(listings => {
-        console.log(listings);
         const newState = {
           searchResults: listings.results
         };
@@ -51,6 +52,9 @@ class SearchResults extends React.Component {
         // this will prep for calling API with next page
         if (listings.count > 10) {
           newState.resultsPage = this.state.resultsPage + 1;
+        }
+        if (listings.count === 0) {
+          newState.noResults = true;
         }
         this.setState(newState);
       })
@@ -63,6 +67,7 @@ class SearchResults extends React.Component {
 
       const company = listing.company.display_name;
       const city = location.area[3];
+      const county = location.area[2];
       const state = location.area[1];
 
       let title = listing.title;
@@ -74,8 +79,11 @@ class SearchResults extends React.Component {
           id={id}
           url={redirect_url}
           title={title}
+          company={company}
           city={city}
           state={state}
+          county={county}
+          contract={contract_time}
           latitude={latitude}
           longitude={longitude}
           description={description}
@@ -89,12 +97,12 @@ class SearchResults extends React.Component {
   render() {
     return (
       this.state.searchResults.length
-        ? <div className="mt-5 p-3">
-            Search Results
-          <br/>
+        ? <div className="list-container my-5 p-2 pb-5">
           {this.renderJobListings()}
         </div>
-        : <div className="mt-5 p-3">Loading...</div>
+        : this.state.noResults
+          ? <div className="mt-5 mx-auto p-3">No Results</div>
+          : <div className="mt-5 mx-auto p-3">Loading...</div>
     );
   }
 }
