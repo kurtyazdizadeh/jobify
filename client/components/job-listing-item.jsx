@@ -1,6 +1,28 @@
 import React from 'react';
 
 class JobListingItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.saveJob = this.saveJob.bind(this);
+  }
+
+  saveJob(event) {
+    event.target.className = 'fas fa-heart like-button';
+
+    const params = {
+      method: 'POST',
+      header: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.props)
+    };
+
+    // POST request for backend!
+    // fetch('/api/save-job', params)
+    //   .then()
+    //   .then()
+    //   .catch(err => console.err(err));
+
+  }
+
   render() {
     const { title, company, city, state, county, url } = this.props;
     let { contract } = this.props;
@@ -31,7 +53,10 @@ class JobListingItem extends React.Component {
           <div className="job-contract">{contract}</div>
         </div>
         <div className="job-list-buttons ml-auto d-flex flex-column justify-content-between align-items-end">
-          <i className="far fa-heart like-button"></i>
+          <i
+            className="far fa-heart like-button"
+            onClick={this.saveJob}
+          ></i>
           <button
             className="btn job-link"
             onClick={() => {

@@ -100,6 +100,7 @@ class JobSearch extends React.Component {
             id="desiredPosition"
             name="desiredPosition"
             placeholder="ex. Web Developer"
+            required
             value={this.state.desiredPosition}
             onChange={this.handleChange}
           />
@@ -114,6 +115,7 @@ class JobSearch extends React.Component {
               className="form-control"
               id="location"
               name="location"
+              required
               placeholder="City, State or Zipcode"
               value={this.state.location}
               onChange={this.handleChange}
@@ -134,6 +136,7 @@ class JobSearch extends React.Component {
             id="distance"
             name="distance"
             placeholder="in miles"
+            required
             value={this.state.distance}
             onChange={this.handleChange}
           />

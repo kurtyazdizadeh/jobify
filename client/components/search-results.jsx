@@ -7,15 +7,22 @@ class SearchResults extends React.Component {
     this.state = {
       noResults: false,
       searchResults: [],
-      resultsPage: 1
+      resultsPage: 1,
+      maxPage: null
     };
+    this.searchView = this.searchView.bind(this);
+    this.handlePageNav = this.handlePageNav.bind(this);
   }
 
   componentDidMount() {
-    this.searchForJobs();
+    this.searchForJobs(this.state.resultsPage);
   }
 
-  searchForJobs() {
+  searchView() {
+    this.props.setView('Job Search', {});
+  }
+
+  searchForJobs(resultsPage) {
     const { desiredPosition, location, distance, jobType } = this.props.searchQuery;
 
     const params = {
@@ -42,16 +49,17 @@ class SearchResults extends React.Component {
         break;
     }
 
-    fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${this.state.resultsPage}?` + new URLSearchParams(params))
+    fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${resultsPage}?` + new URLSearchParams(params))
       .then(res => res.json())
       .then(listings => {
         const newState = {
           searchResults: listings.results
         };
-        // come back to this for pagination on search results...
-        // this will prep for calling API with next page
         if (listings.count > 10) {
-          newState.resultsPage = this.state.resultsPage + 1;
+          newState.resultsPage = resultsPage;
+          if (!newState.maxPage) {
+            newState.maxPage = Math.ceil(listings.count / 10);
+          }
         }
         if (listings.count === 0) {
           newState.noResults = true;
@@ -94,15 +102,51 @@ class SearchResults extends React.Component {
     return jobListingElements;
   }
 
+  handlePageNav(event) {
+    const { resultsPage, maxPage } = this.state;
+    const { id } = event.target;
+
+    if (id === 'next' && resultsPage !== maxPage) {
+      this.searchForJobs(resultsPage + 1);
+    } else if (id === 'prev' && resultsPage !== 1) {
+      this.searchForJobs(resultsPage - 1);
+    }
+  }
+
   render() {
+    const { searchResults, noResults, resultsPage, maxPage } = this.state;
     return (
-      this.state.searchResults.length
+      searchResults.length
         ? <div className="list-container my-5 p-2 pb-5">
           {this.renderJobListings()}
+          <div className="search-pages d-flex justify-content-around align-items-center">
+            <i
+              className="fas fa-angle-left pointer"
+              id="prev"
+              onClick={this.handlePageNav}
+            ></i>
+            <span>{`${resultsPage} of ${maxPage}`}</span>
+            <i
+              className="fas fa-angle-right pointer"
+              id="next"
+              onClick={this.handlePageNav}
+            ></i>
+          </div>
         </div>
-        : this.state.noResults
-          ? <div className="mt-5 mx-auto p-3">No Results</div>
-          : <div className="mt-5 mx-auto p-3">Loading...</div>
+        : noResults
+          ? <div className="mt-5 p-3 d-flex flex-column align-items-center">
+            <h5>No Results</h5>
+            <div>
+              <button
+                className="btn job-listing"
+                onClick={this.searchView}>
+                    Go Back
+              </button>
+            </div>
+          </div>
+          : <div className="mt-5 p-3 d-flex justify-content-center">
+            <h5>Loading...</h5>
+          </div>
     );
   }
 }
