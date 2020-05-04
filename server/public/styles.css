@@ -1,3 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: #E0E0E0;
+  color: #4F4F4F;
+}
+/* ********************* */
+/*     Header/Footer     */
+/* ********************* */
 nav, footer {
   font-size: 1.5rem;
 }
@@ -10,11 +20,64 @@ nav, footer {
 }
 .light-green {
   background-color: #6D9197;
-  color: #CACFCF;
+  color: #C4CDC1;
 }
+
 .menu-circle {
   height: 50px;
   width: 50px;
   background-color: #6D9197;
   border-radius: 50%;
+}
+/* ********************* */
+
+
+.dark-gray {
+  background-color: #E0E0E0;
+  color: #4F4F4F;
+}
+.grey {
+  color: #CACFCF;
+}
+
+
+/* ********************* */
+/*    Job Search Form    */
+/* ********************* */
+
+input[type="text"],
+input[type="text"]:focus,
+input[type="number"],
+input[type="number"]:focus,
+input[type="submit"] {
+  background-color: #C4C4C4;
+  color: #252525;
+}
+
+input[type="submit"]:hover {
+  background-color: #9E9E9E;
+}
+
+.form-spacing {
+  height: 100vh;
+  justify-content: space-evenly;
+}
+
+/* ************************ */
+/*    Job Search Results    */
+/* ************************ */
+.job-listing {
+  background-color: #CFCFCF;
+}
+.like-button {
+  color: red;
+  font-size: 1.5rem;
+}
+.job-company {
+  font-size: .9rem;
+}
+.job-location,
+.job-contract,
+.job-link {
+  font-size: .75rem;
 }
