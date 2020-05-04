@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
 import ExpandedNotes from './expanded-notes';
 import Header from './header';
@@ -29,6 +30,7 @@ export default class App extends React.Component {
 
       <div>
         <Header title="Job Search"/>;
+        <ExpandedNotes />
         <FooterMenu />
       </div>
     );
