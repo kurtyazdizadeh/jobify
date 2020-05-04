@@ -5,7 +5,7 @@ function YourJobsItem(props) {
   title = title.toString();
   title = title.replace(/(<([^>]+)>)/ig, '');
   return (
-    <tr>
+    <tr onClick={() => props.setView('Job Detail', { userJobId: props.id })}>
       <td>{title}</td>
       <td>{props.info.results[0].company.display_name}</td>
       <td>{props.status}</td>
