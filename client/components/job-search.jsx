@@ -23,7 +23,7 @@ class JobSearch extends React.Component {
         .then(res => res.json())
         .then(data => {
           const location = data.plus_code.compound_code;
-          const cityAndState = location.slice(location.indexOf(' '), location.lastIndexOf(','));
+          const cityAndState = location.slice(location.indexOf(' ') + 1, location.lastIndexOf(','));
           this.setState({ location: cityAndState });
         })
         .catch(err => console.error(err));
@@ -69,7 +69,7 @@ class JobSearch extends React.Component {
       jobType: jobType
     };
 
-    this.props.onSubmit(newSearch);
+    this.props.setView('Search Results', newSearch);
     this.resetForm();
   }
 
@@ -88,6 +88,7 @@ class JobSearch extends React.Component {
     return (
       <form
         className="form-spacing d-flex flex-column justify-content-evenly p-3"
+        onSubmit={this.handleSubmit}
       >
         <div className={formRowClasses}>
           <label htmlFor="desiredPosition">
@@ -196,7 +197,6 @@ class JobSearch extends React.Component {
             type="submit"
             value="Search"
             className={'btn w-50'}
-            onSubmit={this.handleSubmit}
           />
         </div>
       </form>
