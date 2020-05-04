@@ -29,6 +29,33 @@ app.get('/api/saved-job', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/specific-job/:id', (req, res, next) => {
+  const { id } = req.params;
+  if (id <= 0) {
+    res.status(400).send({ error: `cannot get user at id of ${id}` });
+    return;
+  }
+  const sql = `
+  SELECT "job_status",
+         "date_applied",
+         "job_priority",
+         "files_id",
+         "interview_date",
+         "job_info"
+  FROM "UserSelectedJob"
+  WHERE "user_job_id" = ${id}
+  `;
+  db.query(sql)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(400).json({ error: `user id of ${id} not found` });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
