@@ -9,11 +9,12 @@ class ExpandedNotes extends React.Component {
   }
 
   componentDidMount() {
-    this.getJob();
+    this.getJob(this.props.params.userJobId);
   }
 
-  getJob() {
-    fetch('/api/saved-job')
+  getJob(jobId) {
+
+    fetch(`/api/specific-job/${jobId}`)
       .then(data => data.json())
       .then(job => {
         this.setState({
@@ -24,17 +25,23 @@ class ExpandedNotes extends React.Component {
   }
 
   render() {
+    if (this.state.job === null) {
+      return <h1>Job</h1>;
+    }
+    let title = this.state.job.job_info.results[0].title;
+    title = title.replace(/(<([^>]+)>)/ig, '');
+    const info = this.state.job.job_info.results[0];
     return (
       <>
-        <div className='d-flex justify-content-around mt-4 py-2 dark-gray'>
+        <div className='d-flex justify-content-between mt-5 py-2 dark-gray'>
           <div>
-            <h4>Job Title</h4>
+            <h4>{title}</h4>
           </div>
           <div>
-            <h4>Company</h4>
+            <h4>{info.company.display_name}</h4>
           </div>
           <div>
-            <h4>Location</h4>
+            <h4>{info.location.display_name}</h4>
           </div>
         </div>
         <div className='d-flex justify-content-around py-3 light-green'>
