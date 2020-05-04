@@ -13,7 +13,6 @@ class ExpandedNotes extends React.Component {
   }
 
   getJob(jobId) {
-
     fetch(`/api/specific-job/${jobId}`)
       .then(data => data.json())
       .then(job => {
@@ -27,8 +26,8 @@ class ExpandedNotes extends React.Component {
   getRating(star) {
     const priority = this.state.job.job_priority;
     return (priority >= star
-      ? 'fas fa-star text-warning' : 'fas fa-star');
-
+      ? 'fas fa-star text-warning'
+      : 'fas fa-star');
   }
 
   render() {
@@ -59,8 +58,8 @@ class ExpandedNotes extends React.Component {
         </div>
         <div className='d-flex justify-content-around py-3 light-green'>
           <h3>Job Post</h3>
-          <button className='btn'>
-            <a href={info.redirect_url} className='text-secondary'>Click to Apply</a>
+          <button className='btn btn-secondary'>
+            <a href={info.redirect_url} className='text-light'>Click to Apply</a>
           </button>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
@@ -78,7 +77,16 @@ class ExpandedNotes extends React.Component {
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <h3>Status</h3>
           <div>
-            <button className='btn'><i className="fas fa-chevron-down"></i> Pending</button>
+            <form action="submit">
+              <select name="status" id="" className='btn btn-secondary'>
+                <option selected>{this.state.job.job_status}</option>
+                <option value="none">None</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="interview">Interview Scheduled</option>
+                <option value="denied">Denied</option>
+              </select>
+            </form>
           </div>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
@@ -88,14 +96,14 @@ class ExpandedNotes extends React.Component {
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
-            <button className='m-1'>Upload Docs</button>
+            <button className='m-1 btn btn-secondary'>Upload Docs</button>
             <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
           </div>
           <div>
             <h3 className='m-1'>Notes</h3>
-            <button className='m-1'>See Notes</button>
+            <button className='m-1 btn btn-secondary'>See Notes</button>
             <h6 className='m-1'>Recent:</h6>
             <h6 className='m-1'>Got letter of rejection today</h6>
             <h6 className='m-1'>Added: 5/1/20</h6>
