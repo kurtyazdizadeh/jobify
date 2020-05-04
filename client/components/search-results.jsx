@@ -3,6 +3,9 @@ import React from 'react';
 class SearchResults extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      searchResults: []
+    };
   }
 
   componentDidMount() {
@@ -33,15 +36,19 @@ class SearchResults extends React.Component {
 
     fetch('https://api.adzuna.com/v1/api/jobs/us/search/1?' + new URLSearchParams(params))
       .then(res => res.json())
-      .then(results => {
-        console.log(results);
+      .then(listings => {
+        this.setState({
+          searchResults: listings.results
+        });
       })
       .catch(err => console.error(err));
   }
 
   render() {
     return (
-      <div className="mt-5">Search Results</div>
+      this.state.searchResults.length
+        ? <div className="mt-5 p-3">Search Results</div>
+        : <div className="mt-5 p-3">Loading...</div>
     );
   }
 }
