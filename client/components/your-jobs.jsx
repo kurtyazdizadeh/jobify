@@ -25,30 +25,36 @@ class YourJobs extends React.Component {
 
   render() {
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Position</th>
-            <th>Company</th>
-            <th>Status</th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            this.state.savedJobs.map(job => {
-              return (
-                <YourJobsItem
-                  key={job.user_job_id}
-                  status={job.job_status}
-                  priority={job.job_priority}
-                  info={job.job_info}
-                />
-              );
-            })
-          }
-        </tbody>
-      </table>
+      <div>
+        <div className="d-flex justify-content-around mt-5">
+          <button>Sort By</button>
+          <button>Add</button>
+        </div>
+        <table className='table table-striped text-center text-capitalize mt-2 '>
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Company</th>
+              <th>Status</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.state.savedJobs.map(job => {
+                return (
+                  <YourJobsItem
+                    key={job.user_job_id}
+                    status={job.job_status}
+                    priority={job.job_priority}
+                    info={job.job_info}
+                  />
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
