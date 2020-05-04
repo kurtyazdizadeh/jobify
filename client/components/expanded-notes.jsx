@@ -24,6 +24,13 @@ class ExpandedNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  getRating(star) {
+    const priority = this.state.job.job_priority;
+    return (priority >= star
+      ? 'fas fa-star text-warning' : 'fas fa-star');
+
+  }
+
   render() {
     if (this.state.job === null) {
       return <h1>Job</h1>;
@@ -31,6 +38,12 @@ class ExpandedNotes extends React.Component {
     let title = this.state.job.job_info.results[0].title;
     title = title.replace(/(<([^>]+)>)/ig, '');
     const info = this.state.job.job_info.results[0];
+
+    let interview = this.state.job.interview_date;
+    if (interview === 'No' || interview === 'no' || interview === null) {
+      interview = 'No';
+    }
+
     return (
       <>
         <div className='d-flex justify-content-between mt-5 py-2 dark-gray'>
@@ -46,19 +59,21 @@ class ExpandedNotes extends React.Component {
         </div>
         <div className='d-flex justify-content-around py-3 light-green'>
           <h3>Job Post</h3>
-          <button className='btn'>Click to Apply</button>
+          <button className='btn'>
+            <a href={info.redirect_url} className='text-secondary'>Click to Apply</a>
+          </button>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
           <h3>Rating</h3>
-          <i className="fas fa-star text-warning"></i>
-          <i className="fas fa-star text-warning"></i>
-          <i className="fas fa-star text-warning"></i>
-          <i className="fas fa-star text-warning"></i>
-          <i className="far fa-star"></i>
+          <i className={this.getRating(1)}></i>
+          <i className={this.getRating(2)}></i>
+          <i className={this.getRating(3)}></i>
+          <i className={this.getRating(4)}></i>
+          <i className={this.getRating(5)}></i>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
           <h3>Interview?</h3>
-          <h3>No</h3>
+          <h3>{interview}</h3>
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <h3>Status</h3>
