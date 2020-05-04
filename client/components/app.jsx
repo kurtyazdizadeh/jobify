@@ -13,7 +13,7 @@ export default class App extends React.Component {
       message: null,
       isLoading: true,
       view: {
-        name: 'Job Search',
+        name: 'Home',
         params: {}
       }
     };
@@ -42,6 +42,12 @@ export default class App extends React.Component {
 
     if (name === 'Job Search') {
       return <JobSearch setView={this.setView}/>;
+    }
+    if (name === 'Home') {
+      return <YourJobs setView={this.setView} />;
+    }
+    if (name === 'Job Detail') {
+      return <ExpandedNotes params={this.state.view.params} setView={this.setView}/>;
     }
     if (name === 'Search Results') {
       return (

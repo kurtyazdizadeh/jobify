@@ -45,9 +45,11 @@ class YourJobs extends React.Component {
                 return (
                   <YourJobsItem
                     key={job.user_job_id}
+                    id={job.user_job_id}
                     status={job.job_status}
                     priority={job.job_priority}
                     info={job.job_info}
+                    setView={this.props.setView}
                   />
                 );
               })
