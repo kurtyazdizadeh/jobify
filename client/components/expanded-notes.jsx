@@ -26,7 +26,7 @@ class ExpandedNotes extends React.Component {
   render() {
     return (
       <>
-        <div className='d-flex justify-content-around mt-4 py-3 gray'>
+        <div className='d-flex justify-content-around mt-4 py-2 dark-gray'>
           <div>
             <h4>Job Title</h4>
           </div>
@@ -41,7 +41,7 @@ class ExpandedNotes extends React.Component {
           <h3>Job Post</h3>
           <button className='btn'>Click to Apply</button>
         </div>
-        <div className='d-flex justify-content-around align-items-center py-2 gray'>
+        <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
           <h3>Rating</h3>
           <i className="fas fa-star text-warning"></i>
           <i className="fas fa-star text-warning"></i>
@@ -53,7 +53,7 @@ class ExpandedNotes extends React.Component {
           <h3>Interview?</h3>
           <h3>No</h3>
         </div>
-        <div className='d-flex justify-content-around py-2 gray'>
+        <div className='d-flex justify-content-around py-2 dark-gray'>
           <h3>Status</h3>
           <div>
             <button className='btn'><i className="fas fa-chevron-down"></i> Pending</button>
@@ -63,7 +63,7 @@ class ExpandedNotes extends React.Component {
           <h3>Follow up by:</h3>
           <h3>6/10/20</h3>
         </div>
-        <div className='d-flex justify-content-around py-2 gray'>
+        <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
             <button className='m-1'>Upload Docs</button>

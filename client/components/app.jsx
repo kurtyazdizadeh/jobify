@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
 import ExpandedNotes from './expanded-notes';
 import JobSearch from './job-search';
@@ -61,6 +62,7 @@ export default class App extends React.Component {
     return (
 
       <div>
+
         <Header title={this.state.view.name}/>
         {this.renderView()}
         <FooterMenu />
