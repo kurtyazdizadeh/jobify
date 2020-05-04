@@ -50,6 +50,15 @@ export default class App extends React.Component {
     if (name === 'Job Detail') {
       return <ExpandedNotes params={this.state.view.params} setView={this.setView}/>;
     }
+    if (name === 'Map') {
+      return <h1 className='mt-5'>Map in progress</h1>;
+    }
+    if (name === 'Note') {
+      return <h1 className='mt-5'>Note in Progress</h1>;
+    }
+    if (name === 'Goal') {
+      return <h1 className='mt-5'>Goal in progress</h1>;
+    }
     if (name === 'Search Results') {
       return (
         <SearchResults
@@ -71,7 +80,7 @@ export default class App extends React.Component {
 
         <Header title={this.state.view.name}/>
         {this.renderView()}
-        <FooterMenu />
+        <FooterMenu setView={this.setView}/>
       </div>
     );
   }
