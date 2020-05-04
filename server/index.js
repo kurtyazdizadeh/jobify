@@ -21,7 +21,7 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/saved-job', (req, res, next) => {
   const sql = `
-    SELECT    "job_status", "job_priority", "job_info"
+    SELECT    "user_job_id", "job_status", "job_priority", "job_info"
     FROM      "UserSelectedJob"
   `;
   db.query(sql)

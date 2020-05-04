@@ -28,6 +28,7 @@ export default class App extends React.Component {
     return (
       <div>
         <Header title="Job Search"/>;
+        <YourJobs />
         <FooterMenu />
       </div>
     );
