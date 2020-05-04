@@ -15,7 +15,7 @@ export default class App extends React.Component {
       message: null,
       isLoading: true,
       view: {
-        name: 'Home',
+        name: 'Job Search',
         params: {}
       }
     };
