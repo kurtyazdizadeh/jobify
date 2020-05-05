@@ -24,6 +24,7 @@ class JobListingItem extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const { title, company, city, state, county, url } = this.props;
     let { contract } = this.props;
 

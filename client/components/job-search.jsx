@@ -19,7 +19,7 @@ class JobSearch extends React.Component {
   getLocation(event) {
     const success = position => {
       const { latitude, longitude } = position.coords;
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsAPI}`)
+      fetch(`/api/location/${latitude}-${longitude}`)
         .then(res => res.json())
         .then(data => {
           const location = data.plus_code.compound_code;
@@ -27,6 +27,15 @@ class JobSearch extends React.Component {
           this.setState({ location: cityAndState });
         })
         .catch(err => console.error(err));
+
+      // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsAPI}`)
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     const location = data.plus_code.compound_code;
+      //     const cityAndState = location.slice(location.indexOf(' ') + 1, location.lastIndexOf(','));
+      //     this.setState({ location: cityAndState });
+      //   })
+      //   .catch(err => console.error(err));
 
     };
     const error = () => {

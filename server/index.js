@@ -1,5 +1,6 @@
 require('dotenv/config');
 const express = require('express');
+const fetch = require('node-fetch');
 
 const db = require('./database');
 const ClientError = require('./client-error');
@@ -59,7 +60,6 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 app.delete('/api/saved-job/:id', (req, res, next) => {
   const { id } = req.params;
   if (id <= 0) {
@@ -90,6 +90,7 @@ app.delete('/api/saved-job/:id', (req, res, next) => {
         error: 'An unexpected error occurred.'
       });
     });
+});
 
 app.post('/api/status/:id', (req, res, next) => {
   const { id } = req.params;
@@ -115,6 +116,26 @@ app.post('/api/status/:id', (req, res, next) => {
       res.status(202).json(result.rows[0]);
     })
     .catch(err => next(err));
+});
+
+app.get('/api/location/:lat-:long', (req, res, next) => {
+  const { lat, long } = req.params;
+  console.log(lat, long);
+});
+
+app.get('/api/search-jobs/:params', (req, res, next) => {
+  const { params } = req.params;
+  const pageNum = params.slice(params.indexOf('=') + 1, params.indexOf('&'));
+  const actualParams = params.slice(params.indexOf('&'));
+
+  const queryString = `app_id=${process.env.ADZUNA_ID}&app_key=${process.env.ADZUNA_KEY}` + actualParams;
+
+  fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${pageNum}?${queryString}`)
+    .then(response => response.json())
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => console.error(err));
 });
 
 app.use('/api', (req, res, next) => {
