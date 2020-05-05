@@ -10,6 +10,7 @@ function YourJobsItem(props) {
       <td>{props.info.results[0].company.display_name}</td>
       <td>{props.status}</td>
       <td>{props.priority} <i className='fas fa-star gold'></i></td>
+      <td><i className='fas fa-trash red'></i></td>
     </tr>
   );
 }

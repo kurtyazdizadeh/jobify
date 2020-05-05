@@ -31,8 +31,6 @@ nav, footer {
 }
 /* ********************* */
 
-
-
 .dark-gray {
   background-color: #E0E0E0;
   color: #4F4F4F;
@@ -42,7 +40,19 @@ nav, footer {
 }
 
 .gold {
-  color: gold
+  color: gold;
+}
+
+.red {
+  color: red;
+}
+
+/* ********************* */
+/*    Your Jobs Page     */
+/* ********************* */
+
+.jobTable {
+  font-size: .8rem;
 }
 
 /* ********************* */

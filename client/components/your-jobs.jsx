@@ -45,20 +45,21 @@ class YourJobs extends React.Component {
           <form>
             <select className='form-control pointer btn btn-secondary' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
               <option value="" disabled defaultValue>Sort By:</option>
-              <option value="date">Date</option>
+              <option value="Date">Date</option>
               <option value="Rating">Rating</option>
               <option value="Status">Status</option>
             </select>
           </form>
           <button className='btn btn-secondary'>Add</button>
         </div>
-        <table className='table table-striped text-center text-capitalize mt-2 '>
+        <table className='jobTable table table-striped text-center text-capitalize mt-2 '>
           <thead>
             <tr>
               <th>Position</th>
               <th>Company</th>
               <th>Status</th>
               <th>Rating</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
