@@ -1,5 +1,6 @@
 require('dotenv/config');
 const express = require('express');
+const fetch = require('node-fetch');
 
 const db = require('./database');
 const ClientError = require('./client-error');
@@ -58,6 +59,7 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
 
 app.get('/api/notes/:jobId', (req, res, next) => {
   const { jobId } = req.params;
@@ -142,6 +144,48 @@ app.post('/api/status/:id', (req, res, next) => {
         res.status(404).json({ error: 'something happened while sending request' });
       }
       res.status(202).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/location/:lat-:long', (req, res, next) => {
+  const { lat, long } = req.params;
+
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${process.env.GOOGLE_MAPS_API}`)
+    .then(response => response.json())
+    .then(location => res.json(location))
+    .catch(err => console.error(err));
+});
+
+app.get('/api/search-jobs/:params', (req, res, next) => {
+  const { params } = req.params;
+  const pageNum = params.slice(params.indexOf('=') + 1, params.indexOf('&'));
+  const actualParams = params.slice(params.indexOf('&'));
+
+  const queryString = `app_id=${process.env.ADZUNA_ID}&app_key=${process.env.ADZUNA_KEY}` + actualParams;
+
+  fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${pageNum}?${queryString}`)
+    .then(response => response.json())
+    .then(results => res.json(results))
+    .catch(err => console.error(err));
+});
+
+app.post('/api/save-job/', (req, res, next) => {
+  const jobDetails = req.body;
+
+  const sql = `
+    insert into "UserSelectedJob" ("user_job_id", "user_id", "job_info")
+    values (default, 1, $1)
+    returning *;
+  `;
+  const params = [jobDetails];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
     })
     .catch(err => next(err));
 });

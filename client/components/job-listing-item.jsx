@@ -7,23 +7,24 @@ class JobListingItem extends React.Component {
   }
 
   saveJob(event) {
-    event.target.className = 'fas fa-heart like-button';
+    const heart = event.target;
 
     const params = {
       method: 'POST',
-      header: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.props)
     };
 
-    // POST request for backend!
-    // fetch('/api/save-job', params)
-    //   .then()
-    //   .then()
-    //   .catch(err => console.err(err));
-
+    fetch('/api/save-job', params)
+      .then(res => res.json())
+      .then(job => {
+        heart.className = 'fas fa-heart like-button';
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
+    console.log;
     const { title, company, city, state, county, url } = this.props;
     let { contract } = this.props;
 
