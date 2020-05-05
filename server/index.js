@@ -59,6 +59,35 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/notes/:jobId', (req, res, next) => {
+  const { jobId } = req.params;
+  if (jobId <= 0) {
+    res.status(400).json({ error: 'job id must be a positive integer' });
+  }
+  const sql = `
+  SELECt "notes"."note_title",
+         "notes"."note_content",
+         "notes"."date_posted",
+         "JobNotes"."job_note_id",
+         "JobNotes"."note_id"
+    FROM "notes"
+    JOIN "JobNotes" using ("note_id")
+   WHERE "user_job_id" = $1
+  `;
+
+  const params = [jobId];
+
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(200).json({ empty: `there are no notes for user_job_id ${jobId}` });
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.delete('/api/saved-job/:id', (req, res, next) => {
   const { id } = req.params;
   if (id <= 0) {
