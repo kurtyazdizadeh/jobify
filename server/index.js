@@ -59,7 +59,6 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 app.delete('/api/saved-job/:id', (req, res, next) => {
   const { id } = req.params;
   if (id <= 0) {
@@ -90,6 +89,7 @@ app.delete('/api/saved-job/:id', (req, res, next) => {
         error: 'An unexpected error occurred.'
       });
     });
+});
 
 app.post('/api/status/:id', (req, res, next) => {
   const { id } = req.params;

@@ -40,10 +40,6 @@ export default class App extends React.Component {
     });
   }
 
-  deleteJob(userJobId) {
-
-  }
-
   renderView() {
     const { name, params } = this.state.view;
 

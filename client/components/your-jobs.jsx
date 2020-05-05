@@ -25,6 +25,15 @@ class YourJobs extends React.Component {
       });
   }
 
+  deleteJob(userJobId) {
+    const req = {
+      method: 'DELETE'
+    };
+
+    fetch(`/api/saved-job/${userJobId}`, req);
+
+  }
+
   handleChange(event) {
     event.preventDefault();
     if (event.target.value === 'Date') {
