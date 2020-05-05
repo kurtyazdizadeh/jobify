@@ -39,7 +39,8 @@ class ExpandedNotes extends React.Component {
             }
           });
         } else {
-
+          const date = this.props.date(notes[0].date_posted);
+          notes[0].date_posted = date;
           this.setState({
             note: notes[0]
           });
@@ -67,7 +68,6 @@ class ExpandedNotes extends React.Component {
     if (interview === 'No' || interview === 'no' || interview === null) {
       interview = 'No';
     }
-
     return (
       <>
         <div className='d-flex justify-content-between mt-5 py-2 dark-gray'>
@@ -105,11 +105,11 @@ class ExpandedNotes extends React.Component {
             <form action="submit">
               <select name="status" id="" className='btn btn-secondary'>
                 <option disabled defaultValue>{this.state.job.job_status}</option>
-                <option value="none">None</option>
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="interview">Interview Scheduled</option>
-                <option value="denied">Denied</option>
+                <option value="None">None</option>
+                <option value="Pending">Pending</option>
+                <option value="In-Progress">In Progress</option>
+                <option value="Interview">Interview Scheduled</option>
+                <option value="Denied">Denied</option>
               </select>
             </form>
           </div>
@@ -130,8 +130,8 @@ class ExpandedNotes extends React.Component {
             <h3 className='m-1'>Notes</h3>
             <button className='m-1 btn btn-secondary'>See All Notes</button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>
+            <h6 className='m-1'>Added: {this.state.note.date_posted}</h6>
             <p className='m-1'>{this.state.note.note_content}</p>
-            <h6 className='m-1'>Added: 5/1/20</h6>
           </div>
         </div>
       </>

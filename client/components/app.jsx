@@ -39,6 +39,11 @@ export default class App extends React.Component {
     });
   }
 
+  manipulateDate(date) {
+    const convertedDate = new Date(date.slice(0, 10));
+    return convertedDate.toLocaleDateString('en-US');
+  }
+
   renderView() {
     const { name, params } = this.state.view;
 
@@ -49,7 +54,7 @@ export default class App extends React.Component {
       return <YourJobs setView={this.setView} />;
     }
     if (name === 'Job Detail') {
-      return <ExpandedNotes params={this.state.view.params} setView={this.setView}/>;
+      return <ExpandedNotes date={this.manipulateDate} params={this.state.view.params} setView={this.setView}/>;
     }
     if (name === 'Map') {
       return <h1 className='mt-5'>Map in progress</h1>;
