@@ -140,6 +140,26 @@ app.get('/api/search-jobs/:params', (req, res, next) => {
     .catch(err => console.error(err));
 });
 
+app.post('/api/save-job/', (req, res, next) => {
+  const jobDetails = req.body;
+
+  const sql = `
+    insert into "UserSelectedJob" ("user_job_id", "user_id", "job_info")
+    values (default, 1, $1)
+    returning *;
+  `;
+  const params = [jobDetails];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });

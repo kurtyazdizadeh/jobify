@@ -1,13 +1,13 @@
 import React from 'react';
 
 function YourJobsItem(props) {
-  let title = props.info.results[0].title;
+  let title = props.info.title;
   title = title.toString();
   title = title.replace(/(<([^>]+)>)/ig, '');
   return (
     <tr onClick={() => props.setView('Job Detail', { userJobId: props.id })}>
       <td>{title}</td>
-      <td>{props.info.results[0].company.display_name}</td>
+      <td>{props.info.company}</td>
       <td>{props.status}</td>
       <td>{props.priority} <i className='fas fa-star gold'></i></td>
       <td><i className='fas fa-trash red'></i></td>
