@@ -58,6 +58,38 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/saved-job/:id', (req, res, next) => {
+  const { id } = req.params;
+  if (id <= 0) {
+    return res.status(400).json({
+      error: '"jobId" must be a positive integer'
+    });
+  }
+  const sql = `
+  DELETE FROM "UserSelectedJob"
+  WHERE       "user_job_id" = $1
+  RETURNING *;
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      const jobResult = result.rows;
+      if (!jobResult[0]) {
+        res.status(404).json({
+          error: `jobId ${id} is not found`
+        });
+      } else {
+        res.status(200).json(jobResult);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        error: 'An unexpected error occurred.'
+      });
+    });
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
