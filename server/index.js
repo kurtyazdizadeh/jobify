@@ -45,15 +45,42 @@ app.get('/api/specific-job/:id', (req, res, next) => {
          "interview_date",
          "job_info"
   FROM "UserSelectedJob"
-  WHERE "user_job_id" = ${id}
+  WHERE "user_job_id" = $1
   `;
-  db.query(sql)
+  const params = [id];
+  db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
         res.status(400).json({ error: `user id of ${id} not found` });
       } else {
         res.status(200).json(result.rows[0]);
       }
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/status/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  if (id <= 0) {
+    return res.status(404).json({ error: 'id must be a positive integer' });
+  } else if (!status) {
+    return res.status(404).json({ error: 'body is a required field' });
+  }
+
+  const sql = `
+  update "UserSelectedJob"
+     set "job_status" = $1
+   where "user_job_id" = $2
+   returning "job_status"
+  `;
+  const params = [status, id];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something happened while sending request' });
+      }
+      res.status(202).json(result.rows[0]);
     })
     .catch(err => next(err));
 });
