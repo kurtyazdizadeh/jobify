@@ -7,6 +7,7 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import AddNewJob from './add-new-job';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -50,6 +51,9 @@ export default class App extends React.Component {
     }
     if (name === 'Job Detail') {
       return <ExpandedNotes params={this.state.view.params} setView={this.setView}/>;
+    }
+    if (name === 'Add New Job') {
+      return <AddNewJob setView={this.setView}/>;
     }
     if (name === 'Search Results') {
       return (
