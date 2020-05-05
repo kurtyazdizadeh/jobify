@@ -35,7 +35,7 @@ class YourJobs extends React.Component {
     const newJobs = this.state.savedJobs.slice();
     const index = newJobs.findIndex(job => job.user_job_id === userJobId);
     newJobs.splice(index, 1);
-    this.setState({ grades: newJobs });
+    this.setState({ savedJobs: newJobs });
   }
 
   handleChange(event) {
