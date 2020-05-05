@@ -60,7 +60,6 @@ app.get('/api/specific-job/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 app.get('/api/notes/:jobId', (req, res, next) => {
   const { jobId } = req.params;
   if (jobId <= 0) {
@@ -174,8 +173,8 @@ app.post('/api/save-job/', (req, res, next) => {
   const jobDetails = req.body;
 
   const sql = `
-    insert into "UserSelectedJob" ("user_job_id", "user_id", "job_info")
-    values (default, 1, $1)
+    insert into "UserSelectedJob" ("user_job_id", "user_id", "job_status", "job_priority", "job_info")
+    values (default, 1, default, default, $1)
     returning *;
   `;
   const params = [jobDetails];
