@@ -78,7 +78,13 @@ app.get('/api/notes/:jobId', (req, res, next) => {
   const params = [jobId];
 
   db.query(sql, params)
-    .then(result => res.status(200).json(result.rows))
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(200).json({ empty: `there are no notes for user_job_id ${jobId}` });
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
     .catch(err => next(err));
 });
 
