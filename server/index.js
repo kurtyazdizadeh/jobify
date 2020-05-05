@@ -120,7 +120,11 @@ app.post('/api/status/:id', (req, res, next) => {
 
 app.get('/api/location/:lat-:long', (req, res, next) => {
   const { lat, long } = req.params;
-  console.log(lat, long);
+
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${process.env.GOOGLE_MAPS_API}`)
+    .then(response => response.json())
+    .then(location => res.json(location))
+    .catch(err => console.error(err));
 });
 
 app.get('/api/search-jobs/:params', (req, res, next) => {
@@ -132,9 +136,7 @@ app.get('/api/search-jobs/:params', (req, res, next) => {
 
   fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${pageNum}?${queryString}`)
     .then(response => response.json())
-    .then(results => {
-      res.json(results);
-    })
+    .then(results => res.json(results))
     .catch(err => console.error(err));
 });
 
