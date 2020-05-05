@@ -86,7 +86,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public."JobNotes" (
     job_note_id integer NOT NULL,
-    job_id integer NOT NULL,
+    user_job_id integer NOT NULL,
     note_id integer NOT NULL
 );
 
@@ -118,9 +118,9 @@ ALTER SEQUENCE public."JobNotes_job_note_id_seq" OWNED BY public."JobNotes".job_
 CREATE TABLE public."UserSelectedJob" (
     user_job_id integer NOT NULL,
     user_id integer NOT NULL,
-    job_status text NOT NULL,
-    date_applied date DEFAULT now() NOT NULL,
-    job_priority integer NOT NULL,
+    job_status text,
+    date_applied date DEFAULT now(),
+    job_priority integer,
     follow_up_date date,
     files_id bigint NOT NULL,
     interview_date date,
@@ -257,7 +257,7 @@ CREATE TABLE public.notes (
     note_title text NOT NULL,
     note_content text NOT NULL,
     date_posted date DEFAULT now() NOT NULL,
-    date_type text NOT NULL
+    note_type text NOT NULL
 );
 
 
@@ -373,7 +373,8 @@ ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.
 -- Data for Name: JobNotes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."JobNotes" (job_note_id, job_id, note_id) FROM stdin;
+COPY public."JobNotes" (job_note_id, user_job_id, note_id) FROM stdin;
+1	1	1
 \.
 
 
@@ -383,6 +384,8 @@ COPY public."JobNotes" (job_note_id, job_id, note_id) FROM stdin;
 
 COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_applied, job_priority, follow_up_date, files_id, interview_date, job_info) FROM stdin;
 4	1	applied	2020-05-02	5	\N	1	\N	{"results":[{"description":"...  Task Lead to provide leadership, supervision and management to a small team of <strong>web</strong> <strong>developers</strong>. The Website Maintenance and Design Task Lead will focus on ensuring the website stays ...  and Design Task Lead will oversee a small team of <strong>web</strong> <strong>developers</strong> responsible for maintaining and updating the content of an external facing government website, as well as the maintenance ...","created":"2020-04-16T17:47:21Z","location":{"__CLASS__":"Adzuna::API::Response::Location","display_name":"Washington, Montgomery County","area":["US","Ohio","Montgomery County","Washington"]},"company":{"display_name":"HighPoint Global","__CLASS__":"Adzuna::API::Response::Company"},"__CLASS__":"Adzuna::API::Response::Job","title":"<strong>Web</strong> <strong>Developer</strong>","category":{"tag":"it-jobs","label":"IT Jobs","__CLASS__":"Adzuna::API::Response::Category"},"id":"1522594859","latitude":38.906704,"adref":"eyJhbGciOiJIUzI1NiJ9.eyJpIjoiMTUyMjU5NDg1OSIsInMiOiJUdXltQUNpTTZoR3JvVmlqU0ZEcnVRIn0.8U-KlGOaVNtanVytP7oB8gHYYIxK_teO-3kNKGf2vck","redirect_url":"https://www.adzuna.com/land/ad/1522594859?se=TuymACiM6hGroVijSFDruQ&utm_medium=api&utm_source=e4056c10&v=FE67CA0D313B4B9BE1BC4F88C7394A31CE9C224A","salary_is_predicted":"0","longitude":-77.041912}]}
+8	1	rejected	2020-05-05	3	\N	2	\N	{"results":[{"salary_min":23,"company":{"__CLASS__":"Adzuna::API::Response::Company","display_name":"Jessamy Staffing Solutions"},"adref":"eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2x0VFhUMk82aEdMRnc0U1Y0N3NrdyIsImkiOiIxNTI5MTQ2NDA4In0.P5GPm2xMo5g26b5-ql27sWEWDK4mxxPDsoFzWN71zng","contract_time":"full_time","location":{"display_name":"Manchester, Greater Manchester","area":["UK","North West England","Greater Manchester","Manchester"],"__CLASS__":"Adzuna::API::Response::Location"},"salary_max":34,"__CLASS__":"Adzuna::API::Response::Job","contract_type":"contract","title":"Registered General Nurse","description":"The job involves carrying out Nurses plan and provide medical and nursing care to patients.Clients and assignment venue will be discussed and agreed beforehand. Duties of the job include: assessing and planning nursing care requirements; providing pre- and post-operation care; monitoring and administering medication and intravenous infusions; taking patient samples, pulses, temperatures and blood pressures; writing records; supervising junior staff; organising workloads; providing emotional sup\\u2026","id":"1529146408","redirect_url":"https://www.adzuna.co.uk/jobs/land/ad/1529146408?se=WltTXT2O6hGLFw4SV47skw&utm_medium=api&utm_source=e4056c10&v=374134EC2CC575DBA60E303765DC45099A2DEA7A","salary_is_predicted":"0","created":"2020-04-25T12:24:30Z","category":{"label":"Healthcare & Nursing Jobs","tag":"healthcare-nursing-jobs","__CLASS__":"Adzuna::API::Response::Category"}}]}
+9	1	rejected	2020-05-05	3	\N	2	\N	{"results":[{"salary_min":23,"company":{"__CLASS__":"Adzuna::API::Response::Company","display_name":"Jessamy Staffing Solutions"},"adref":"eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2x0VFhUMk82aEdMRnc0U1Y0N3NrdyIsImkiOiIxNTI5MTQ2NDA4In0.P5GPm2xMo5g26b5-ql27sWEWDK4mxxPDsoFzWN71zng","contract_time":"full_time","location":{"display_name":"Manchester, Greater Manchester","area":["UK","North West England","Greater Manchester","Manchester"],"__CLASS__":"Adzuna::API::Response::Location"},"salary_max":34,"__CLASS__":"Adzuna::API::Response::Job","contract_type":"contract","title":"Registered General Nurse","description":"The job involves carrying out Nurses plan and provide medical and nursing care to patients.Clients and assignment venue will be discussed and agreed beforehand. Duties of the job include: assessing and planning nursing care requirements; providing pre- and post-operation care; monitoring and administering medication and intravenous infusions; taking patient samples, pulses, temperatures and blood pressures; writing records; supervising junior staff; organising workloads; providing emotional sup\\u2026","id":"1529146408","redirect_url":"https://www.adzuna.co.uk/jobs/land/ad/1529146408?se=WltTXT2O6hGLFw4SV47skw&utm_medium=api&utm_source=e4056c10&v=374134EC2CC575DBA60E303765DC45099A2DEA7A","salary_is_predicted":"0","created":"2020-04-25T12:24:30Z","category":{"label":"Healthcare & Nursing Jobs","tag":"healthcare-nursing-jobs","__CLASS__":"Adzuna::API::Response::Category"}}]}
 \.
 
 
@@ -414,7 +417,8 @@ COPY public.files (files_id, resume, cover_letter, letter_of_recommendation) FRO
 -- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.notes (note_id, note_title, note_content, date_posted, date_type) FROM stdin;
+COPY public.notes (note_id, note_title, note_content, date_posted, note_type) FROM stdin;
+1	Testing	A dummy note for testing only	2020-05-05	Job
 \.
 
 
@@ -431,14 +435,14 @@ COPY public."user" (user_id, first_name, last_name, city, image, email, phone_nu
 -- Name: JobNotes_job_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, true);
 
 
 --
 -- Name: UserSelectedJob_user_job_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 4, true);
+SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 9, true);
 
 
 --
@@ -466,7 +470,7 @@ SELECT pg_catalog.setval('public.files_files_id_seq', 1, false);
 -- Name: notes_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.notes_note_id_seq', 1, false);
+SELECT pg_catalog.setval('public.notes_note_id_seq', 1, true);
 
 
 --
