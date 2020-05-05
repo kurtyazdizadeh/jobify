@@ -9,6 +9,7 @@ class YourJobs extends React.Component {
       value: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.deleteJob = this.deleteJob.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +32,10 @@ class YourJobs extends React.Component {
     };
 
     fetch(`/api/saved-job/${userJobId}`, req);
-
+    const newJobs = this.state.savedJobs.slice();
+    const index = newJobs.findIndex(job => job.user_job_id === userJobId);
+    newJobs.splice(index, 1);
+    this.setState({ grades: newJobs });
   }
 
   handleChange(event) {
@@ -82,6 +86,7 @@ class YourJobs extends React.Component {
                     priority={job.job_priority}
                     info={job.job_info}
                     setView={this.props.setView}
+                    deleteJob={this.deleteJob}
                   />
                 );
               })
