@@ -140,8 +140,9 @@ app.post('/api/status/:id', (req, res, next) => {
     .then(result => {
       if (!result.rows[0]) {
         res.status(404).json({ error: 'something happened while sending request' });
+      } else {
+        res.status(202).json(result.rows[0]);
       }
-      res.status(202).json(result.rows[0]);
     })
     .catch(err => next(err));
 });

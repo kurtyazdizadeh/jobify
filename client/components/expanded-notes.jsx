@@ -7,6 +7,7 @@ class ExpandedNotes extends React.Component {
       job: null,
       note: null
     };
+    this.handleStatus = this.handleStatus.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +21,27 @@ class ExpandedNotes extends React.Component {
       .then(job => {
         this.setState({
           job: job
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleStatus(event) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: event.target.value })
+    };
+    fetch(`/api/status/${this.props.params.userJobId}`, params)
+      .then(res => res.json())
+      .then(data => {
+        const newStatus = Object.assign(this.state.job);
+        newStatus.job_status = data.job_status;
+        this.setState({
+          job: newStatus
         });
       })
       .catch(err => console.error(err));
@@ -103,8 +125,13 @@ class ExpandedNotes extends React.Component {
           <h3>Status</h3>
           <div>
             <form action="submit">
-              <select name="status" id="" className='btn btn-secondary'>
-                <option disabled defaultValue>{this.state.job.job_status}</option>
+              <select
+                name="status"
+                id="status"
+                className='form-control pointer btn btn-secondary'
+                value='this.state.job.job_status'
+                onChange={this.handleStatus}>
+                <option value='' defaultValue>{this.state.job.job_status}</option>
                 <option value="None">None</option>
                 <option value="Pending">Pending</option>
                 <option value="In-Progress">In Progress</option>
