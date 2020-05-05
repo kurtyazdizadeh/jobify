@@ -72,13 +72,13 @@ app.get('/api/notes/:jobId', (req, res, next) => {
          "JobNotes"."note_id"
     FROM "notes"
     JOIN "JobNotes" using ("note_id")
-   WHERE "note_id" = $1
+   WHERE "user_job_id" = $1
   `;
 
   const params = [jobId];
 
   db.query(sql, params)
-    .then(result => res.status(200).json(result.rows[0]))
+    .then(result => res.status(200).json(result.rows))
     .catch(err => next(err));
 });
 
