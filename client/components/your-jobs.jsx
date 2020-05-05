@@ -43,14 +43,14 @@ class YourJobs extends React.Component {
       <div className='mt-4'>
         <div className="form-group d-flex justify-content-around mt-5">
           <form>
-            <select className='form-control pointer' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
+            <select className='form-control pointer btn btn-secondary' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
               <option value="" disabled defaultValue>Sort By:</option>
               <option value="date">Date</option>
               <option value="Rating">Rating</option>
               <option value="Status">Status</option>
             </select>
           </form>
-          <button>Add</button>
+          <button className='btn btn-secondary'>Add</button>
         </div>
         <table className='table table-striped text-center text-capitalize mt-2 '>
           <thead>

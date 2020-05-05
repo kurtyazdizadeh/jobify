@@ -41,12 +41,8 @@ nav, footer {
   color: #CACFCF;
 }
 
-/* ************************ */
-/*    Select Form      */
-/* ************************ */
-
-option:nth-child(odd) {
-  background-color: #6d9197;
+.gold {
+  color: gold
 }
 
 /* ********************* */

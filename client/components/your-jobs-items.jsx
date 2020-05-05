@@ -9,7 +9,7 @@ function YourJobsItem(props) {
       <td>{title}</td>
       <td>{props.info.results[0].company.display_name}</td>
       <td>{props.status}</td>
-      <td>{props.priority}</td>
+      <td>{props.priority} <i className='fas fa-star gold'></i></td>
     </tr>
   );
 }
