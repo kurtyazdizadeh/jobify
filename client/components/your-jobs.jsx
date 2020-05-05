@@ -6,9 +6,12 @@ class YourJobs extends React.Component {
     super(props);
     this.state = {
       savedJobs: [],
-      value: ''
+      value: '',
+      isDesc: 'Descending'
     };
     this.handleChange = this.handleChange.bind(this);
+    this.deleteJob = this.deleteJob.bind(this);
+    this.toggleOrder = this.toggleOrder.bind(this);
   }
 
   componentDidMount() {
@@ -25,16 +28,42 @@ class YourJobs extends React.Component {
       });
   }
 
+  deleteJob(userJobId) {
+    const req = {
+      method: 'DELETE'
+    };
+
+    fetch(`/api/saved-job/${userJobId}`, req);
+    const newJobs = this.state.savedJobs.slice();
+    const index = newJobs.findIndex(job => job.user_job_id === userJobId);
+    newJobs.splice(index, 1);
+    this.setState({ savedJobs: newJobs });
+  }
+
+  toggleOrder() {
+    if (this.state.isDesc === 'Descending') {
+      this.setState(state => ({ isDesc: 'Ascending' }));
+    } else {
+      this.setState(state => ({ isDesc: 'Descending' }));
+    }
+  }
+
   handleChange(event) {
     event.preventDefault();
+    let order = '';
+    if (this.state.isDesc === 'Descending') {
+      order = 'DESC';
+    } else {
+      order = 'ASC';
+    }
     if (event.target.value === 'Date') {
-      this.getSavedJobs('date_applied');
+      this.getSavedJobs(`date_applied ${order}`);
     }
     if (event.target.value === 'Status') {
-      this.getSavedJobs('job_status');
+      this.getSavedJobs(`job_status ${order}`);
     }
     if (event.target.value === 'Rating') {
-      this.getSavedJobs('job_priority');
+      this.getSavedJobs(`job_priority ${order}`);
     }
   }
 
@@ -50,6 +79,7 @@ class YourJobs extends React.Component {
               <option value="Status">Status</option>
             </select>
           </form>
+          <button onClick={this.toggleOrder} className='btn btn-secondary'>{this.state.isDesc}</button>
           <button className='btn btn-secondary'>Add</button>
         </div>
         <table className='jobTable table table-striped text-center text-capitalize mt-2 '>
@@ -73,6 +103,7 @@ class YourJobs extends React.Component {
                     priority={job.job_priority}
                     info={job.job_info}
                     setView={this.props.setView}
+                    deleteJob={this.deleteJob}
                   />
                 );
               })
