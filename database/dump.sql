@@ -122,7 +122,7 @@ CREATE TABLE public."UserSelectedJob" (
     date_applied date DEFAULT now(),
     job_priority integer,
     follow_up_date date,
-    files_id bigint NOT NULL,
+    files_id bigint,
     interview_date date,
     job_info json NOT NULL
 );
