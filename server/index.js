@@ -24,7 +24,7 @@ app.get('/api/saved-job/:sort', (req, res, next) => {
   const sql = `
     SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_applied"
     FROM      "UserSelectedJob"
-    ORDER BY  ${sort}  DESC;
+    ORDER BY  ${sort};
   `;
   db.query(sql)
     .then(result => res.json(result.rows))
