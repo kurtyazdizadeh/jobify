@@ -4,12 +4,14 @@ class ExpandedNotes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      job: null
+      job: null,
+      note: null
     };
   }
 
   componentDidMount() {
     this.getJob(this.props.params.userJobId);
+    this.getNote(this.props.params.userJobId);
   }
 
   getJob(jobId) {
@@ -23,6 +25,29 @@ class ExpandedNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  getNote(jobId) {
+    fetch(`/api/notes/${jobId}`)
+      .then(data => data.json())
+      .then(notes => {
+        const { empty } = notes;
+        if (empty) {
+          this.setState({
+            note: {
+              note_title: 'No notes',
+              note_content: '',
+              date_posted: ''
+            }
+          });
+        } else {
+
+          this.setState({
+            note: notes[0]
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   getRating(star) {
     const priority = this.state.job.job_priority;
     return (priority >= star
@@ -31,7 +56,7 @@ class ExpandedNotes extends React.Component {
   }
 
   render() {
-    if (this.state.job === null) {
+    if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
     let title = this.state.job.job_info.results[0].title;
@@ -79,7 +104,7 @@ class ExpandedNotes extends React.Component {
           <div>
             <form action="submit">
               <select name="status" id="" className='btn btn-secondary'>
-                <option selected>{this.state.job.job_status}</option>
+                <option disabled defaultValue>{this.state.job.job_status}</option>
                 <option value="none">None</option>
                 <option value="pending">Pending</option>
                 <option value="in-progress">In Progress</option>
@@ -103,9 +128,9 @@ class ExpandedNotes extends React.Component {
           </div>
           <div>
             <h3 className='m-1'>Notes</h3>
-            <button className='m-1 btn btn-secondary'>See Notes</button>
-            <h6 className='m-1'>Recent:</h6>
-            <h6 className='m-1'>Got letter of rejection today</h6>
+            <button className='m-1 btn btn-secondary'>See All Notes</button>
+            <h6 className='m-1'>{this.state.note.note_title}</h6>
+            <p className='m-1'>{this.state.note.note_content}</p>
             <h6 className='m-1'>Added: 5/1/20</h6>
           </div>
         </div>
