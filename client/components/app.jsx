@@ -20,7 +20,6 @@ export default class App extends React.Component {
       }
     };
     this.setView = this.setView.bind(this);
-    this.deleteJob = this.deleteJob.bind(this);
   }
 
   componentDidMount() {
@@ -38,10 +37,6 @@ export default class App extends React.Component {
         params: params
       }
     });
-  }
-
-  deleteJob(userJobId) {
-
   }
 
   renderView() {
