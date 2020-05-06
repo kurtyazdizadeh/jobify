@@ -15,6 +15,7 @@ class AddNewJob extends React.Component {
     this.handleClickInterviewYes = this.handleClickInterviewYes.bind(this);
     this.handleClickInterviewNo = this.handleClickInterviewNo.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
 
   handleClickInterviewYes() {
@@ -110,11 +111,11 @@ class AddNewJob extends React.Component {
           </label>
           <div>
             <p className='heading'>Star Rating</p>
-            <span className="fa fa-star checked"></span>
-            <span className="fa fa-star checked"></span>
-            <span className="fa fa-star checked"></span>
-            <span className="fa fa-star"></span>
-            <span className="fa fa-star"></span>
+            <button className="fa fa-star btn"></button>
+            <button className="fa fa-star btn "></button>
+            <button className="fa fa-star btn "></button>
+            <button className="fa fa-star btn "></button>
+            <button className="fa fa-star btn "></button>
           </div>
           <label className='heading'>
             Interview Scheduled?<br></br>
@@ -139,8 +140,8 @@ class AddNewJob extends React.Component {
           </div>
           <div>
             <button className='button btn col'>Files</button>
-            <button className='button btn col'>Submit</button>
-            <button className='button btn col'>Cancel</button>
+            <button className='button btn col' onSubmit={this.handleSubmit}>Submit</button>
+            <button className='button btn col' onClick={this.resetForm}>Cancel</button>
           </div>
         </form>
       </div>
