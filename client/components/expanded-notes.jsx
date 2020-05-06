@@ -149,7 +149,10 @@ class ExpandedNotes extends React.Component {
           </div>
           <div>
             <h3 className='m-1'>Notes</h3>
-            <button className='m-1 btn btn-secondary'>See All Notes</button>
+            <button className='m-1 btn btn-secondary'
+              onClick={() => this.props.setView('Note', { userJobId: this.props.params.userJobId })}>
+              See All Notes
+            </button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>
             <h6 className='m-1'>{this.state.note.date_posted}</h6>
             <p className='m-1'>{this.state.note.note_content}</p>
