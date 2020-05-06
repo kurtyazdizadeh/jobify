@@ -15,7 +15,7 @@ class YourJobs extends React.Component {
   }
 
   componentDidMount() {
-    this.getSavedJobs('date_applied');
+    this.getSavedJobs('date_applied DESC');
   }
 
   getSavedJobs(order) {
