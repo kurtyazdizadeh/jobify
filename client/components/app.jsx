@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
-import ExpandedNotes from './expanded-notes';
+import JobDetails from './job-details';
 import JobSearch from './job-search';
 import SearchResults from './search-results';
 import Header from './header';
@@ -58,8 +58,8 @@ export default class App extends React.Component {
     if (name === 'Profile') {
       return <h1 className='mt-5'>Profile in progress</h1>;
     }
-    if (name === 'Job Detail') {
-      return <ExpandedNotes
+    if (name === 'Job Details') {
+      return <JobDetails
         date={this.manipulateDate}
         params={this.state.view.params}
         setView={this.setView}/>;
@@ -68,10 +68,13 @@ export default class App extends React.Component {
       return <h1 className='mt-5'>Map in progress</h1>;
     }
     if (name === 'Note') {
+      return <h1 className='mt-5'>Notes in progress</h1>;
+    }
+    if (name === 'Job Note') {
       return <SpecificJobNotes
         date={this.manipulateDate}
         params={this.state.view.params}
-        setView={this.setView}/>;
+        setView={this.setView} />;
     }
     if (name === 'Goal') {
       return <h1 className='mt-5'>Goal in progress</h1>;
