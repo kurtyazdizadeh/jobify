@@ -10,7 +10,7 @@ class AddNewJob extends React.Component {
       dateOfApplication: '',
       followUp: '',
       location: '',
-      rating: false,
+      rating: 0,
       isInterviewScheduled: false,
       notes: ''
     };
@@ -69,32 +69,17 @@ class AddNewJob extends React.Component {
     this.setState(change);
   }
 
-  handleClickRating(event) {
+  handleClickRating(num) {
     event.preventDefault();
-    if (this.state.rating === false) {
-      this.setState(state => ({
-        rating: true
-      }));
-    }
+    this.setState({ rating: num });
+  }
 
-    let starClass = 'fa fa-star btn ';
-    if (event.target.id === 1) {
-      if (this.state.rating === false) {
-        starClass += 'fa fa-star btn star-rating';
-      }
-    }
-    if (event.target.id === 2) {
-      starClass += 'fa fa-star btn star-rating';
-    }
-    if (event.target.id === 3) {
-      starClass += 'fa fa-star btn star-rating';
-    }
-    if (event.target.id === 4) {
-      starClass += 'fa fa-star btn star-rating';
-    }
-    if (event.target.id === 5) {
-      starClass += 'fa fa-star btn star-rating';
-    }
+  getRating(num) {
+    return (
+      this.state.rating >= num
+        ? 'fa fa-star btn star-rating'
+        : 'fa fa-star btn'
+    );
   }
 
   handleSubmit(event) {
@@ -137,11 +122,7 @@ class AddNewJob extends React.Component {
     });
   }
 
-  render(event) {
-    let starClass = 'fa fa-star btn ';
-    if (this.state.rating === true) {
-      starClass += 'fa fa-star btn star-rating';
-    }
+  render() {
     return (
       <div>
         <form
@@ -213,32 +194,32 @@ class AddNewJob extends React.Component {
             <button
               id='1'
               value={this.state.star1}
-              onClick={this.handleClickRating}
-              className={starClass}>
+              onClick={() => this.handleClickRating(1)}
+              className={this.getRating(1)}>
             </button>
             <button
               id='2'
               value={this.state.star2}
-              onClick={this.handleClickRating}
-              className={starClass}>
+              onClick={() => this.handleClickRating(2)}
+              className={this.getRating(2)}>
             </button>
             <button
               id='3'
               value={this.state.star3}
-              onClick={this.handleClickRating}
-              className={starClass}>
+              onClick={() => this.handleClickRating(3)}
+              className={this.getRating(3)}>
             </button>
             <button
               id='4'
               value={this.state.star4}
-              onClick={this.handleClickRating}
-              className={starClass}>
+              onClick={() => this.handleClickRating(4)}
+              className={this.getRating(4)}>
             </button>
             <button
               id='5'
               value={this.state.star5}
-              onClick={this.handleClickRating}
-              className={starClass}>
+              onClick={() => this.handleClickRating(5)}
+              className={this.getRating(5)}>
             </button>
           </div>
           <label className='heading'>
