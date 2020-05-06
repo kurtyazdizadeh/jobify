@@ -3,7 +3,19 @@ import React from 'react';
 class JobListingItem extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      logo: ''
+    };
     this.saveJob = this.saveJob.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(`/api/logo/${this.props.company}`)
+      .then(res => res.json())
+      .then(imgURL => {
+        this.setState({ logo: imgURL });
+      })
+      .catch(err => console.error(err));
   }
 
   saveJob(event) {
@@ -24,7 +36,7 @@ class JobListingItem extends React.Component {
   }
 
   render() {
-    console.log;
+    const { logo } = this.state;
     const { title, company, city, state, county, url } = this.props;
     let { contract } = this.props;
 
@@ -44,8 +56,8 @@ class JobListingItem extends React.Component {
 
     return (
       <div className="job-listing d-flex p-2 my-2 rounded">
-        <div className="logo align-self-center mr-2">
-          <img src="https://loremflickr.com/75/75" />
+        <div className="align-self-center mr-2">
+          <img src={logo} className="logo" />
         </div>
         <div className="job-list-text d-flex flex-column">
           <div className="job-title">{title}</div>
