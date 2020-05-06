@@ -123,3 +123,6 @@ input[type="submit"]:hover {
 .text {
   border-radius: 8px;
 }
+.star-rating {
+  color: #d1b902;
+}

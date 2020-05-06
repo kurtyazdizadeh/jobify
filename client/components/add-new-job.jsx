@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 class AddNewJob extends React.Component {
@@ -8,12 +9,13 @@ class AddNewJob extends React.Component {
       position: '',
       dateOfApplication: '',
       followUp: '',
-      rating: 1,
+      rating: false,
       isInterviewScheduled: false,
       notes: ''
     };
     this.handleClickInterviewYes = this.handleClickInterviewYes.bind(this);
     this.handleClickInterviewNo = this.handleClickInterviewNo.bind(this);
+    this.handleClickRating = this.handleClickRating.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetForm = this.resetForm.bind(this);
@@ -59,6 +61,14 @@ class AddNewJob extends React.Component {
     this.setState(change);
   }
 
+  handleClickRating(event) {
+    if (this.state.rating === false) {
+      this.setState(state => ({
+        rating: true
+      }));
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const {
@@ -80,7 +90,7 @@ class AddNewJob extends React.Component {
       notes: notes
     };
     this.props.setView('Add New Job', newJob);
-    this.resetForm();
+    // this.resetForm();
   }
 
   resetForm() {
@@ -89,13 +99,17 @@ class AddNewJob extends React.Component {
       position: '',
       dateOfApplication: '',
       followUp: '',
-      rating: 0,
+      rating: false,
       isInterviewScheduled: false,
       notes: ''
     });
   }
 
   render() {
+    let starClass = 'fa fa-star btn ';
+    if (this.state.rating === true) {
+      starClass += 'fa fa-star btn star-rating';
+    }
     return (
       <div>
         <form
@@ -151,25 +165,36 @@ class AddNewJob extends React.Component {
             />
           </label>
           <div>
-            <p className='heading'>Star Rating</p>
+            <p className='heading'>Star Rating:</p>
             <button
               id='1'
-              className="fa fa-star btn">
+              value={this.state.rating}
+              onClick={this.handleClickRating}
+              className={starClass}>
             </button>
             <button
               id='2'
-              className="fa fa-star btn ">
+              value={this.state.rating}
+              onClick={this.handleClickRating}
+              className={starClass}>
             </button>
             <button
               id='3'
-              className="fa fa-star btn ">
+              value={this.state.rating}
+              onClick={this.handleClickRating}
+              className={starClass}>
             </button>
             <button
               id='4'
-              className="fa fa-star btn "></button>
+              value={this.state.rating}
+              onClick={this.handleClickRating}
+              className={starClass}>
+            </button>
             <button
               id='5'
-              className="fa fa-star btn ">
+              value={this.state.rating}
+              onClick={this.handleClickRating}
+              className={starClass}>
             </button>
           </div>
           <label className='heading'>
