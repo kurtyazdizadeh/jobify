@@ -150,7 +150,7 @@ class JobDetails extends React.Component {
           <div>
             <h3 className='m-1'>Notes</h3>
             <button className='m-1 btn btn-secondary'
-              onClick={() => this.props.setView('Note', { userJobId: this.props.params.userJobId })}>
+              onClick={() => this.props.setView('Job Note', { userJobId: this.props.params.userJobId })}>
               See All Notes
             </button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>
