@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ExpandedNotes extends React.Component {
+class JobDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -163,4 +163,4 @@ class ExpandedNotes extends React.Component {
   }
 }
 
-export default ExpandedNotes;
+export default JobDetails;
