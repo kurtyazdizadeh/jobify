@@ -6,7 +6,7 @@ class Header extends React.Component {
       <nav className="navbar fixed-top dark-green">
         <i className="fas fa-bars pointer"></i>
         {this.props.title}
-        <i className="fas fa-user-circle pointer"></i>
+        <i onClick={() => this.props.setView('Profile', {})} className="fas fa-user-circle pointer"></i>
       </nav>
     );
   }

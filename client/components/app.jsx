@@ -53,6 +53,9 @@ export default class App extends React.Component {
     if (name === 'Home') {
       return <YourJobs setView={this.setView} />;
     }
+    if (name === 'Profile') {
+      return <h1 className='mt-5'>Profile in progress</h1>;
+    }
     if (name === 'Job Detail') {
       return <ExpandedNotes date={this.manipulateDate} params={this.state.view.params} setView={this.setView}/>;
     }
@@ -90,7 +93,7 @@ export default class App extends React.Component {
 
       <div>
 
-        <Header title={this.state.view.name}/>
+        <Header title={this.state.view.name} setView={this.setView}/>
         {this.renderView()}
         <FooterMenu setView={this.setView}/>
       </div>

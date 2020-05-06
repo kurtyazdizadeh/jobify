@@ -82,9 +82,9 @@ class ExpandedNotes extends React.Component {
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
-    let title = this.state.job.job_info.results[0].title;
+    let title = this.state.job.job_info.title;
     title = title.replace(/(<([^>]+)>)/ig, '');
-    const info = this.state.job.job_info.results[0];
+    const info = this.state.job.job_info;
 
     let interview = this.state.job.interview_date;
     if (interview === 'No' || interview === 'no' || interview === null) {
@@ -94,13 +94,13 @@ class ExpandedNotes extends React.Component {
       <>
         <div className='text-center mt-5 py-2 dark-gray'>
           <h4>{title}</h4>
-          <h5>{info.company.display_name}</h5>
-          <h5>{info.location.display_name}</h5>
+          <h5>{info.company}</h5>
+          <h5>{`${info.city || info.county}, ${info.state}`}</h5>
         </div>
         <div className='d-flex justify-content-around py-3 light-green'>
           <h3>Job Post</h3>
           <button className='btn btn-secondary'>
-            <a href={info.redirect_url} className='text-light'>Click to Apply</a>
+            <a href={info.url} className='text-light'>Click to Apply</a>
           </button>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
