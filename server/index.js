@@ -1,6 +1,7 @@
 require('dotenv/config');
 const express = require('express');
 const fetch = require('node-fetch');
+const gis = require('g-i-s');
 
 const db = require('./database');
 const ClientError = require('./client-error');
@@ -168,6 +169,26 @@ app.get('/api/search-jobs/:params', (req, res, next) => {
     .then(response => response.json())
     .then(results => res.json(results))
     .catch(err => console.error(err));
+});
+
+app.get('/api/logo/:company', (req, res, next) => {
+  const { company } = req.params;
+
+  const options = {
+    searchTerm: `${company} logo`,
+    queryStringAddition: 'as_st=y&tbm=isch&safe=images&tbs=isz:i,ic:trans,iar:s'
+  };
+
+  function log(err, results) {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).json(results[0].url);
+    }
+  }
+
+  gis(options, log);
+
 });
 
 app.post('/api/save-job/', (req, res, next) => {

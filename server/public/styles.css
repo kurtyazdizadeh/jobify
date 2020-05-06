@@ -95,6 +95,10 @@ input[type="submit"]:hover {
 .job-link {
   font-size: .75rem;
 }
+.logo {
+  width: 75px;
+  height: 75px;
+}
 
 /* ************************ */
 /*       Upload Files       */
