@@ -35,8 +35,6 @@ nav, footer {
 }
 /* ********************* */
 
-
-
 .dark-gray {
   background-color: #E0E0E0;
   color: #4F4F4F;
@@ -45,12 +43,20 @@ nav, footer {
   color: #CACFCF;
 }
 
-/* ************************ */
-/*    Select Form      */
-/* ************************ */
+.gold {
+  color: gold;
+}
 
-option:nth-child(odd) {
-  background-color: #6d9197;
+.red {
+  color: red;
+}
+
+/* ********************* */
+/*    Your Jobs Page     */
+/* ********************* */
+
+.jobTable {
+  font-size: .6rem;
 }
 
 /* ********************* */
@@ -92,6 +98,10 @@ input[type="submit"]:hover {
 .job-contract,
 .job-link {
   font-size: .75rem;
+}
+.logo {
+  width: 75px;
+  height: 75px;
 }
 
 /* ************************ */

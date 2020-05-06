@@ -4,12 +4,15 @@ class ExpandedNotes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      job: null
+      job: null,
+      note: null
     };
+    this.handleStatus = this.handleStatus.bind(this);
   }
 
   componentDidMount() {
     this.getJob(this.props.params.userJobId);
+    this.getNote(this.props.params.userJobId);
   }
 
   getJob(jobId) {
@@ -23,6 +26,51 @@ class ExpandedNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleStatus(event) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: event.target.value })
+    };
+    fetch(`/api/status/${this.props.params.userJobId}`, params)
+      .then(res => res.json())
+      .then(data => {
+        const newStatus = Object.assign(this.state.job);
+        newStatus.job_status = data.job_status;
+        this.setState({
+          job: newStatus
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  getNote(jobId) {
+    fetch(`/api/notes/${jobId}`)
+      .then(data => data.json())
+      .then(notes => {
+        const { empty } = notes;
+        if (empty) {
+          this.setState({
+            note: {
+              note_title: 'No notes',
+              note_content: '',
+              date_posted: ''
+            }
+          });
+        } else {
+          const date = this.props.date(notes[0].date_posted);
+          notes[0].date_posted = date;
+          this.setState({
+            note: notes[0]
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   getRating(star) {
     const priority = this.state.job.job_priority;
     return (priority >= star
@@ -31,35 +79,28 @@ class ExpandedNotes extends React.Component {
   }
 
   render() {
-    if (this.state.job === null) {
+    if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
-    let title = this.state.job.job_info.results[0].title;
+    let title = this.state.job.job_info.title;
     title = title.replace(/(<([^>]+)>)/ig, '');
-    const info = this.state.job.job_info.results[0];
+    const info = this.state.job.job_info;
 
     let interview = this.state.job.interview_date;
     if (interview === 'No' || interview === 'no' || interview === null) {
       interview = 'No';
     }
-
     return (
       <>
-        <div className='d-flex justify-content-between mt-5 py-2 dark-gray'>
-          <div>
-            <h4>{title}</h4>
-          </div>
-          <div>
-            <h4>{info.company.display_name}</h4>
-          </div>
-          <div>
-            <h4>{info.location.display_name}</h4>
-          </div>
+        <div className='text-center mt-5 py-2 dark-gray'>
+          <h4>{title}</h4>
+          <h5>{info.company}</h5>
+          <h5>{`${info.city || info.county}, ${info.state}`}</h5>
         </div>
         <div className='d-flex justify-content-around py-3 light-green'>
           <h3>Job Post</h3>
           <button className='btn btn-secondary'>
-            <a href={info.redirect_url} className='text-light'>Click to Apply</a>
+            <a href={info.url} className='text-light'>Click to Apply</a>
           </button>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
@@ -78,13 +119,18 @@ class ExpandedNotes extends React.Component {
           <h3>Status</h3>
           <div>
             <form action="submit">
-              <select name="status" id="" className='btn btn-secondary'>
-                <option selected>{this.state.job.job_status}</option>
-                <option value="none">None</option>
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="interview">Interview Scheduled</option>
-                <option value="denied">Denied</option>
+              <select
+                name="status"
+                id="status"
+                className='form-control pointer btn btn-secondary'
+                value='this.state.job.job_status'
+                onChange={this.handleStatus}>
+                <option value='' defaultValue>{this.state.job.job_status}</option>
+                <option value="None">None</option>
+                <option value="Pending">Pending</option>
+                <option value="In-Progress">In Progress</option>
+                <option value="Interview">Interview Scheduled</option>
+                <option value="Denied">Denied</option>
               </select>
             </form>
           </div>
@@ -103,10 +149,13 @@ class ExpandedNotes extends React.Component {
           </div>
           <div>
             <h3 className='m-1'>Notes</h3>
-            <button className='m-1 btn btn-secondary'>See Notes</button>
-            <h6 className='m-1'>Recent:</h6>
-            <h6 className='m-1'>Got letter of rejection today</h6>
-            <h6 className='m-1'>Added: 5/1/20</h6>
+            <button className='m-1 btn btn-secondary'
+              onClick={() => this.props.setView('Note', { userJobId: this.props.params.userJobId })}>
+              See All Notes
+            </button>
+            <h6 className='m-1'>{this.state.note.note_title}</h6>
+            <h6 className='m-1'>{this.state.note.date_posted}</h6>
+            <p className='m-1'>{this.state.note.note_content}</p>
           </div>
         </div>
       </>

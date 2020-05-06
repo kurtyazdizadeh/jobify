@@ -8,6 +8,7 @@ import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
 import AddNewJob from './add-new-job';
+import SpecificJobNotes from './specific-job-notes';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
       message: null,
       isLoading: true,
       view: {
-        name: 'Add New Job',
+        name: 'Home',
         params: {}
       }
     };
@@ -40,6 +41,11 @@ export default class App extends React.Component {
     });
   }
 
+  manipulateDate(date) {
+    const convertedDate = new Date(date.slice(0, 10));
+    return convertedDate.toLocaleDateString('en-US');
+  }
+
   renderView() {
     const { name, params } = this.state.view;
 
@@ -49,8 +55,26 @@ export default class App extends React.Component {
     if (name === 'Home') {
       return <YourJobs setView={this.setView} />;
     }
+    if (name === 'Profile') {
+      return <h1 className='mt-5'>Profile in progress</h1>;
+    }
     if (name === 'Job Detail') {
-      return <ExpandedNotes params={this.state.view.params} setView={this.setView}/>;
+      return <ExpandedNotes
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView}/>;
+    }
+    if (name === 'Map') {
+      return <h1 className='mt-5'>Map in progress</h1>;
+    }
+    if (name === 'Note') {
+      return <SpecificJobNotes
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView}/>;
+    }
+    if (name === 'Goal') {
+      return <h1 className='mt-5'>Goal in progress</h1>;
     }
     if (name === 'Add New Job') {
       return <AddNewJob setView={this.setView}/>;
@@ -80,9 +104,9 @@ export default class App extends React.Component {
 
       <div>
 
-        <Header title={this.state.view.name}/>
+        <Header title={this.state.view.name} setView={this.setView}/>
         {this.renderView()}
-        <FooterMenu />
+        <FooterMenu setView={this.setView}/>
       </div>
     );
   }

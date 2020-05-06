@@ -86,7 +86,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public."JobNotes" (
     job_note_id integer NOT NULL,
-    job_id integer NOT NULL,
+    user_job_id integer NOT NULL,
     note_id integer NOT NULL
 );
 
@@ -118,11 +118,11 @@ ALTER SEQUENCE public."JobNotes_job_note_id_seq" OWNED BY public."JobNotes".job_
 CREATE TABLE public."UserSelectedJob" (
     user_job_id integer NOT NULL,
     user_id integer NOT NULL,
-    job_status text NOT NULL,
-    date_applied date DEFAULT now() NOT NULL,
-    job_priority integer NOT NULL,
+    job_status text DEFAULT 'Interested'::text NOT NULL,
+    date_applied date DEFAULT now(),
+    job_priority integer DEFAULT 1 NOT NULL,
     follow_up_date date,
-    files_id bigint NOT NULL,
+    files_id bigint,
     interview_date date,
     job_info json NOT NULL
 );
@@ -257,7 +257,7 @@ CREATE TABLE public.notes (
     note_title text NOT NULL,
     note_content text NOT NULL,
     date_posted date DEFAULT now() NOT NULL,
-    date_type text NOT NULL
+    note_type text NOT NULL
 );
 
 
@@ -373,7 +373,8 @@ ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.
 -- Data for Name: JobNotes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."JobNotes" (job_note_id, job_id, note_id) FROM stdin;
+COPY public."JobNotes" (job_note_id, user_job_id, note_id) FROM stdin;
+1	4	1
 \.
 
 
@@ -382,7 +383,14 @@ COPY public."JobNotes" (job_note_id, job_id, note_id) FROM stdin;
 --
 
 COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_applied, job_priority, follow_up_date, files_id, interview_date, job_info) FROM stdin;
-4	1	applied	2020-05-02	5	\N	1	\N	{"results":[{"description":"...  Task Lead to provide leadership, supervision and management to a small team of <strong>web</strong> <strong>developers</strong>. The Website Maintenance and Design Task Lead will focus on ensuring the website stays ...  and Design Task Lead will oversee a small team of <strong>web</strong> <strong>developers</strong> responsible for maintaining and updating the content of an external facing government website, as well as the maintenance ...","created":"2020-04-16T17:47:21Z","location":{"__CLASS__":"Adzuna::API::Response::Location","display_name":"Washington, Montgomery County","area":["US","Ohio","Montgomery County","Washington"]},"company":{"display_name":"HighPoint Global","__CLASS__":"Adzuna::API::Response::Company"},"__CLASS__":"Adzuna::API::Response::Job","title":"<strong>Web</strong> <strong>Developer</strong>","category":{"tag":"it-jobs","label":"IT Jobs","__CLASS__":"Adzuna::API::Response::Category"},"id":"1522594859","latitude":38.906704,"adref":"eyJhbGciOiJIUzI1NiJ9.eyJpIjoiMTUyMjU5NDg1OSIsInMiOiJUdXltQUNpTTZoR3JvVmlqU0ZEcnVRIn0.8U-KlGOaVNtanVytP7oB8gHYYIxK_teO-3kNKGf2vck","redirect_url":"https://www.adzuna.com/land/ad/1522594859?se=TuymACiM6hGroVijSFDruQ&utm_medium=api&utm_source=e4056c10&v=FE67CA0D313B4B9BE1BC4F88C7394A31CE9C224A","salary_is_predicted":"0","longitude":-77.041912}]}
+25	1	Interested	2020-05-05	1	\N	\N	\N	{"id":"1509905252","url":"https://www.adzuna.com/land/ad/1509905252?se=EvRnhhyP6hG_Mkwf_ZKZMw&utm_medium=api&utm_source=e4056c10&v=3DD863CCEAA36ABE54355E96B1AC313FBB46CFF2","title":"SQL Programmer","company":"Robert Half","state":"California","county":"Los Angeles County","latitude":34.115582,"longitude":-118.270863,"description":"Description Robert Half Technology is looking for a SQL Programmer with technical expertise working within a Java environment. This SQL Programmer role is a long term temporary employment opportunity located in the Los Angeles, California area. We are looking to present candidates immediately and this SQL Programmer position will not be open long. You can apply for this position today by sending your resume to Jason.KootRHT.com or by contacting (949) 623-2673 Extension 29622. You can also conne…"}
+23	1	Applied	2020-05-05	4	\N	\N	\N	{"id":"1515428365","url":"https://www.adzuna.com/land/ad/1515428365?se=ABAU_huP6hGX5xsi_ZKZMw&utm_medium=api&utm_source=e4056c10&v=2387EE3CCAEBC5E308C2DCD74B7CEC71740B6877","title":"Entry Level Web Developer","company":"Robert Half","city":"Temecula","state":"California","county":"Riverside County","latitude":33.49,"longitude":-117.15,"description":"Description Robert Half Technology is looking for a entry level Web Developer in Temecula, CA. Our client, an online retailer for commercial plumbing and air conditioning supplies, is in need of a web developer to help maintain their already existing website. You will be in charge of maintaining, expanding, and scaling our client's website. Responsibilities Include Write well designed, testable, efficient code by using best software development practices Create website layoutuser interface by u…"}
+24	1	Interested	2020-05-05	2	\N	\N	\N	{"id":"1515427291","url":"https://www.adzuna.com/land/ad/1515427291?se=EvRnhhyP6hG_Mkwf_ZKZMw&utm_medium=api&utm_source=e4056c10&v=7667B0CABF619FC2BEA064561FE1827F06A64A85","title":"Clinical Programmer or Clinical SAS Programmer","company":"American Cybersystems, Inc.","city":"Irvine","state":"California","county":"Orange County","latitude":33.751486,"longitude":-117.75493,"description":"Ascent has an immediate need for a Clinical Programmer or Clinical SAS Programmer This is a 6 months contract to hire opportunity (with long-term potential) and is in Irvine, CA (REMOTE). Our client is a leading Air Lines company. Please review the job description below Top Skills Medidata RAVE, Validation, SAS Programming or any Programming experience Key Responsibilities The Sr. Analyst, EDC Database Validation will be responsible for managing data validation activities using EDC (electronic …"}
+22	1	Rejected	2020-05-05	2	\N	\N	\N	{"id":"1360942229","url":"https://www.adzuna.com/land/ad/1360942229?se=ABAU_huP6hGX5xsi_ZKZMw&utm_medium=api&utm_source=e4056c10&v=45C8C23A16EC498FA56986334CA992DE924F73B2","title":"Web Developer - Angular","company":"Extron Electronics","city":"Anaheim Hills","state":"California","county":"Orange County","latitude":33.856948,"longitude":-117.740666,"description":"WEB DEVELOPER - ANGULAR Extron Electronics is looking for a Software Engineer that specializes in web application development using Angular and related technologies to deliver first class user experiences for distributed applications centered around the management and presentation of audio and video content. Qualified Candidates will have: BSCS degree (transcripts required) 3 years of software development experience. Proven proficiency in developing Angular web applications. Knowledge and aware…"}
+26	1	Interested	2020-05-05	1	\N	\N	\N	{"id":"1509928103","url":"https://www.adzuna.com/land/ad/1509928103?se=VMWuBimP6hGKfQiuhskQEA&utm_medium=api&utm_source=e4056c10&v=385B3D26BBE1818BD272363219F401DBF0D3EC12","title":"Web Developer","company":"CGS Business Solutions","state":"California","county":"Los Angeles County","contract":"full_time","latitude":34.115582,"longitude":-118.270863,"description":"CGS Business Solutions is committed to helping you, as an esteemed Technical Professional, find the next right step in your career. We match professionals like you to rewarding consulting or full-time opportunities in your area of expertise. We are currently seeking Technical Professionals who are searching for challenging and rewarding roles for the following opportunity CGS is currently accepting resumes for a Web Developer Webmaster, who will be serving as the implementation lead for all new…"}
+27	1	Interested	2020-05-05	1	\N	\N	\N	{"id":"1509900237","url":"https://www.adzuna.com/land/ad/1509900237?se=VMWuBimP6hGKfQiuhskQEA&utm_medium=api&utm_source=e4056c10&v=A0214B1C315D27B1CEA18A4A4287CD807EE99476","title":".NET Web Developer","company":"Motion Recruitment","state":"California","county":"Los Angeles County","contract":"full_time","latitude":34.115582,"longitude":-118.270863,"description":"A huge commercial lighting company located in Los Angeles is looking to add a Senior .NET Developer to the team They are looking for a driven problem solver to work on their company website with the latest and greatest tech They are specifically using C, ASP.NET, MVC, Entity Framework, WCF, Web API, JQuery, JavaScript, HTML, CSS, SQL and need someone who has worked in a .NET environment for at least three years. This position offers competitive salary, excellent benefits and a lot of room for g…"}
+21	1	Applied	2020-05-05	3	\N	\N	\N	{"id":"1536354943","url":"https://www.adzuna.com/land/ad/1536354943?se=ABAU_huP6hGX5xsi_ZKZMw&utm_medium=api&utm_source=e4056c10&v=1F361028FF2FB3D6BE6EEE3EB3E4B35F04F96E2A","title":"Senior Web Developer","company":"Workbridge Associates","city":"Irvine","state":"California","county":"Orange County","latitude":33.751486,"longitude":-117.75493,"description":"A big name in the Orange County home automation space is looking for a Senior Web Developer to build out the front end of their main web application. They need a Senior Web Developer to join their team and help build new features for the application that connects customers to all of their products. The ideal candidate is a forward-thinking engineer with strong Angular experience and a desire to grow. If you're looking to showcase your Angular expertise, and if you are eager to tackle new challe…"}
+19	1	Interested	2020-05-05	1	\N	\N	\N	{"id":"1509929008","url":"https://www.adzuna.com/land/ad/1509929008?se=ABAU_huP6hGX5xsi_ZKZMw&utm_medium=api&utm_source=e4056c10&v=23F10E069BABCC24026531D6BF55FE5696557776","title":"Web Developer","company":"Prelude Systems, Inc.","city":"Santa Ana","state":"California","county":"Orange County","latitude":33.746392,"longitude":-117.860447,"description":"Experience As a front-end software development engineer on the team, you will translate concepts and business requirements in user flows, wireframes, mock-ups and prototypes that lead to an intuitive user experience. You will work closely with product owner and stake holder to gain clear understanding of product vision and requirements. You will also provide strategic design and user-experience recommendations based on the core features and new features of our products. You will collaborate wit…"}
 \.
 
 
@@ -414,7 +422,8 @@ COPY public.files (files_id, resume, cover_letter, letter_of_recommendation) FRO
 -- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.notes (note_id, note_title, note_content, date_posted, date_type) FROM stdin;
+COPY public.notes (note_id, note_title, note_content, date_posted, note_type) FROM stdin;
+1	Testing	A dummy note for testing only	2020-05-05	Job
 \.
 
 
@@ -431,14 +440,14 @@ COPY public."user" (user_id, first_name, last_name, city, image, email, phone_nu
 -- Name: JobNotes_job_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, true);
 
 
 --
 -- Name: UserSelectedJob_user_job_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 4, true);
+SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 27, true);
 
 
 --
@@ -466,7 +475,7 @@ SELECT pg_catalog.setval('public.files_files_id_seq', 1, false);
 -- Name: notes_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.notes_note_id_seq', 1, false);
+SELECT pg_catalog.setval('public.notes_note_id_seq', 1, true);
 
 
 --

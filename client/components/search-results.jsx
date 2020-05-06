@@ -26,8 +26,7 @@ class SearchResults extends React.Component {
     const { desiredPosition, location, distance, jobType } = this.props.searchQuery;
 
     const params = {
-      app_id: adzunaID,
-      app_key: adzunaKEY,
+      pageNum: resultsPage,
       results_per_page: 10,
       title_only: desiredPosition,
       where: location,
@@ -49,7 +48,9 @@ class SearchResults extends React.Component {
         break;
     }
 
-    fetch(`https://api.adzuna.com/v1/api/jobs/us/search/${resultsPage}?` + new URLSearchParams(params))
+    const query = new URLSearchParams(params);
+
+    fetch(`/api/search-jobs/${query}`)
       .then(res => res.json())
       .then(listings => {
         const newState = {
@@ -81,6 +82,11 @@ class SearchResults extends React.Component {
       let title = listing.title;
       title = title.replace(/(<([^>]+)>)/ig, '');
 
+      // const logoURL = await fetch(`/api/logo/${company}`)
+      //   .then(res => res.json())
+      //   .then(imgURL => imgURL)
+      //   .catch(err => console.error(err));
+
       return (
         <JobListingItem
           key={id}
@@ -95,6 +101,7 @@ class SearchResults extends React.Component {
           latitude={latitude}
           longitude={longitude}
           description={description}
+          // logo={logoURL}
         />
       );
     });
@@ -125,7 +132,7 @@ class SearchResults extends React.Component {
               id="prev"
               onClick={this.handlePageNav}
             ></i>
-            <span>{`${resultsPage} of ${maxPage}`}</span>
+            <span>{`${resultsPage} of ${maxPage || 1}`}</span>
             <i
               className="fas fa-angle-right pointer"
               id="next"
