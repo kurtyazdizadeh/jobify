@@ -7,6 +7,7 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import SpecificJobNotes from './specific-job-notes';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -57,13 +58,19 @@ export default class App extends React.Component {
       return <h1 className='mt-5'>Profile in progress</h1>;
     }
     if (name === 'Job Detail') {
-      return <ExpandedNotes date={this.manipulateDate} params={this.state.view.params} setView={this.setView}/>;
+      return <ExpandedNotes
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView}/>;
     }
     if (name === 'Map') {
       return <h1 className='mt-5'>Map in progress</h1>;
     }
     if (name === 'Note') {
-      return <h1 className='mt-5'>Note in Progress</h1>;
+      return <SpecificJobNotes
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView}/>;
     }
     if (name === 'Goal') {
       return <h1 className='mt-5'>Goal in progress</h1>;
