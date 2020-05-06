@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
 import ExpandedNotes from './expanded-notes';
 import JobSearch from './job-search';
@@ -7,6 +6,7 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import MapJob from './map-job';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -60,7 +60,7 @@ export default class App extends React.Component {
       return <ExpandedNotes date={this.manipulateDate} params={this.state.view.params} setView={this.setView}/>;
     }
     if (name === 'Map') {
-      return <h1 className='mt-5'>Map in progress</h1>;
+      return <MapJob />;
     }
     if (name === 'Note') {
       return <h1 className='mt-5'>Note in Progress</h1>;
