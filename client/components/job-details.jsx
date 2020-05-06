@@ -8,6 +8,7 @@ class JobDetails extends React.Component {
       note: null
     };
     this.handleStatus = this.handleStatus.bind(this);
+    this.changeRating = this.changeRating.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +72,26 @@ class JobDetails extends React.Component {
       .catch(err => console.error(err));
   }
 
+  changeRating(star) {
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ rating: star })
+    };
+    fetch(`api/rating/${this.props.params.userJobId}`, params)
+      .then(res => res.json())
+      .then(rating => {
+        const newRating = Object.assign(this.state.job);
+        newRating.job_priority = rating.job_priority;
+        this.setState({
+          job: newRating
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
   getRating(star) {
     const priority = this.state.job.job_priority;
     return (priority >= star
@@ -105,11 +126,16 @@ class JobDetails extends React.Component {
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
           <h3>Rating</h3>
-          <i className={this.getRating(1)}></i>
-          <i className={this.getRating(2)}></i>
-          <i className={this.getRating(3)}></i>
-          <i className={this.getRating(4)}></i>
-          <i className={this.getRating(5)}></i>
+          <i className={this.getRating(1)}
+            onClick={() => this.changeRating(1)}></i>
+          <i className={this.getRating(2)}
+            onClick={() => this.changeRating(2)}></i>
+          <i className={this.getRating(3)}
+            onClick={() => this.changeRating(3)}></i>
+          <i className={this.getRating(4)}
+            onClick={() => this.changeRating(4)}></i>
+          <i className={this.getRating(5)}
+            onClick={() => this.changeRating(5)}></i>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
           <h3>Interview?</h3>
