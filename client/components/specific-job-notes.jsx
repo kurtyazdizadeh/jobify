@@ -15,15 +15,27 @@ class SpecificJobNotes extends React.Component {
     fetch(`/api/notes/${this.props.params.userJobId}`)
       .then(res => res.json())
       .then(notes => {
-        this.setState({
-          notes: notes
-        });
+        const { empty } = notes;
+        if (empty) {
+          this.setState({
+            notes: [{
+              note_title: 'No Notes for this job',
+              note_content: '',
+              date_posted: '',
+              note_id: 1
+            }]
+          });
+        } else {
+          this.setState({
+            notes: notes
+          });
+        }
       })
       .catch(err => console.error(err));
   }
 
   render() {
-    if (this.state.notes === null) {
+    if (!this.state.notes) {
       return <h1>Notes</h1>;
     }
 
@@ -39,7 +51,6 @@ class SpecificJobNotes extends React.Component {
               note={note.note_content}/>;
           })
         }
-
       </div>
     );
   }
