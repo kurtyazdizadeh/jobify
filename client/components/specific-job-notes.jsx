@@ -41,7 +41,7 @@ class SpecificJobNotes extends React.Component {
 
     return (
       <div className='mt-5'>
-        <button>Add</button>
+        <button className='ml-2 mt-2 btn btn-secondary'>Add</button>
         {
           this.state.notes.map(note => {
             return <RenderNotes

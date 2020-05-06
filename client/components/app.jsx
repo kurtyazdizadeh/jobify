@@ -69,7 +69,8 @@ export default class App extends React.Component {
     if (name === 'Note') {
       return <SpecificJobNotes
         date={this.manipulateDate}
-        params={this.state.view.params}/>;
+        params={this.state.view.params}
+        setView={this.setView}/>;
     }
     if (name === 'Goal') {
       return <h1 className='mt-5'>Goal in progress</h1>;
