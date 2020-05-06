@@ -7,6 +7,7 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
 
 export default class App extends React.Component {
@@ -74,6 +75,9 @@ export default class App extends React.Component {
     }
     if (name === 'Goal') {
       return <h1 className='mt-5'>Goal in progress</h1>;
+    }
+    if (name === 'Add New Job') {
+      return <AddNewJob setView={this.setView}/>;
     }
     if (name === 'Search Results') {
       return (

@@ -22,6 +22,10 @@ nav, footer {
   background-color: #6D9197;
   color: #C4CDC1;
 }
+.light-gray {
+  background-color: #B1B4B5;
+  color: #2F575D;
+}
 
 .menu-circle {
   height: 50px;
@@ -116,4 +120,19 @@ input[type="submit"]:hover {
 }
 .title {
   margin: 2rem;
+}
+.heading{
+  margin: 10px;
+  border-radius: 5px;
+  color: #2F575D;
+}
+.addJob {
+  font-size: 15px;
+  padding-top: 3em;
+}
+.text {
+  border-radius: 8px;
+}
+.star-rating {
+  color: #d1b902;
 }
