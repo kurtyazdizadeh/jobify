@@ -153,6 +153,32 @@ app.post('/api/status/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/rating/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { rating } = req.body;
+  if (id <= 0) {
+    return res.status(404).json({ error: 'id must be a positive intiger' });
+  } else if (!rating) {
+    return res.status(404).json({ error: 'rating is a required field' });
+  }
+  const sql = `
+  update "UserSelectedJob"
+     set "job_priority" = $1
+   where "user_job_id" = $2
+  returning "job_priority"
+  `;
+  const params = [rating, id];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: `cannot find user job id ${id}` });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/location/:lat-:long', (req, res, next) => {
   const { lat, long } = req.params;
 
