@@ -9,6 +9,7 @@ class AddNewJob extends React.Component {
       position: '',
       dateOfApplication: '',
       followUp: '',
+      location: '',
       rating: false,
       isInterviewScheduled: false,
       notes: ''
@@ -22,6 +23,8 @@ class AddNewJob extends React.Component {
   }
 
   handleClickInterviewYes() {
+    event.preventDefault();
+
     if (this.state.isInterviewScheduled === false) {
       this.setState(state => ({
         isInterviewScheduled: true
@@ -30,6 +33,8 @@ class AddNewJob extends React.Component {
   }
 
   handleClickInterviewNo() {
+    event.preventDefault();
+
     if (this.state.isInterviewScheduled === true) {
       this.setState(state => ({
         isInterviewScheduled: false
@@ -52,6 +57,9 @@ class AddNewJob extends React.Component {
       case 'followUp':
         change.followUp = event.target.value;
         break;
+      case 'location':
+        change.location = event.target.value;
+        break;
       case 'notes':
         change.notes = event.target.value;
         break;
@@ -62,10 +70,30 @@ class AddNewJob extends React.Component {
   }
 
   handleClickRating(event) {
+    event.preventDefault();
     if (this.state.rating === false) {
       this.setState(state => ({
         rating: true
       }));
+    }
+
+    let starClass = 'fa fa-star btn ';
+    if (event.target.id === 1) {
+      if (this.state.rating === false) {
+        starClass += 'fa fa-star btn star-rating';
+      }
+    }
+    if (event.target.id === 2) {
+      starClass += 'fa fa-star btn star-rating';
+    }
+    if (event.target.id === 3) {
+      starClass += 'fa fa-star btn star-rating';
+    }
+    if (event.target.id === 4) {
+      starClass += 'fa fa-star btn star-rating';
+    }
+    if (event.target.id === 5) {
+      starClass += 'fa fa-star btn star-rating';
     }
   }
 
@@ -75,7 +103,9 @@ class AddNewJob extends React.Component {
       companyName,
       position,
       dateOfApplication,
-      followUp, rating,
+      followUp,
+      location,
+      rating,
       isInterviewScheduled,
       notes
     } = this.state;
@@ -85,12 +115,13 @@ class AddNewJob extends React.Component {
       position: position,
       dateOfApplication: dateOfApplication,
       followUp: followUp,
+      location: location,
       rating: rating,
       isInterviewScheduled: isInterviewScheduled,
       notes: notes
     };
-    this.props.setView('Add New Job', newJob);
-    // this.resetForm();
+    // this.props.setView('Add New Job', newJob);
+    this.resetForm();
   }
 
   resetForm() {
@@ -99,13 +130,14 @@ class AddNewJob extends React.Component {
       position: '',
       dateOfApplication: '',
       followUp: '',
+      location: '',
       rating: false,
       isInterviewScheduled: false,
       notes: ''
     });
   }
 
-  render() {
+  render(event) {
     let starClass = 'fa fa-star btn ';
     if (this.state.rating === true) {
       starClass += 'fa fa-star btn star-rating';
@@ -114,7 +146,6 @@ class AddNewJob extends React.Component {
       <div>
         <form
           className='addJob align-middle text-center'
-          onSubmit={this.handleSubmit}
         >
           <label className='heading'>
             Company Name:<br></br>
@@ -164,35 +195,48 @@ class AddNewJob extends React.Component {
               onChange={this.handleChange}
             />
           </label>
+          <label className='heading'>
+            Location:<br></br>
+            <input
+              id='location'
+              className='text form-control light-gray'
+              type='text'
+              name='location'
+              size='30'
+              placeholder='ex. City, State'
+              value={this.state.location}
+              onChange={this.handleChange}
+            />
+          </label>
           <div>
             <p className='heading'>Star Rating:</p>
             <button
               id='1'
-              value={this.state.rating}
+              value={this.state.star1}
               onClick={this.handleClickRating}
               className={starClass}>
             </button>
             <button
               id='2'
-              value={this.state.rating}
+              value={this.state.star2}
               onClick={this.handleClickRating}
               className={starClass}>
             </button>
             <button
               id='3'
-              value={this.state.rating}
+              value={this.state.star3}
               onClick={this.handleClickRating}
               className={starClass}>
             </button>
             <button
               id='4'
-              value={this.state.rating}
+              value={this.state.star4}
               onClick={this.handleClickRating}
               className={starClass}>
             </button>
             <button
               id='5'
-              value={this.state.rating}
+              value={this.state.star5}
               onClick={this.handleClickRating}
               className={starClass}>
             </button>
@@ -217,13 +261,12 @@ class AddNewJob extends React.Component {
               className='text light-gray'
               name='Notes'
               cols='40'
-              rows='5'
+              rows='2'
               value={this.state.notes}
               onChange={this.handleChange}>
             </textarea>
           </div>
           <div>
-            <button className='button btn col'>Files</button>
             <button
               className='button btn col'
               onSubmit={this.handleSubmit}>
