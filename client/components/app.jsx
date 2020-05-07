@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
@@ -8,9 +9,8 @@ import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
 import MapJob from './map-job';
 import AddNewJob from './add-new-job';
-import SpecificJobNotes from './specific-job-notes';
+import SpecificJobNotes from './specific-job-ntes';
 import Notes from './notes';
-
 
 export default class App extends React.Component {
   constructor(props) {
