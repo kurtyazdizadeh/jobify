@@ -75,7 +75,11 @@ export default class App extends React.Component {
       case 'Notes':
         return <Notes setView={this.setView} />;
       case 'View Notes':
-        return <NotesView setView={this.setView} category={this.state.view.params} />;
+        return <NotesView
+          setView={this.setView}
+          category={this.state.view.params}
+          date={this.manipulateDate}
+        />;
       case 'Profile':
         return <h1 className='mt-5'>Profile in progress</h1>;
       case 'Search Results':

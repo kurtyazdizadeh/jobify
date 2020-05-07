@@ -24,6 +24,25 @@ class NotesView extends React.Component {
       .catch(err => console.error(err));
   }
 
+  renderNoteItems() {
+    const noteItemsElements = this.state.notes.map((note, index) => {
+      const { date_posted: date, note_content: content, note_title: title, note_id: id } = note;
+
+      let bgColor = '';
+      if (index % 2 === 0) {
+        bgColor = 'bg-grey';
+      }
+      return (
+        <div key={id} className={`${bgColor} p-3`}>
+          <h6>{title}</h6>
+          <h6>Added: {this.props.date(date)}</h6>
+          <p>{content}</p>
+        </div>
+      );
+    });
+    return noteItemsElements;
+  }
+
   notesView() {
     this.props.setView('Notes', {});
   }
@@ -41,6 +60,10 @@ class NotesView extends React.Component {
         </div>
         : <div className="mt-5 d-flex flex-column align-items-center">
           <h5 className="py-3">{`${this.state.category} Notes`}</h5>
+          <div className="notes-area">
+            {this.renderNoteItems()}
+          </div>
+          <button className="btn bg-grey m-3" onClick={this.notesView}>Go Back</button>
         </div>
     );
   }
