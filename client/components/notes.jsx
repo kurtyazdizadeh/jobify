@@ -62,14 +62,39 @@ class Notes extends React.Component {
     });
   }
 
+  viewNotes(category) {
+    this.props.setView('View Notes', category);
+  }
+
   render() {
     return (
       <div className="mt-5 d-flex flex-column align-items-center">
         <h5 className="py-3">View Notes</h5>
         <div className="container">
-          <button className="btn btn-block notes-button">General Notes</button>
-          <button className="btn btn-block notes-button">Networking Events</button>
-          <button className="btn btn-block notes-button">Resume Notes</button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('general');
+            }}
+          >
+              General Notes
+          </button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('networking');
+            }}
+          >
+              Networking Events
+          </button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('resume');
+            }}
+          >
+              Resume Notes
+          </button>
         </div>
         <h5 className="py-3">Add Note</h5>
         <form className="d-flex flex-column align-items-center" onSubmit={this.handleSubmit}>

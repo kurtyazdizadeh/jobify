@@ -10,7 +10,7 @@ import MapJob from './map-job';
 import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
-
+import NotesView from './notes-view';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -71,14 +71,15 @@ export default class App extends React.Component {
       case 'Job Search':
         return <JobSearch setView={this.setView} />;
       case 'Map':
-        return <h1 className='mt-5'>Map in progress</h1>;
+        return <MapJob />;
       case 'Notes':
         return <Notes setView={this.setView} />;
+      case 'View Notes':
+        return <NotesView setView={this.setView} category={this.state.view.params} />;
       case 'Profile':
         return <h1 className='mt-5'>Profile in progress</h1>;
       case 'Search Results':
         return <SearchResults
-
           setView={this.setView}
           searchQuery={params}
         />;
