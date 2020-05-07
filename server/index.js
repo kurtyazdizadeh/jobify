@@ -184,8 +184,8 @@ app.post('/api/job-note/:id', (req, res, next) => {
   const { noteTitle, note, noteType } = req.body;
   if (id <= 0 || !id) {
     return res.status(404).json({ error: `id is a required field expects integer but got ${id}` });
-  } else if (!note) {
-    return res.status(404).json({ error: 'note is required in the body' });
+  } else if (!note || !noteType || !noteTitle) {
+    return res.status(404).json({ error: 'noteTitle, note, and noteType are required in the body' });
   }
 
   const sql = `
