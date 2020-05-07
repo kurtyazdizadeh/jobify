@@ -152,15 +152,17 @@ class SpecificJobNotes extends React.Component {
               <input
                 onChange={this.handleTitle}
                 value={this.state.newNote.noteTitle}
-                type="text" />
+                type="text"
+                required/>
             </div>
             <div className='d-flex flex-column'>
-              <label className='text-center font-weight-bold' htmlFor="">Note</label>
+              <h4 className='text-center font-weight-bold'>Note</h4>
               <textarea
                 onChange={this.handleNote}
                 value={this.state.newNote.note}
                 cols='40'
                 rows='10'
+                required
                 className='form-control form-style'></textarea>
             </div>
             <div className='d-flex justify-content-around mt-3'>
