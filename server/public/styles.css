@@ -67,7 +67,8 @@ input[type="text"],
 input[type="text"]:focus,
 input[type="number"],
 input[type="number"]:focus,
-input[type="submit"] {
+input[type="submit"],
+.notes-button {
   background-color: #C4C4C4;
   color: #252525;
 }
