@@ -200,6 +200,50 @@ app.post('/api/rating/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/job-note/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { noteTitle, note, noteType } = req.body;
+  if (id <= 0 || !id) {
+    return res.status(404).json({ error: `id is a required field expects integer but got ${id}` });
+  } else if (!note || !noteType || !noteTitle) {
+    return res.status(404).json({ error: 'noteTitle, note, and noteType are required in the body' });
+  }
+
+  const sql = `
+  insert into "notes" ("note_title", "note_content", "note_type")
+  values ($1, $2, $3)
+  returning "note_title", "note_content", "note_id"
+  `;
+  const params = [noteTitle, note, noteType];
+
+  db.query(sql, params)
+    .then(result => {
+      // eslint-disable-next-line camelcase
+      const { note_content, note_title, note_id } = result.rows[0];
+      // eslint-disable-next-line camelcase
+      if (!note_content || !note_title || !note_id) {
+        return res.status(400).json({ error: 'internal server error' });
+      }
+      return {
+        note_title: note_title,
+        note_content: note_content,
+        note_id: note_id
+      };
+    })
+    .then(note => {
+      const jobNotessql = `
+      insert into "JobNotes" ("user_job_id", "note_id")
+      values ($1, $2)
+      `;
+      const jobNotesParams = [id, note.note_id];
+      db.query(jobNotessql, jobNotesParams)
+        .then(data => {
+          res.status(200).json(note);
+        });
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/location/:lat-:long', (req, res, next) => {
   const { lat, long } = req.params;
 
