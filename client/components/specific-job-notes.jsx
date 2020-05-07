@@ -64,7 +64,9 @@ class SpecificJobNotes extends React.Component {
       displayAdd: false,
       displayNotes: true,
       newNote: {
-        noteType: 'Job'
+        noteType: 'Job',
+        note: '',
+        noteTitle: ''
       }
     });
   }
@@ -99,11 +101,16 @@ class SpecificJobNotes extends React.Component {
     fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
       .then(res => res.json())
       .then(data => {
-        if (this.state.notes.note_content === '') {
+        if (this.state.notes[0].note_title === 'No Notes for this job') {
           this.setState({
             notes: [data],
             displayAdd: false,
-            displayNotes: true
+            displayNotes: true,
+            newNote: {
+              jobType: 'Job',
+              note: '',
+              noteTitle: ''
+            }
           });
         } else {
           const newNote = this.state.notes;
@@ -111,7 +118,12 @@ class SpecificJobNotes extends React.Component {
           this.setState({
             notes: newNote,
             displayAdd: false,
-            displayNotes: true
+            displayNotes: true,
+            newNote: {
+              jobType: 'Job',
+              note: '',
+              noteTitle: ''
+            }
           });
         }
       })
@@ -136,15 +148,21 @@ class SpecificJobNotes extends React.Component {
         <div className={addClass}>
           <form action="" onSubmit={this.handleSubmit}>
             <div className='d-flex flex-column'>
-              <label className='text-center font-weight-bold' htmlFor="">Title</label>
-              <input onChange={this.handleTitle} type="text" />
+              <h4 className='text-center font-weight-bold'>Title</h4>
+              <input
+                onChange={this.handleTitle}
+                value={this.state.newNote.noteTitle}
+                type="text"
+                required/>
             </div>
             <div className='d-flex flex-column'>
-              <label className='text-center font-weight-bold' htmlFor="">Note</label>
+              <h4 className='text-center font-weight-bold'>Note</h4>
               <textarea
                 onChange={this.handleNote}
+                value={this.state.newNote.note}
                 cols='40'
                 rows='10'
+                required
                 className='form-control form-style'></textarea>
             </div>
             <div className='d-flex justify-content-around mt-3'>
