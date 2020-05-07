@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
 import JobSearch from './job-search';
@@ -7,9 +6,11 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import MapJob from './map-job';
 import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -77,6 +78,7 @@ export default class App extends React.Component {
         return <h1 className='mt-5'>Profile in progress</h1>;
       case 'Search Results':
         return <SearchResults
+
           setView={this.setView}
           searchQuery={params}
         />;
