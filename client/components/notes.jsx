@@ -9,6 +9,8 @@ class Notes extends React.Component {
       category: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.resetForm = this.resetForm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -29,17 +31,48 @@ class Notes extends React.Component {
     this.setState(change);
   }
 
+  handleSubmit() {
+    event.preventDefault();
+    const { title, content, category } = this.state;
+
+    const newNote = {
+      title: title,
+      content: content,
+      category: category
+    };
+
+    const config = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newNote)
+    };
+    fetch('/api/notes', config)
+      .then(res => res.json())
+      .then(note => console.log(note))
+      .catch(err => console.error(err));
+
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.setState({
+      title: '',
+      content: '',
+      category: ''
+    });
+  }
+
   render() {
     return (
       <div className="mt-5 d-flex flex-column align-items-center">
         <h5 className="py-3">View Notes</h5>
         <div className="container">
-          <button className="btn btn-block notes-button">Job Notes</button>
+          <button className="btn btn-block notes-button">General Notes</button>
           <button className="btn btn-block notes-button">Networking Events</button>
           <button className="btn btn-block notes-button">Resume Notes</button>
         </div>
         <h5 className="py-3">Add Note</h5>
-        <form className="d-flex flex-column align-items-center">
+        <form className="d-flex flex-column align-items-center" onSubmit={this.handleSubmit}>
           <div className="title-category d-flex justify-content-between">
             <div className="ml-3">
               <input
@@ -61,6 +94,7 @@ class Notes extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.category}>
                 <option value="" disabled defaultValue>Category</option>
+                <option value="General Notes">General Notes</option>
                 <option value="Networking Events">Network Events</option>
                 <option value="Resume">Resume</option>
               </select>
@@ -77,8 +111,8 @@ class Notes extends React.Component {
             </textarea>
           </div>
           <div className="buttons">
-            <button className="notes-button mx-3">Submit Note</button>
-            <button className="notes-button mx-3">Cancel</button>
+            <button className="notes-button mx-3" type="submit">Submit Note</button>
+            <button className="notes-button mx-3" onClick={this.resetForm}>Cancel</button>
           </div>
         </form>
       </div>
