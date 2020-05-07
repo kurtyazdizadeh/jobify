@@ -7,11 +7,28 @@ class MapJob extends React.Component {
     this.createGoogleMap = this.createGoogleMap.bind(this);
     this.createMarker = this.createMarker.bind(this);
     this.map = null;
+    this.state = {
+      openMarkerId: ''
+    };
+    this.handleToggleClose = this.handleToggleClose.bind(this);
+    this.handleToggleOpen = this.handleToggleOpen.bind(this);
   }
 
   componentDidMount() {
     this.createGoogleMap();
     this.createMarker();
+  }
+
+  handleToggleOpen(markerId) {
+    this.setState({
+      openMarkerId: markerId
+    });
+  }
+
+  handleToggleClose() {
+    this.setState({
+      openMarkerId: ''
+    });
   }
 
   createGoogleMap() {
@@ -35,17 +52,28 @@ class MapJob extends React.Component {
     const jobs = this.props.savedJobs;
     const allJobs = [];
     for (let i = 0; i < jobs.length; i++) {
-      allJobs.push({ lat: jobs[i].job_info.latitude, lng: jobs[i].job_info.longitude, company: jobs[i].job_info.company });
+      allJobs.push(jobs[i].job_info);
     }
     for (let i = 0; i < allJobs.length; i++) {
       const currentJob = allJobs[i];
       // eslint-disable-next-line no-undef
-      this.marker = new google.maps.Marker({
-        position: { lat: currentJob.lat, lng: currentJob.lng },
+      const infowindow = new google.maps.InfoWindow({
+        content: `<p class='text-center font-weight-bold'>${currentJob.company}</p>
+         <p>${currentJob.title}</p> <p>${currentJob.description}</p>`
+      });
+      // eslint-disable-next-line no-undef
+      const marker = new google.maps.Marker({
+        position: { lat: currentJob.latitude, lng: currentJob.longitude },
         map: this.map,
         title: currentJob.company
       });
-      bounds.extend(this.marker.position);
+      marker.addListener('click', function () {
+        infowindow.open(this.map, marker);
+      });
+      this.map.addListener('click', function () {
+        infowindow.close(this.map, marker);
+      });
+      bounds.extend(marker.position);
     }
     if (this.props.savedJobs[0] !== undefined) {
       this.map.fitBounds(bounds);
@@ -55,7 +83,7 @@ class MapJob extends React.Component {
   render() {
     return (
       <div className='d-flex flex-column align-items-center'>
-        <h1 className='mt-5'>Google Maps</h1>
+        <h1 className='mt-5'>Your Jobs</h1>
         <div ref={this.googleMapRef} className='mapJobs'></div>
       </div>
     );
