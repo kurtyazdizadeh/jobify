@@ -15,7 +15,7 @@ class MapJob extends React.Component {
   }
 
   createGoogleMap() {
-    let coordinate = { lat: 33.683414, lng: -100 };
+    let coordinate = { lat: 33.683414, lng: -117 };
 
     if (this.props.savedJobs[0] !== undefined) {
       const jobInfo = this.props.savedJobs[0].job_info;
@@ -45,11 +45,11 @@ class MapJob extends React.Component {
         map: this.map,
         title: currentJob.company
       });
-      if (this.props.savedJobs[0] !== undefined) {
-        bounds.extend(this.marker.position);
-      }
+      bounds.extend(this.marker.position);
     }
-    this.map.fitBounds(bounds);
+    if (this.props.savedJobs[0] !== undefined) {
+      this.map.fitBounds(bounds);
+    }
   }
 
   render() {
