@@ -182,9 +182,6 @@ app.post('/api/rating/:id', (req, res, next) => {
 app.post('/api/job-note/:id', (req, res, next) => {
   const { id } = req.params;
   const { noteTitle, note, noteType } = req.body;
-  // console.log(noteTitle);
-  // console.log(note);
-  // console.log(noteType);
   if (id <= 0 || !id) {
     return res.status(404).json({ error: `id is a required field expects integer but got ${id}` });
   } else if (!note) {
@@ -194,16 +191,34 @@ app.post('/api/job-note/:id', (req, res, next) => {
   const sql = `
   insert into "notes" ("note_title", "note_content", "note_type")
   values ($1, $2, $3)
-    join "JobNotes" using ("note_id")
-   where "user_job_id" = $4
-  returning "note_title", "note_content"
+  returning "note_title", "note_content", "note_id"
   `;
-  const params = [noteTitle, note, noteType, id];
+  const params = [noteTitle, note, noteType];
 
   db.query(sql, params)
     .then(result => {
-      // console.log(res.json(result));
-      res.json(result);
+      // eslint-disable-next-line camelcase
+      const { note_content, note_title, note_id } = result.rows[0];
+      // console.log('line 204 title ', note_title);
+      // console.log('line 205 content', note_content);
+      // console.log('line 206 id ', note_id);
+      return {
+        note_title: note_title,
+        note_content: note_content,
+        note_id: note_id
+      };
+    })
+    .then(note => {
+      // console.log('Note', note);
+      const jobNotessql = `
+      insert into "JobNotes" ("user_job_id", "note_id")
+      values ($1, $2)
+      `;
+      const jobNotesParams = [id, note.note_id];
+      db.query(jobNotessql, jobNotesParams)
+        .then(data => {
+          res.status(200).json(note);
+        });
     })
     .catch(err => next(err));
 });
