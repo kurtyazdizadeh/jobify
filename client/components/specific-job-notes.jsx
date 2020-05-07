@@ -6,7 +6,9 @@ class SpecificJobNotes extends React.Component {
     super(props);
     this.state = {
       notes: null,
-      newNote: {},
+      newNote: {
+        noteType: 'Job'
+      },
       displayAdd: false,
       displayNotes: true
     };
@@ -14,6 +16,7 @@ class SpecificJobNotes extends React.Component {
     this.handleCancle = this.handleCancle.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -55,16 +58,18 @@ class SpecificJobNotes extends React.Component {
     this.setState({
       displayAdd: false,
       displayNotes: true,
-      newNote: {}
+      newNote: {
+        noteType: 'Job'
+      }
     });
   }
 
   handleTitle(event) {
     event.preventDefault();
+    const previous = Object.assign(this.state.newNote);
+    previous.noteTitle = event.target.value;
     this.setState({
-      newNote: {
-        noteTitle: event.target.value
-      }
+      newNote: previous
     });
   }
 
@@ -79,7 +84,33 @@ class SpecificJobNotes extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch('/api');
+    const noteBody = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.newNote)
+    };
+    fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
+      .then(res => res.json())
+      .then(data => {
+        if (this.state.notes.note_content === '') {
+          this.setState({
+            notes: [data],
+            displayAdd: false,
+            displayNotes: true
+          });
+        } else {
+          const newNote = this.state.notes;
+          newNote.push(data);
+          this.setState({
+            notes: newNote,
+            displayAdd: false,
+            displayNotes: true
+          });
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -98,7 +129,7 @@ class SpecificJobNotes extends React.Component {
     return (
       <div className='mt-5'>
         <div className={addClass}>
-          <form action="">
+          <form action="" onSubmit={this.handleSubmit}>
             <div className='d-flex flex-column'>
               <label className='text-center font-weight-bold' htmlFor="">Title</label>
               <input onChange={this.handleTitle} type="text" />

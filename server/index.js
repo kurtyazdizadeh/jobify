@@ -212,14 +212,14 @@ app.post('/api/job-note/:id', (req, res, next) => {
   const sql = `
   insert into "notes" ("note_title", "note_content", "note_type")
   values ($1, $2, $3)
-  returning "note_title", "note_content", "note_id"
+  returning "note_title", "note_content", "note_id", "date_posted"
   `;
   const params = [noteTitle, note, noteType];
 
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line camelcase
-      const { note_content, note_title, note_id } = result.rows[0];
+      const { note_content, note_title, note_id, date_posted } = result.rows[0];
       // eslint-disable-next-line camelcase
       if (!note_content || !note_title || !note_id) {
         return res.status(400).json({ error: 'internal server error' });
@@ -227,7 +227,8 @@ app.post('/api/job-note/:id', (req, res, next) => {
       return {
         note_title: note_title,
         note_content: note_content,
-        note_id: note_id
+        note_id: note_id,
+        date_posted: date_posted
       };
     })
     .then(note => {
