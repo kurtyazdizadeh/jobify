@@ -96,7 +96,7 @@ export default class App extends React.Component {
       case 'Job Search':
         return <JobSearch setView={this.setView} />;
       case 'Map':
-        return <MapJob />;
+        return <MapJob savedJobs={this.state.savedJobs}/>;
       case 'Notes':
         return <Notes setView={this.setView} />;
       case 'Profile':
