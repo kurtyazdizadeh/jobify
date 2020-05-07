@@ -71,7 +71,7 @@ app.get('/api/notes/:jobId', (req, res, next) => {
     res.status(400).json({ error: 'job id must be a positive integer' });
   }
   const sql = `
-  SELECt "notes"."note_title",
+  SELECT "notes"."note_title",
          "notes"."note_content",
          "notes"."date_posted",
          "JobNotes"."job_note_id",
@@ -113,6 +113,35 @@ app.post('/api/notes/', (req, res, next) => {
       }
     })
     .catch(err => next(err));
+});
+
+app.get('/api/notes/view/:category', (req, res, next) => {
+  let { category } = req.params;
+  switch (category) {
+    case 'general':
+      category = 'General Notes';
+      break;
+    case 'networking':
+      category = 'Networking Events';
+      break;
+    case 'resume':
+      category = 'Resume';
+      break;
+    default:
+      break;
+  }
+
+  const sql = `
+     select *
+       from "notes"
+      where "note_type" = $1
+  `;
+  const params = [category];
+
+  db.query(sql, params)
+    .then(result => res.status(200).json(result.rows))
+    .catch(err => console.error(err));
+
 });
 
 app.delete('/api/saved-job/:id', (req, res, next) => {
