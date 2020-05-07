@@ -82,6 +82,11 @@ class SearchResults extends React.Component {
       let title = listing.title;
       title = title.replace(/(<([^>]+)>)/ig, '');
 
+      // const logoURL = await fetch(`/api/logo/${company}`)
+      //   .then(res => res.json())
+      //   .then(imgURL => imgURL)
+      //   .catch(err => console.error(err));
+
       return (
         <JobListingItem
           key={id}
@@ -96,9 +101,11 @@ class SearchResults extends React.Component {
           latitude={latitude}
           longitude={longitude}
           description={description}
+          // logo={logoURL}
         />
       );
     });
+
     return jobListingElements;
   }
 
@@ -125,7 +132,7 @@ class SearchResults extends React.Component {
               id="prev"
               onClick={this.handlePageNav}
             ></i>
-            <span>{`${resultsPage} of ${maxPage}`}</span>
+            <span>{`${resultsPage} of ${maxPage || 1}`}</span>
             <i
               className="fas fa-angle-right pointer"
               id="next"

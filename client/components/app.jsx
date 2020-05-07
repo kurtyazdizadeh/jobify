@@ -1,12 +1,15 @@
 import React from 'react';
 import YourJobs from './your-jobs';
-import ExpandedNotes from './expanded-notes';
+import JobDetails from './job-details';
 import JobSearch from './job-search';
 import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
 import MapJob from './map-job';
+import AddNewJob from './add-new-job';
+import SpecificJobNotes from './specific-job-notes';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -56,17 +59,29 @@ export default class App extends React.Component {
     if (name === 'Profile') {
       return <h1 className='mt-5'>Profile in progress</h1>;
     }
-    if (name === 'Job Detail') {
-      return <ExpandedNotes date={this.manipulateDate} params={this.state.view.params} setView={this.setView}/>;
+    if (name === 'Job Details') {
+      return <JobDetails
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView}/>;
     }
     if (name === 'Map') {
       return <MapJob />;
     }
     if (name === 'Note') {
-      return <h1 className='mt-5'>Note in Progress</h1>;
+      return <h1 className='mt-5'>Notes in progress</h1>;
+    }
+    if (name === 'Job Note') {
+      return <SpecificJobNotes
+        date={this.manipulateDate}
+        params={this.state.view.params}
+        setView={this.setView} />;
     }
     if (name === 'Goal') {
       return <h1 className='mt-5'>Goal in progress</h1>;
+    }
+    if (name === 'Add New Job') {
+      return <AddNewJob setView={this.setView}/>;
     }
     if (name === 'Search Results') {
       return (
