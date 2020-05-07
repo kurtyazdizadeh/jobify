@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
 import JobSearch from './job-search';
@@ -7,8 +6,10 @@ import SearchResults from './search-results';
 import Header from './header';
 import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
+import MapJob from './map-job';
 import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ export default class App extends React.Component {
         setView={this.setView}/>;
     }
     if (name === 'Map') {
-      return <h1 className='mt-5'>Map in progress</h1>;
+      return <MapJob />;
     }
     if (name === 'Note') {
       return <h1 className='mt-5'>Notes in progress</h1>;
