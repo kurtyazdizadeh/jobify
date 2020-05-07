@@ -115,8 +115,6 @@ input[type="submit"]:hover {
   font-size: .8rem;
 }
 
-
-
 /* ************************ */
 /*       Upload Files       */
 /* ************************ */
@@ -135,18 +133,14 @@ input[type="submit"]:hover {
   margin: 2rem;
 }
 
-
 /* ************************ */
 /*       Job Map Results    */
 /* ************************ */
-
 .mapJobs {
   height: 500px;
   width: 100%;
 }
-
 .heading {
-
   margin: 10px;
   border-radius: 5px;
   color: #2F575D;
@@ -160,4 +154,8 @@ input[type="submit"]:hover {
 }
 .star-rating {
   color: #d1b902;
+}
+
+.hidden {
+  display: none;
 }

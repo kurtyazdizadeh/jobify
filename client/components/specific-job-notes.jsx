@@ -4,7 +4,20 @@ import RenderNotes from './render-notes';
 class SpecificJobNotes extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { notes: null };
+    this.state = {
+      notes: null,
+      newNote: {
+        noteType: 'Job'
+      },
+      displayAdd: false,
+      displayNotes: true
+    };
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    this.handleCancle = this.handleCancle.bind(this);
+    this.handleTitle = this.handleTitle.bind(this);
+    this.handleNote = this.handleNote.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -34,23 +47,128 @@ class SpecificJobNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleAdd(event) {
+    this.setState({
+      displayAdd: true,
+      displayNotes: false
+    });
+  }
+
+  handleBack() {
+    this.props.setView('Job Details', { userJobId: this.props.params.userJobId });
+  }
+
+  handleCancle(event) {
+    event.preventDefault();
+    this.setState({
+      displayAdd: false,
+      displayNotes: true,
+      newNote: {
+        noteType: 'Job'
+      }
+    });
+  }
+
+  handleTitle(event) {
+    event.preventDefault();
+    const previous = Object.assign(this.state.newNote);
+    previous.noteTitle = event.target.value;
+    this.setState({
+      newNote: previous
+    });
+  }
+
+  handleNote(event) {
+    event.preventDefault();
+    const previous = Object.assign(this.state.newNote);
+    previous.note = event.target.value;
+    this.setState({
+      newNote: previous
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const noteBody = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.newNote)
+    };
+    fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
+      .then(res => res.json())
+      .then(data => {
+        if (this.state.notes.note_content === '') {
+          this.setState({
+            notes: [data],
+            displayAdd: false,
+            displayNotes: true
+          });
+        } else {
+          const newNote = this.state.notes;
+          newNote.push(data);
+          this.setState({
+            notes: newNote,
+            displayAdd: false,
+            displayNotes: true
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
     if (!this.state.notes) {
       return <h1>Notes</h1>;
     }
+    let addClass = 'hidden';
+    let notesClass = '';
+    if (this.state.displayAdd) {
+      addClass = 'pt-3 form-group';
+    }
+    if (!this.state.displayNotes) {
+      notesClass = 'hidden';
+    }
 
     return (
       <div className='mt-5'>
-        <button className='ml-2 mt-2 btn btn-secondary'>Add</button>
-        {
-          this.state.notes.map(note => {
-            return <RenderNotes
-              key={note.note_id}
-              title={note.note_title}
-              date={this.props.date(note.date_posted)}
-              note={note.note_content}/>;
-          })
-        }
+        <div className={addClass}>
+          <form action="" onSubmit={this.handleSubmit}>
+            <div className='d-flex flex-column'>
+              <label className='text-center font-weight-bold' htmlFor="">Title</label>
+              <input onChange={this.handleTitle} type="text" />
+            </div>
+            <div className='d-flex flex-column'>
+              <label className='text-center font-weight-bold' htmlFor="">Note</label>
+              <textarea
+                onChange={this.handleNote}
+                cols='40'
+                rows='10'
+                className='form-control form-style'></textarea>
+            </div>
+            <div className='d-flex justify-content-around mt-3'>
+              <button className='btn btn-secondary'>Submit</button>
+              <button onClick={this.handleCancle} className='btn btn-secondary'>Cancle</button>
+            </div>
+          </form>
+        </div>
+        <div className={notesClass}>
+          <div>
+            <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
+            <button onClick={this.handleBack} className='ml-2 mt-2 btn btn-secondary'>Back</button>
+          </div>
+
+          {
+            this.state.notes.map(note => {
+              return <RenderNotes
+                key={note.note_id}
+                title={note.note_title}
+                date={this.props.date(note.date_posted)}
+                note={note.note_content} />;
+            })
+          }
+        </div>
       </div>
     );
   }
