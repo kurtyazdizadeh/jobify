@@ -3,9 +3,6 @@ import React from 'react';
 class MapJob extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      savedJobs: []
-    };
     this.googleMapRef = React.createRef();
     this.createGoogleMap = this.createGoogleMap.bind(this);
     this.createMarker = this.createMarker.bind(this);
@@ -18,20 +15,33 @@ class MapJob extends React.Component {
   }
 
   createGoogleMap() {
+    let coordinate = { lat: 33.683414, lng: -100 };
+    const jobInfo = this.props.savedJobs[0].job_info;
+    if (this.props.savedJobs !== undefined) {
+      coordinate = { lat: jobInfo.latitude, lng: jobInfo.longitude };
+    }
     // eslint-disable-next-line no-undef
     this.map = new google.maps.Map(this.googleMapRef.current, {
-      center: { lat: -34.397, lng: 150 },
-      zoom: 8
+      center: coordinate,
+      zoom: 12
     });
   }
 
   createMarker() {
-    // eslint-disable-next-line no-undef
-    this.marker = new google.maps.Marker({
-      position: { lat: -34.397, lng: 150 },
-      map: this.map,
-      title: 'testing'
-    });
+    const jobs = this.props.savedJobs;
+    const allJobs = [];
+    for (let i = 0; i < jobs.length; i++) {
+      allJobs.push({ lat: jobs[i].job_info.latitude, lng: jobs[i].job_info.longitude, company: jobs[i].job_info.company });
+    }
+    for (let i = 0; i < allJobs.length; i++) {
+      const currentJob = allJobs[i];
+      // eslint-disable-next-line no-undef
+      this.marker = new google.maps.Marker({
+        position: { lat: currentJob.lat, lng: currentJob.lng },
+        map: this.map,
+        title: currentJob.company
+      });
+    }
   }
 
   render() {
