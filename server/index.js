@@ -203,6 +203,32 @@ app.post('/api/status/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/interview/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { interview } = req.body;
+  if (id <= 0) {
+    return res.status(404).json({ error: 'id is a required field' });
+  } else if (!interview) {
+    return res.status(404).json({ error: 'interview date is a required field' });
+  }
+  const sql = `
+  update "UserSelectedJob"
+     set "interview_date" = $1
+   where "user_job_id" = $2
+  returning "interview_date"
+  `;
+  const params = [interview, id];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(400).json({ error: `there is no data at id ${id}` });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/rating/:id', (req, res, next) => {
   const { id } = req.params;
   const { rating } = req.body;
