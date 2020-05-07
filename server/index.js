@@ -199,9 +199,10 @@ app.post('/api/job-note/:id', (req, res, next) => {
     .then(result => {
       // eslint-disable-next-line camelcase
       const { note_content, note_title, note_id } = result.rows[0];
-      // console.log('line 204 title ', note_title);
-      // console.log('line 205 content', note_content);
-      // console.log('line 206 id ', note_id);
+      // eslint-disable-next-line camelcase
+      if (!note_content || !note_title || !note_id) {
+        return res.status(400).json({ error: 'internal server error' });
+      }
       return {
         note_title: note_title,
         note_content: note_content,
@@ -209,7 +210,6 @@ app.post('/api/job-note/:id', (req, res, next) => {
       };
     })
     .then(note => {
-      // console.log('Note', note);
       const jobNotessql = `
       insert into "JobNotes" ("user_job_id", "note_id")
       values ($1, $2)
