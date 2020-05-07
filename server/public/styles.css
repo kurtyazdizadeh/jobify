@@ -40,9 +40,11 @@ nav, footer {
   color: #4F4F4F;
 }
 .grey {
-  color: #CACFCF;
+  color: #CFCFCF;
 }
-
+.bg-grey {
+  background-color: #CFCFCF;
+}
 .gold {
   color: gold;
 }
@@ -86,7 +88,8 @@ input[type="submit"]:hover {
 /* ************************ */
 /*    Job Search Results    */
 /* ************************ */
-.job-listing {
+.job-listing,
+.dark-button {
   background-color: #CFCFCF;
 }
 .like-button {
@@ -112,8 +115,6 @@ input[type="submit"]:hover {
   font-size: .8rem;
 }
 
-
-
 /* ************************ */
 /*       Upload Files       */
 /* ************************ */
@@ -132,17 +133,14 @@ input[type="submit"]:hover {
   margin: 2rem;
 }
 
-
 /* ************************ */
 /*       Job Map Results    */
 /* ************************ */
-
 .mapJobs {
   height: 500px;
   width: 100%;
 }
-
-.heading{
+.heading {
   margin: 10px;
   border-radius: 5px;
   color: #2F575D;
