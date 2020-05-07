@@ -94,6 +94,27 @@ app.get('/api/notes/:jobId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/notes/', (req, res, next) => {
+  const { title, content, category } = req.body;
+
+  const sql = `
+    insert into "notes" ("note_id", "note_title", "note_content", "note_type", "date_posted")
+         values         (default, $1, $2, $3, default)
+         returning *;
+  `;
+  const params = [title, content, category];
+
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.delete('/api/saved-job/:id', (req, res, next) => {
   const { id } = req.params;
   if (id <= 0) {
@@ -203,12 +224,10 @@ app.get('/api/search-jobs/:params', (req, res, next) => {
 
 app.get('/api/logo/:company', (req, res, next) => {
   const { company } = req.params;
-
   const options = {
     searchTerm: `${company} logo`,
     queryStringAddition: 'as_st=y&tbm=isch&safe=images&tbs=isz:i,ic:trans,iar:s'
   };
-
   function log(err, results) {
     if (err) {
       console.error(err);
@@ -216,9 +235,7 @@ app.get('/api/logo/:company', (req, res, next) => {
       res.status(200).json(results[0].url);
     }
   }
-
   gis(options, log);
-
 });
 
 app.post('/api/save-job/', (req, res, next) => {

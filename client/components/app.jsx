@@ -9,6 +9,7 @@ import UploadFiles from './upload-files';
 import MapJob from './map-job';
 import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
+import Notes from './notes';
 
 
 export default class App extends React.Component {
@@ -50,52 +51,40 @@ export default class App extends React.Component {
   renderView() {
     const { name, params } = this.state.view;
 
-    if (name === 'Job Search') {
-      return <JobSearch setView={this.setView}/>;
-    }
-    if (name === 'Home') {
-      return <YourJobs setView={this.setView} />;
-    }
-    if (name === 'Profile') {
-      return <h1 className='mt-5'>Profile in progress</h1>;
-    }
-    if (name === 'Job Details') {
-      return <JobDetails
-        date={this.manipulateDate}
-        params={this.state.view.params}
-        setView={this.setView}/>;
-    }
-    if (name === 'Map') {
-      return <MapJob />;
-    }
-    if (name === 'Note') {
-      return <h1 className='mt-5'>Notes in progress</h1>;
-    }
-    if (name === 'Job Note') {
-      return <SpecificJobNotes
-        date={this.manipulateDate}
-        params={this.state.view.params}
-        setView={this.setView} />;
-    }
-    if (name === 'Goal') {
-      return <h1 className='mt-5'>Goal in progress</h1>;
-    }
-    if (name === 'Add New Job') {
-      return <AddNewJob setView={this.setView}/>;
-    }
-    if (name === 'Search Results') {
-      return (
-        <SearchResults
+    switch (name) {
+      case 'Add New Job':
+        return <AddNewJob setView={this.setView} />;
+      case 'Goal':
+        return <h1 className='mt-5'>Goal in progress</h1>;
+      case 'Home':
+        return <YourJobs setView={this.setView} />;
+      case 'Job Details':
+        return <JobDetails
+          date={this.manipulateDate}
+          params={this.state.view.params}
+          setView={this.setView} />;
+      case 'Job Note':
+        return <SpecificJobNotes
+          date={this.manipulateDate}
+          params={this.state.view.params}
+          setView={this.setView} />;
+      case 'Job Search':
+        return <JobSearch setView={this.setView} />;
+      case 'Map':
+        return <h1 className='mt-5'>Map in progress</h1>;
+      case 'Notes':
+        return <Notes setView={this.setView} />;
+      case 'Profile':
+        return <h1 className='mt-5'>Profile in progress</h1>;
+      case 'Search Results':
+        return <SearchResults
+
           setView={this.setView}
           searchQuery={params}
-        />
-      );
-    }
-    if (name === 'Upload Files') {
-      return (
-        <UploadFiles
-          setView={this.setView}/>
-      );
+        />;
+      case 'Upload Files':
+        return <UploadFiles setView={this.setView} />;
+      default:
     }
 
   }
@@ -108,9 +97,9 @@ export default class App extends React.Component {
 
       <div>
 
-        <Header title={this.state.view.name} setView={this.setView}/>
+        <Header title={this.state.view.name} setView={this.setView} />
         {this.renderView()}
-        <FooterMenu setView={this.setView}/>
+        <FooterMenu setView={this.setView} />
       </div>
     );
   }

@@ -9,7 +9,7 @@ function FooterMenu(props) {
       <span onClick={() => props.setView('Job Search', {})} className="menu-circle d-flex justify-content-center align-items-center">
         <i className="fas fa-search pointer"></i>
       </span>
-      <i onClick={() => props.setView('Note', {})} className="fas fa-sticky-note pointer"></i>
+      <i onClick={() => props.setView('Notes', {})} className="fas fa-sticky-note pointer"></i>
       <i onClick={() => props.setView('Home', {})} className="fas fa-briefcase pointer"></i>
     </footer>
   );

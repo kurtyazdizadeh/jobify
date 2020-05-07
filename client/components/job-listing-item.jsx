@@ -7,6 +7,7 @@ class JobListingItem extends React.Component {
       logo: ''
     };
     this.saveJob = this.saveJob.bind(this);
+    this.loadingImage = this.loadingImage.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,10 @@ class JobListingItem extends React.Component {
       .catch(err => console.error(err));
   }
 
+  loadingImage(event) {
+    event.target.src = './images/loading.gif';
+  }
+
   render() {
     const { logo } = this.state;
     const { title, company, city, state, county, url } = this.props;
@@ -57,7 +62,7 @@ class JobListingItem extends React.Component {
     return (
       <div className="job-listing d-flex p-2 my-2 rounded">
         <div className="align-self-center mr-2">
-          <img src={logo} className="logo" />
+          <img src={logo} className="logo" onError={this.loadingImage} />
         </div>
         <div className="job-list-text d-flex flex-column">
           <div className="job-title">{title}</div>
