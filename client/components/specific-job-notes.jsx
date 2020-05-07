@@ -6,11 +6,14 @@ class SpecificJobNotes extends React.Component {
     super(props);
     this.state = {
       notes: null,
+      newNote: {},
       displayAdd: false,
       displayNotes: true
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleCancle = this.handleCancle.bind(this);
+    this.handleTitle = this.handleTitle.bind(this);
+    this.handleNote = this.handleNote.bind(this);
   }
 
   componentDidMount() {
@@ -51,8 +54,32 @@ class SpecificJobNotes extends React.Component {
     event.preventDefault();
     this.setState({
       displayAdd: false,
-      displayNotes: true
+      displayNotes: true,
+      newNote: {}
     });
+  }
+
+  handleTitle(event) {
+    event.preventDefault();
+    this.setState({
+      newNote: {
+        noteTitle: event.target.value
+      }
+    });
+  }
+
+  handleNote(event) {
+    event.preventDefault();
+    const previous = Object.assign(this.state.newNote);
+    previous.note = event.target.value;
+    this.setState({
+      newNote: previous
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    fetch('/api');
   }
 
   render() {
@@ -74,11 +101,11 @@ class SpecificJobNotes extends React.Component {
           <form action="">
             <div className='d-flex flex-column'>
               <label className='text-center font-weight-bold' htmlFor="">Title</label>
-              <input type="text" />
+              <input onChange={this.handleTitle} type="text" />
             </div>
             <div className='d-flex flex-column'>
               <label className='text-center font-weight-bold' htmlFor="">Note</label>
-              <textarea cols='25' rows='15'></textarea>
+              <textarea onChange={this.handleNote} cols='25' rows='15'></textarea>
             </div>
             <div className='d-flex justify-content-around mt-3'>
               <button className='btn btn-secondary'>Submit</button>
