@@ -13,6 +13,7 @@ class SpecificJobNotes extends React.Component {
       displayNotes: true
     };
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleBack = this.handleBack.bind(this);
     this.handleCancle = this.handleCancle.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
@@ -51,6 +52,10 @@ class SpecificJobNotes extends React.Component {
       displayAdd: true,
       displayNotes: false
     });
+  }
+
+  handleBack() {
+    this.props.setView('Job Details', { userJobId: this.props.params.userJobId });
   }
 
   handleCancle(event) {
@@ -136,7 +141,11 @@ class SpecificJobNotes extends React.Component {
             </div>
             <div className='d-flex flex-column'>
               <label className='text-center font-weight-bold' htmlFor="">Note</label>
-              <textarea onChange={this.handleNote} cols='25' rows='15'></textarea>
+              <textarea
+                onChange={this.handleNote}
+                cols='40'
+                rows='10'
+                className='form-control form-style'></textarea>
             </div>
             <div className='d-flex justify-content-around mt-3'>
               <button className='btn btn-secondary'>Submit</button>
@@ -145,7 +154,11 @@ class SpecificJobNotes extends React.Component {
           </form>
         </div>
         <div className={notesClass}>
-          <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
+          <div>
+            <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
+            <button onClick={this.handleBack} className='ml-2 mt-2 btn btn-secondary'>Back</button>
+          </div>
+
           {
             this.state.notes.map(note => {
               return <RenderNotes
