@@ -15,19 +15,23 @@ class MapJob extends React.Component {
   }
 
   createGoogleMap() {
-    let coordinate = { lat: 33.683414, lng: -100 };
-    const jobInfo = this.props.savedJobs[0].job_info;
-    if (this.props.savedJobs !== undefined) {
+    let coordinate = { lat: 33.683414, lng: -117 };
+
+    if (this.props.savedJobs[0] !== undefined) {
+      const jobInfo = this.props.savedJobs[0].job_info;
       coordinate = { lat: jobInfo.latitude, lng: jobInfo.longitude };
     }
     // eslint-disable-next-line no-undef
     this.map = new google.maps.Map(this.googleMapRef.current, {
       center: coordinate,
-      zoom: 12
+      zoom: 12,
+      disableDefaultUI: true
     });
   }
 
   createMarker() {
+    // eslint-disable-next-line no-undef
+    const bounds = new google.maps.LatLngBounds();
     const jobs = this.props.savedJobs;
     const allJobs = [];
     for (let i = 0; i < jobs.length; i++) {
@@ -41,6 +45,10 @@ class MapJob extends React.Component {
         map: this.map,
         title: currentJob.company
       });
+      bounds.extend(this.marker.position);
+    }
+    if (this.props.savedJobs[0] !== undefined) {
+      this.map.fitBounds(bounds);
     }
   }
 
