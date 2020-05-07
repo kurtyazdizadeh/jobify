@@ -144,7 +144,9 @@ input[type="submit"]:hover {
   height: 500px;
   width: 100%;
 }
+
 .heading {
+
   margin: 10px;
   border-radius: 5px;
   color: #2F575D;

@@ -19,11 +19,14 @@ export default class App extends React.Component {
       message: null,
       isLoading: true,
       view: {
+        savedJobs: [],
         name: 'Home',
         params: {}
       }
     };
     this.setView = this.setView.bind(this);
+    this.getSavedJobs = this.getSavedJobs.bind(this);
+    this.deleteJob = this.deleteJob.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +35,7 @@ export default class App extends React.Component {
       .then(data => this.setState({ message: data.message || data.error }))
       .catch(err => this.setState({ message: err.message }))
       .finally(() => this.setState({ isLoading: false }));
+    this.getSavedJobs('date_applied DESC');
   }
 
   setView(name, params) {
@@ -41,6 +45,28 @@ export default class App extends React.Component {
         params: params
       }
     });
+  }
+
+  getSavedJobs(order) {
+    fetch(`/api/saved-job/${order}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          savedJobs: data
+        });
+      });
+  }
+
+  deleteJob(userJobId) {
+    const req = {
+      method: 'DELETE'
+    };
+
+    fetch(`/api/saved-job/${userJobId}`, req);
+    const newJobs = this.state.savedJobs.slice();
+    const index = newJobs.findIndex(job => job.user_job_id === userJobId);
+    newJobs.splice(index, 1);
+    this.setState({ savedJobs: newJobs });
   }
 
   manipulateDate(date) {
@@ -57,7 +83,7 @@ export default class App extends React.Component {
       case 'Goal':
         return <h1 className='mt-5'>Goal in progress</h1>;
       case 'Home':
-        return <YourJobs setView={this.setView} />;
+        return <YourJobs setView={this.setView} savedJobs={this.state.savedJobs} deleteJob={this.deleteJob} />;
       case 'Job Details':
         return <JobDetails
           date={this.manipulateDate}
@@ -71,7 +97,7 @@ export default class App extends React.Component {
       case 'Job Search':
         return <JobSearch setView={this.setView} />;
       case 'Map':
-        return <MapJob />;
+        return <MapJob savedJobs={this.state.savedJobs}/>;
       case 'Notes':
         return <Notes setView={this.setView} />;
       case 'View Notes':
