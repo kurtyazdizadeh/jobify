@@ -48,7 +48,6 @@ class Notes extends React.Component {
     };
     fetch('/api/notes', config)
       .then(res => res.json())
-      .then(note => console.log(note))
       .catch(err => console.error(err));
 
     this.resetForm();
@@ -136,8 +135,8 @@ class Notes extends React.Component {
             </textarea>
           </div>
           <div className="buttons">
-            <button className="notes-button mx-3" type="submit">Submit Note</button>
-            <button className="notes-button mx-3" onClick={this.resetForm}>Cancel</button>
+            <button className="btn notes-button mx-3" type="submit">Submit Note</button>
+            <button className="btn notes-button mx-3" onClick={this.resetForm}>Cancel</button>
           </div>
         </form>
       </div>
