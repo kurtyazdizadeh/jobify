@@ -4,7 +4,13 @@ import RenderNotes from './render-notes';
 class SpecificJobNotes extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { notes: null };
+    this.state = {
+      notes: null,
+      displayAdd: false,
+      displayNotes: true
+    };
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleCancle = this.handleCancle.bind(this);
   }
 
   componentDidMount() {
@@ -34,23 +40,64 @@ class SpecificJobNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleAdd(event) {
+    this.setState({
+      displayAdd: true,
+      displayNotes: false
+    });
+  }
+
+  handleCancle(event) {
+    event.preventDefault();
+    this.setState({
+      displayAdd: false,
+      displayNotes: true
+    });
+  }
+
   render() {
     if (!this.state.notes) {
       return <h1>Notes</h1>;
     }
+    let addClass = 'hidden';
+    let notesClass = '';
+    if (this.state.displayAdd) {
+      addClass = 'pt-3 form-group';
+    }
+    if (!this.state.displayNotes) {
+      notesClass = 'hidden';
+    }
 
     return (
       <div className='mt-5'>
-        <button className='ml-2 mt-2 btn btn-secondary'>Add</button>
-        {
-          this.state.notes.map(note => {
-            return <RenderNotes
-              key={note.note_id}
-              title={note.note_title}
-              date={this.props.date(note.date_posted)}
-              note={note.note_content}/>;
-          })
-        }
+        <div className={addClass}>
+          <form action="">
+            <div className='d-flex flex-column'>
+              <label className='text-center font-weight-bold' htmlFor="">Title</label>
+              <input type="text" />
+            </div>
+            <div className='d-flex flex-column'>
+              <label className='text-center font-weight-bold' htmlFor="">Note</label>
+              <textarea cols='25' rows='15'></textarea>
+            </div>
+            <div className='d-flex justify-content-around mt-3'>
+              <button className='btn btn-secondary'>Submit</button>
+              <button onClick={this.handleCancle} className='btn btn-secondary'>Cancle</button>
+            </div>
+          </form>
+        </div>
+        <div className={notesClass}>
+          <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
+          {
+            this.state.notes.map(note => {
+              return <RenderNotes
+                key={note.note_id}
+                title={note.note_title}
+                date={this.props.date(note.date_posted)}
+                note={note.note_content} />;
+            })
+          }
+        </div>
       </div>
     );
   }

@@ -140,6 +140,7 @@ input[type="submit"]:hover {
 .mapJobs {
   height: 500px;
   width: 100%;
+}
 
 .heading{
   margin: 10px;
@@ -155,4 +156,8 @@ input[type="submit"]:hover {
 }
 .star-rating {
   color: #d1b902;
+}
+
+.hidden {
+  display: none;
 }
