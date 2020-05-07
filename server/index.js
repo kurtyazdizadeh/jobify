@@ -179,6 +179,35 @@ app.post('/api/rating/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/job-note/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { noteTitle, note, noteType } = req.body;
+  // console.log(noteTitle);
+  // console.log(note);
+  // console.log(noteType);
+  if (id <= 0 || !id) {
+    return res.status(404).json({ error: `id is a required field expects integer but got ${id}` });
+  } else if (!note) {
+    return res.status(404).json({ error: 'note is required in the body' });
+  }
+
+  const sql = `
+  insert into "notes" ("note_title", "note_content", "note_type")
+  values ($1, $2, $3)
+    join "JobNotes" using ("note_id")
+   where "user_job_id" = $4
+  returning "note_title", "note_content"
+  `;
+  const params = [noteTitle, note, noteType, id];
+
+  db.query(sql, params)
+    .then(result => {
+      // console.log(res.json(result));
+      res.json(result);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/location/:lat-:long', (req, res, next) => {
   const { lat, long } = req.params;
 
