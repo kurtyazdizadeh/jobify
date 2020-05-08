@@ -2,6 +2,24 @@ require('dotenv/config');
 const express = require('express');
 const fetch = require('node-fetch');
 const gis = require('g-i-s');
+// const multer = require('multer');
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public")
+//   },
+//   filename: function (req, file, cb) {
+//     const parts = file.mimetype.split('/');
+//     cb(null, `${file.fieldname}-${Date.now()}.${parts[1]}`)
+//   }
+// })
+
+// const upload = multer({storage});
+
+// app.post('/api/save-docs', upload.single("pdf"), (req, res, next) => {
+//   res.status(201).json({path: req.file.filename}
+
+// })
 
 const db = require('./database');
 const ClientError = require('./client-error');
@@ -241,14 +259,14 @@ app.post('/api/job-note/:id', (req, res, next) => {
   const sql = `
   insert into "notes" ("note_title", "note_content", "note_type")
   values ($1, $2, $3)
-  returning "note_title", "note_content", "note_id", "date_posted"
+  returning "note_title", "note_content", "note_id"
   `;
   const params = [noteTitle, note, noteType];
 
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line camelcase
-      const { note_content, note_title, note_id, date_posted } = result.rows[0];
+      const { note_content, note_title, note_id } = result.rows[0];
       // eslint-disable-next-line camelcase
       if (!note_content || !note_title || !note_id) {
         return res.status(400).json({ error: 'internal server error' });
@@ -256,8 +274,7 @@ app.post('/api/job-note/:id', (req, res, next) => {
       return {
         note_title: note_title,
         note_content: note_content,
-        note_id: note_id,
-        date_posted: date_posted
+        note_id: note_id
       };
     })
     .then(note => {
