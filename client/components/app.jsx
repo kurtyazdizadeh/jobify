@@ -11,6 +11,7 @@ import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
 import NotesView from './notes-view';
+import Goals from './goals';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -81,7 +82,7 @@ export default class App extends React.Component {
       case 'Add New Job':
         return <AddNewJob setView={this.setView} />;
       case 'Goal':
-        return <h1 className='mt-5'>Goal in progress</h1>;
+        return <Goals setView={this.setView} />;
       case 'Home':
         return <YourJobs setView={this.setView} savedJobs={this.state.savedJobs} deleteJob={this.deleteJob} />;
       case 'Job Details':
