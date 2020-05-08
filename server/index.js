@@ -290,6 +290,33 @@ app.post('/api/rating/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/follow-up/:id', (req, res, next) => {
+  const { id } = req.params;
+  const { date } = req.body;
+  if (!id || id <= 0) {
+    return res.status(404).json({ error: `cannot read id of ${id}` });
+  } else if (!date) {
+    return res.status(404).json({ error: 'date is a required field' });
+  }
+  const sql = `
+  update "UserSelectedJob"
+  set "follow_up_date" = $1
+  where "user_job_id" = $2
+  returning "follow_up_date"
+  `;
+  const params = [date, id];
+  db.query(sql, params)
+    .then(result => {
+      const newDate = result.rows[0];
+      if (!newDate) {
+        res.status(400).json({ error: 'there was an internal server error' });
+      } else {
+        res.status(200).json(newDate);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/job-note/:id', (req, res, next) => {
   const { id } = req.params;
   const { noteTitle, note, noteType } = req.body;
