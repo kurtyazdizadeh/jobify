@@ -37,6 +37,19 @@ app.get('/api/saved-job/:sort', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/goals', (req, res, next) => {
+  const sql = `
+    SELECT "user_goal_id",
+    "goal_achieved",
+    "currently_active", "current_progress", "end_goal", "deadline_date"
+    FROM "UsersGoal"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.status(200).json(result);
+    });
+});
+
 app.get('/api/specific-job/:id', (req, res, next) => {
   const { id } = req.params;
   if (id <= 0) {
