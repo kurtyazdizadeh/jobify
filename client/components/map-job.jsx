@@ -58,27 +58,30 @@ class MapJob extends React.Component {
     }
     for (let i = 0; i < allJobs.length; i++) {
       const currentJob = allJobs[i];
+      // eslint-disable-next-line no-prototype-builtins
+      if (currentJob.hasOwnProperty('latitude') && currentJob.hasOwnProperty('longitude')) {
       // eslint-disable-next-line no-undef
-      const infowindow = new google.maps.InfoWindow({
-        content: `<p class='text-center font-weight-bold'>${currentJob.company}</p>
+        const infowindow = new google.maps.InfoWindow({
+          content: `<p class='text-center font-weight-bold'>${currentJob.company}</p>
          <p>${currentJob.title}</p> <p>${currentJob.description}</p>`
-      });
-      // eslint-disable-next-line no-undef
-      const marker = new google.maps.Marker({
-        position: { lat: currentJob.latitude, lng: currentJob.longitude },
-        map: this.map,
-        title: currentJob.company
-      });
-      marker.addListener('click', function () {
-        infowindow.open(this.map, marker);
-      });
-      this.map.addListener('click', function () {
-        infowindow.close(this.map, marker);
-      });
-      bounds.extend(marker.position);
-    }
-    if (this.props.savedJobs[0] !== undefined) {
-      this.map.fitBounds(bounds);
+        });
+        // eslint-disable-next-line no-undef
+        const marker = new google.maps.Marker({
+          position: { lat: currentJob.latitude, lng: currentJob.longitude },
+          map: this.map,
+          title: currentJob.company
+        });
+        marker.addListener('click', function () {
+          infowindow.open(this.map, marker);
+        });
+        this.map.addListener('click', function () {
+          infowindow.close(this.map, marker);
+        });
+        bounds.extend(marker.position);
+      }
+      if (this.props.savedJobs[0] !== undefined) {
+        this.map.fitBounds(bounds);
+      }
     }
   }
 
@@ -88,13 +91,15 @@ class MapJob extends React.Component {
         <div className='centerButtons-row d-flex flex-wrap row justify-content-around'>
           {this.props.savedJobs.map((job, index) => {
             const words = job.job_info.company.split(' ');
-            return (
-              <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
-                {words[0]}
-              </button>
-            );
+            // eslint-disable-next-line no-prototype-builtins
+            if (job.job_info.hasOwnProperty('latitude') && job.job_info.hasOwnProperty('longitude')) {
+              return (
+                <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
+                  {words[0]}
+                </button>
+              );
+            }
           })}
-
         </div>
       </div>
     );

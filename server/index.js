@@ -106,7 +106,27 @@ app.post('/api/manual-save', (req, res, next) => {
       error: 'companyName must be included'
     });
   }
-
+  if (!job.position) {
+    return res.status(400).json({
+      error: 'position must be included'
+    });
+  }
+  const json = JSON.stringify({ company: job.companyName, title: job.position, location: location });
+  const sql = `
+    INSERT INTO "UserSelectedJob" ("user_job_id", "user_id", "job_status", "date_saved", "job_priority", "follow_up_date", "date_applied", "job_info")
+    VALUES (default, 1, 'interested', default, $1, $2, $3, $4)
+    returning *;
+  `;
+  const params = [job.rating, job.followUp, job.dateOfApplication, json];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/notes/', (req, res, next) => {
