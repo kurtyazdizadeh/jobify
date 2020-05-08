@@ -39,14 +39,18 @@ app.get('/api/saved-job/:sort', (req, res, next) => {
 
 app.get('/api/goals', (req, res, next) => {
   const sql = `
-    SELECT "user_goal_id",
-    "goal_achieved",
-    "currently_active", "current_progress", "end_goal", "deadline_date"
-    FROM "UsersGoal"
+    SELECT  *
+    FROM    "UsersGoal"
   `;
   db.query(sql)
     .then(result => {
-      res.status(200).json(result);
+      res.json(result.rows);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        error: 'An unexpected error occured.'
+      });
     });
 });
 
