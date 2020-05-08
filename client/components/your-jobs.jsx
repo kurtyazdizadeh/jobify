@@ -29,7 +29,7 @@ class YourJobs extends React.Component {
       order = 'ASC';
     }
     if (event.target.value === 'Date') {
-      this.getSavedJobs(`date_applied ${order}`);
+      this.getSavedJobs(`date_saved ${order}`);
     }
     if (event.target.value === 'Status') {
       this.getSavedJobs(`job_status ${order}`);

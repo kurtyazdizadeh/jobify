@@ -31,17 +31,45 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('file');
 
 app.post('/api/save-docs/:userJobId-:fileType', (req, res, next) => {
-  upload(req, res, err => {
+  const { userJobId, fileType } = req.params;
+  let fileName = '';
+
+  if (userJobId <= 1 ||
+      (fileType !== 'resume' &&
+       fileType !== 'cover_letter' &&
+       fileType !== 'letter_of_recommendation')
+  ) {
+    res.status(400).send({ error: `either jobID: ${userJobId} or file type: ${fileType} is invalid` });
+  }
+
+  upload(request, response, err => {
     if (err instanceof multer.MulterError) {
-      console.log('multer error');
       return res.status(500).json(err);
     } else if (err) {
-      console.log('other error');
       return res.status(500).json(err);
     }
-    return res.status(200).send(req.file);
+    fileName = request.file.filename;
+
+    const sql = `
+      UPDATE "UserSelectedJob" (${fileType})
+         SET ${fileType} = $1
+       WHERE "user_job_id" = $2
+   RETURNING ${fileType};
+    `;
+    const params = [fileName, userJobId];
+
+    db.query(sql, params)
+      .then(result => {
+        if (!result.rows[0]) {
+          res.status(404).json({ error: 'something went wrong' });
+        } else {
+          res.status(201).json(result);
+        }
+      })
+      .catch(err => next(err));
+
+    // return res.status(201).send(request.file);
   });
-  console.log(req);
 });
 
 app.get('/api/health-check', (req, res, next) => {
@@ -52,12 +80,12 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/saved-job/:sort', (req, res, next) => {
   const { sort } = req.params;
-  if (sort !== 'date_applied DESC' && sort !== 'date_applied ASC' && sort !== 'job_status ASC' &&
+  if (sort !== 'date_saved DESC' || sort !== 'date_saved ASC' && sort !== 'job_status ASC' &&
           sort !== 'job_status DESC' && sort !== 'job_priority ASC' && sort !== 'job_priority DESC') {
     res.status(400).send({ error: `Cannot sort by ${sort}` });
   }
   const sql = `
-    SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_applied"
+    SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_saved"
     FROM      "UserSelectedJob"
     ORDER BY  ${sort};
   `;
@@ -74,7 +102,7 @@ app.get('/api/specific-job/:id', (req, res, next) => {
   }
   const sql = `
   SELECT "job_status",
-         "date_applied",
+         "date_saved",
          "job_priority",
          "files_id",
          "interview_date",

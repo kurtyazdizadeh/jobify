@@ -35,7 +35,7 @@ export default class App extends React.Component {
       .then(data => this.setState({ message: data.message || data.error }))
       .catch(err => this.setState({ message: err.message }))
       .finally(() => this.setState({ isLoading: false }));
-    this.getSavedJobs('date_applied DESC');
+    this.getSavedJobs('date_saved DESC');
   }
 
   setView(name, params) {
