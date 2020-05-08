@@ -94,6 +94,21 @@ app.get('/api/notes/:jobId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/manual-save', (req, res, next) => {
+  const job = req.body;
+  if (!parseInt(job.rating, 10) || parseInt(job.rating, 10) < 0) {
+    return res.status(400).json({
+      error: 'rating must be a positive integer'
+    });
+  }
+  if (!job.companyName) {
+    return res.status(400).json({
+      error: 'companyName must be included'
+    });
+  }
+
+});
+
 app.post('/api/notes/', (req, res, next) => {
   const { title, content, category } = req.body;
 
