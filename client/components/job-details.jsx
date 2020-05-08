@@ -7,13 +7,18 @@ class JobDetails extends React.Component {
       job: null,
       note: null,
       interviewModal: false,
-      interview: null
+      interview: null,
+      followUpModal: false,
+      followUp: null
     };
     this.handleStatus = this.handleStatus.bind(this);
     this.changeRating = this.changeRating.bind(this);
     this.handleSetDate = this.handleSetDate.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSendInterview = this.handleSendInterview.bind(this);
+    this.handleFollowUpModal = this.handleFollowUpModal.bind(this);
+    this.handleFollowUpText = this.handleFollowUpText.bind(this);
+    this.handleAddFollowUp = this.handleAddFollowUp.bind(this);
   }
 
   componentDidMount() {
@@ -42,7 +47,7 @@ class JobDetails extends React.Component {
             <input
               className='form-control input-width'
               onChange={this.handleDateChange}
-              maxLength='8'
+              maxLength='10'
               required
               placeholder='mm/dd/yyy' type="text" />
             <button className='btn btn-secondary'>Add</button>
@@ -111,6 +116,66 @@ class JobDetails extends React.Component {
         newStatus.job_status = data.job_status;
         this.setState({
           job: newStatus
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  toggleFollowUp() {
+    const followUpDate = this.state.job.follow_up_date;
+    if (this.state.followUpModal === true) {
+      return (
+        <div className='form-group'>
+          <form
+            onSubmit={this.handleAddFollowUp}
+            className='d-flex flex-row align-items-center'>
+            <input
+              className='form-control input-width'
+              onChange={this.handleFollowUpText}
+              maxLength='10'
+              required
+              placeholder='mm/dd/yyy' type="text" />
+            <button className='btn btn-secondary'>Add</button>
+          </form>
+        </div>
+      );
+    } else if (followUpDate === null) {
+      return <button onClick={this.handleFollowUpModal} className='btn btn-secondary'>Set Date</button>;
+    } else {
+      return <h3>{this.props.date(followUpDate)}</h3>;
+    }
+  }
+
+  handleFollowUpModal(event) {
+    this.setState({
+      followUpModal: true
+    });
+  }
+
+  handleFollowUpText(event) {
+    event.preventDefault();
+    this.setState({
+      followUp: event.target.value
+    });
+  }
+
+  handleAddFollowUp(event) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ date: this.state.followUp })
+    };
+    fetch(`/api/follow-up/${this.props.params.userJobId}`, params)
+      .then(res => res.json())
+      .then(date => {
+        const newDate = Object.assign(this.state.job);
+        newDate.follow_up_date = date.follow_up_date;
+        this.setState({
+          job: newDate,
+          followUpModal: false
         });
       })
       .catch(err => console.error(err));
@@ -227,7 +292,7 @@ class JobDetails extends React.Component {
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
           <h3>Follow up by:</h3>
-          <h3>6/10/20</h3>
+          {this.toggleFollowUp()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>

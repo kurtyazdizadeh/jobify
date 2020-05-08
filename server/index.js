@@ -49,7 +49,8 @@ app.get('/api/specific-job/:id', (req, res, next) => {
          "job_priority",
          "files_id",
          "interview_date",
-         "job_info"
+         "job_info",
+         "follow_up_date"
   FROM "UserSelectedJob"
   WHERE "user_job_id" = $1
   `;
