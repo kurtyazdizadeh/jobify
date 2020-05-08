@@ -12,6 +12,8 @@ class MapJob extends React.Component {
     };
     this.handleToggleClose = this.handleToggleClose.bind(this);
     this.handleToggleOpen = this.handleToggleOpen.bind(this);
+    this.createCenterButton = this.createCenterButton.bind(this);
+    this.centerMap = this.centerMap.bind(this);
   }
 
   componentDidMount() {
@@ -80,11 +82,36 @@ class MapJob extends React.Component {
     }
   }
 
-  render() {
+  createCenterButton() {
     return (
-      <div className='d-flex flex-column align-items-center'>
+      <div>
+        <div className='centerButtons-row d-flex flex-wrap row justify-content-around'>
+          {this.props.savedJobs.map((job, index) => {
+            const words = job.job_info.company.split(' ');
+            return (
+              <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
+                {words[0]}
+              </button>
+            );
+          })}
+
+        </div>
+      </div>
+    );
+  }
+
+  centerMap(lat, lng) {
+    this.map.setCenter({ lat: lat, lng: lng });
+    this.map.setZoom(15);
+  }
+
+  render() {
+    const centerButton = this.createCenterButton();
+    return (
+      <div className=' d-flex flex-column align-items-center'>
         <h1 className='mt-5'>Your Jobs</h1>
         <div ref={this.googleMapRef} className='mapJobs'></div>
+        {centerButton}
       </div>
     );
   }
