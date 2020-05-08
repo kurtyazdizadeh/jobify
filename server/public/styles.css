@@ -177,6 +177,10 @@ input[type="submit"]:hover {
   transform: translate(-50%, -50%);
 }
 
+.input-width {
+  width: 7rem;
+}
+
 /* ********** */
 /*   hidden   */
 /* ********** */
