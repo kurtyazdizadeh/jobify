@@ -5,10 +5,15 @@ class JobDetails extends React.Component {
     super(props);
     this.state = {
       job: null,
-      note: null
+      note: null,
+      interviewModal: false,
+      interview: null
     };
     this.handleStatus = this.handleStatus.bind(this);
     this.changeRating = this.changeRating.bind(this);
+    this.handleSetDate = this.handleSetDate.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleSendInterview = this.handleSendInterview.bind(this);
   }
 
   componentDidMount() {
@@ -22,6 +27,64 @@ class JobDetails extends React.Component {
       .then(job => {
         this.setState({
           job: job
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleInterview() {
+    let view = this.state.job.interview_date;
+    if (this.state.interviewModal === true) {
+
+      view = (
+        <div>
+          <form onSubmit={this.handleSendInterview} className='d-flex flex-row align-items-center'>
+            <input onChange={this.handleDateChange} required placeholder='mm/dd/yyy' type="text" />
+            <button className='btn btn-secondary'>Add</button>
+          </form>
+        </div>
+      );
+    } else if (view === 'No' || view === 'no' || view === null) {
+      view = <button onClick={this.handleSetDate} className='btn btn-secondary'>Set Date</button>;
+    } else {
+      view = <h3>{this.props.date(view)}</h3>;
+    }
+    return view;
+  }
+
+  handleSetDate(event) {
+    event.preventDefault();
+    this.setState({
+      interviewModal: true
+    });
+  }
+
+  handleDateChange(event) {
+    event.preventDefault();
+    this.setState({
+      interview: event.target.value
+    });
+  }
+
+  handleSendInterview(event) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ interview: this.state.interview })
+    };
+
+    fetch(`/api/interview/${this.props.params.userJobId}`, params)
+      .then(date => date.json())
+      .then(res => {
+        const newDate = this.props.date(res.interview_date);
+        const date = Object.assign(this.state.job);
+        date.interview_date = newDate;
+        this.setState({
+          job: date,
+          interviewModal: false
         });
       })
       .catch(err => console.error(err));
@@ -100,17 +163,13 @@ class JobDetails extends React.Component {
   }
 
   render() {
+
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
     let title = this.state.job.job_info.title;
     title = title.replace(/(<([^>]+)>)/ig, '');
     const info = this.state.job.job_info;
-
-    let interview = this.state.job.interview_date;
-    if (interview === 'No' || interview === 'no' || interview === null) {
-      interview = 'No';
-    }
     return (
       <>
         <div className='text-center mt-5 py-2 dark-gray'>
@@ -118,7 +177,7 @@ class JobDetails extends React.Component {
           <h5>{info.company}</h5>
           <h5>{`${info.city || info.county}, ${info.state}`}</h5>
         </div>
-        <div className='d-flex justify-content-around py-3 light-green'>
+        <div className='d-flex justify-content-around py-2 light-green'>
           <h3>Job Post</h3>
           <button className='btn btn-secondary'>
             <a href={info.url} className='text-light'>Click to Apply</a>
@@ -138,8 +197,8 @@ class JobDetails extends React.Component {
             onClick={() => this.changeRating(5)}></i>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
-          <h3>Interview?</h3>
-          <h3>{interview}</h3>
+          <h3>Interview</h3>
+          {this.handleInterview()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <h3>Status</h3>

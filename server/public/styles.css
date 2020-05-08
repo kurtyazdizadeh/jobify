@@ -156,6 +156,21 @@ input[type="submit"]:hover {
   color: #d1b902;
 }
 
+/* **************** */
+/*  modal position  */
+/* **************** */
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ********** */
+/*   hidden   */
+/* ********** */
+
 .hidden {
   display: none;
 }
