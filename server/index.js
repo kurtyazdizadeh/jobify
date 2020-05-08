@@ -23,12 +23,12 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/saved-job/:sort', (req, res, next) => {
   const { sort } = req.params;
-  if (sort !== 'date_applied DESC' && sort !== 'date_applied ASC' && sort !== 'job_status ASC' &&
+  if (sort !== 'date_saved DESC' && sort !== 'date_saved ASC' && sort !== 'job_status ASC' &&
           sort !== 'job_status DESC' && sort !== 'job_priority ASC' && sort !== 'job_priority DESC') {
     res.status(400).send({ error: `Cannot sort by ${sort}` });
   }
   const sql = `
-    SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_applied"
+    SELECT    "user_job_id", "job_status", "job_priority", "job_info", "date_saved"
     FROM      "UserSelectedJob"
     ORDER BY  ${sort};
   `;
@@ -45,7 +45,7 @@ app.get('/api/specific-job/:id', (req, res, next) => {
   }
   const sql = `
   SELECT "job_status",
-         "date_applied",
+         "date_saved",
          "job_priority",
          "files_id",
          "interview_date",
@@ -89,6 +89,41 @@ app.get('/api/notes/:jobId', (req, res, next) => {
         res.status(200).json({ empty: `there are no notes for user_job_id ${jobId}` });
       } else {
         res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/manual-save', (req, res, next) => {
+  const job = req.body;
+  if (!parseInt(job.rating, 10) || parseInt(job.rating, 10) < 0) {
+    return res.status(400).json({
+      error: 'rating must be a positive integer'
+    });
+  }
+  if (!job.companyName) {
+    return res.status(400).json({
+      error: 'companyName must be included'
+    });
+  }
+  if (!job.position) {
+    return res.status(400).json({
+      error: 'position must be included'
+    });
+  }
+  const json = JSON.stringify({ company: job.companyName, title: job.position, location: job.location });
+  const sql = `
+    INSERT INTO "UserSelectedJob" ("user_job_id", "user_id", "job_status", "date_saved", "job_priority", "follow_up_date", "date_applied", "job_info")
+    VALUES (default, 1, 'interested', default, $1, $2, $3, $4)
+    returning *;
+  `;
+  const params = [job.rating, job.followUp, job.dateOfApplication, json];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
       }
     })
     .catch(err => next(err));
