@@ -37,9 +37,14 @@ class JobDetails extends React.Component {
     if (this.state.interviewModal === true) {
 
       view = (
-        <div>
+        <div className='form-group'>
           <form onSubmit={this.handleSendInterview} className='d-flex flex-row align-items-center'>
-            <input onChange={this.handleDateChange} required placeholder='mm/dd/yyy' type="text" />
+            <input
+              className='form-control input-width'
+              onChange={this.handleDateChange}
+              maxLength='8'
+              required
+              placeholder='mm/dd/yyy' type="text" />
             <button className='btn btn-secondary'>Add</button>
           </form>
         </div>
@@ -196,7 +201,7 @@ class JobDetails extends React.Component {
           <i className={this.getRating(5)}
             onClick={() => this.changeRating(5)}></i>
         </div>
-        <div className='d-flex justify-content-around py-2 light-green'>
+        <div className='d-flex justify-content-around align-items-center py-2 light-green'>
           <h3>Interview</h3>
           {this.handleInterview()}
         </div>
