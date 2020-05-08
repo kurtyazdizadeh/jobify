@@ -71,7 +71,7 @@ export default class App extends React.Component {
 
   manipulateDate(date) {
     const convertedDate = new Date(date.slice(0, 10));
-    return convertedDate.toLocaleDateString('en-US');
+    return convertedDate.toLocaleDateString('en-US', { timeZone: 'Europe/Helsinki' });
   }
 
   renderView() {
