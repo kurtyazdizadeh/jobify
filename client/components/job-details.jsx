@@ -19,6 +19,8 @@ class JobDetails extends React.Component {
     this.handleFollowUpModal = this.handleFollowUpModal.bind(this);
     this.handleFollowUpText = this.handleFollowUpText.bind(this);
     this.handleAddFollowUp = this.handleAddFollowUp.bind(this);
+    this.handleUpdateInterview = this.handleUpdateInterview.bind(this);
+    this.handleUpdateFollowUp = this.handleUpdateFollowUp.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +59,12 @@ class JobDetails extends React.Component {
     } else if (view === 'No' || view === 'no' || view === null) {
       view = <button onClick={this.handleSetDate} className='btn btn-secondary'>Set Date</button>;
     } else {
-      view = <h3>{this.props.date(view)}</h3>;
+      view = (
+        <>
+          <h3>{this.props.date(view)}</h3>
+          <i onClick={this.handleUpdateInterview} className="fas fa-edit"></i>
+        </>
+      );
     }
     return view;
   }
@@ -121,6 +128,12 @@ class JobDetails extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleUpdateInterview(event) {
+    this.setState({
+      interviewModal: true
+    });
+  }
+
   toggleFollowUp() {
     const followUpDate = this.state.job.follow_up_date;
     if (this.state.followUpModal === true) {
@@ -142,7 +155,12 @@ class JobDetails extends React.Component {
     } else if (followUpDate === null) {
       return <button onClick={this.handleFollowUpModal} className='btn btn-secondary'>Set Date</button>;
     } else {
-      return <h3>{this.props.date(followUpDate)}</h3>;
+      return (
+        <>
+          <h3>{this.props.date(followUpDate)}</h3>
+          <i onClick={this.handleUpdateFollowUp} className="fas fa-edit"></i>
+        </>
+      );
     }
   }
 
@@ -179,6 +197,12 @@ class JobDetails extends React.Component {
         });
       })
       .catch(err => console.error(err));
+  }
+
+  handleUpdateFollowUp(event) {
+    this.setState({
+      followUpModal: true
+    });
   }
 
   getNote(jobId) {
@@ -290,7 +314,7 @@ class JobDetails extends React.Component {
             </form>
           </div>
         </div>
-        <div className='d-flex justify-content-around py-2 light-green'>
+        <div className='d-flex justify-content-around align-items-center py-2 light-green'>
           <h3>Follow up by:</h3>
           {this.toggleFollowUp()}
         </div>
