@@ -1,37 +1,48 @@
 require('dotenv/config');
 const express = require('express');
-const fetch = require('node-fetch');
-const gis = require('g-i-s');
-// const multer = require('multer');
-
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "public")
-//   },
-//   filename: function (req, file, cb) {
-//     const parts = file.mimetype.split('/');
-//     cb(null, `${file.fieldname}-${Date.now()}.${parts[1]}`)
-//   }
-// })
-
-// const upload = multer({storage});
-
-// app.post('/api/save-docs', upload.single("pdf"), (req, res, next) => {
-//   res.status(201).json({path: req.file.filename}
-
-// })
-
+const path = require('path');
 const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
+const fetch = require('node-fetch');
+const gis = require('g-i-s');
+const multer = require('multer');
 
 const app = express();
 
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
-
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '/public/docs/'));
+  },
+  filename: function (req, file, cb) {
+    let ext = file.mimetype.split('/')[1];
+    if (ext === 'vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      ext = 'docx';
+    }
+    cb(null, `${Date.now()}.${ext}`);
+  }
+});
+
+const upload = multer({ storage: storage }).single('file');
+
+app.post('/api/save-docs/:userJobId-:fileType', (req, res, next) => {
+  upload(req, res, err => {
+    if (err instanceof multer.MulterError) {
+      console.log('multer error');
+      return res.status(500).json(err);
+    } else if (err) {
+      console.log('other error');
+      return res.status(500).json(err);
+    }
+    return res.status(200).send(req.file);
+  });
+  console.log(req);
+});
 
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')

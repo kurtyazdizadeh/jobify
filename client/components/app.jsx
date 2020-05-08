@@ -20,7 +20,7 @@ export default class App extends React.Component {
       isLoading: true,
       view: {
         savedJobs: [],
-        name: 'Upload Files',
+        name: 'Home',
         params: {}
       }
     };
