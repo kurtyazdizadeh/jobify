@@ -138,8 +138,18 @@ input[type="submit"]:hover {
 /* ************************ */
 .mapJobs {
   height: 500px;
+  width: 90%;
+  border: 5px solid #275727;
+}
+
+.centerButtons-row {
   width: 100%;
 }
+
+.centerButton {
+  font-size: .8rem;
+}
+
 .heading {
   margin: 10px;
   border-radius: 5px;
