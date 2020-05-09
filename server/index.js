@@ -229,6 +229,48 @@ app.delete('/api/saved-job/:id', (req, res, next) => {
     });
 });
 
+app.delete('/api/remove-note/:id', (req, res, next) => {
+  const { id } = req.params;
+  if (!id || id <= 0) {
+    return res.status(404).json({ error: `expected note id but instead got ${id}` });
+  }
+  const sql = `
+  delete from "notes"
+   where "note_id" = $1
+   returning *
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(data => {
+      const removed = data.rows[0];
+      if (!removed) {
+        res.status(400).json({ error: 'there was an internal server error' });
+      } else {
+        res.status(200).json(removed);
+      }
+    })
+    .catch(err => next(err));
+  const jobNoteSql = `
+      delete from "JobNotes"
+       where "note_id" = $1
+      returning *
+      `;
+  db.query(jobNoteSql, params)
+    .then(jobNote => {
+      const noteInfo = jobNote.rows[0];
+      if (!noteInfo) {
+        return res.status(400).json({ error: 'there was an internal server error' });
+      } else {
+        res.status(200).json(noteInfo);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/romove-job-note/:id', (req, res, next) => {
+
+});
+
 app.post('/api/status/:id', (req, res, next) => {
   const { id } = req.params;
   const { status } = req.body;
