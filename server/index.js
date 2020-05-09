@@ -33,6 +33,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('file');
 
+app.get('/api/health-check', (req, res, next) => {
+  db.query('select \'successfully connected\' as "message"')
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.post('/api/save-docs/:userJobId-:fileType', upload, (req, res, next) => {
   const { userJobId, fileType } = req.params;
   const fileName = req.file.filename;
@@ -64,9 +70,25 @@ app.post('/api/save-docs/:userJobId-:fileType', upload, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/health-check', (req, res, next) => {
-  db.query('select \'successfully connected\' as "message"')
-    .then(result => res.json(result.rows[0]))
+app.get('/api/view-docs/:userJobId', (req, res, next) => {
+  const { userJobId } = req.params;
+  if (userJobId <= 1) {
+    res.status(400).send({ error: `invalid jobID: ${userJobId}` });
+  }
+  const sql = `
+      SELECT "resume", "cover_letter", "letter_of_recommendation"
+        FROM "UserSelectedJob"
+       WHERE "user_job_id" = $1
+  `;
+  const params = [userJobId];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(400).json({ error: 'docs not found for this job, please upload docs first' });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
     .catch(err => next(err));
 });
 

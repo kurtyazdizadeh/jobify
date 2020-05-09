@@ -5,10 +5,34 @@ class UploadFiles extends React.Component {
     super(props);
     this.state = {
       selectedFile: null,
-      fileType: ''
+      fileType: '',
+      resumeURL: null,
+      coverURL: null,
+      letterURL: null
     };
     this.handleUploadChange = this.handleUploadChange.bind(this);
     this.handleUploadToServer = this.handleUploadToServer.bind(this);
+  }
+
+  componentDidMount() {
+    this.getDocList();
+  }
+
+  getDocList() {
+    const { userJobId } = this.props;
+
+    fetch(`/api/view-docs/${userJobId}`)
+      .then(res => res.json())
+      .then(files => {
+        // eslint-disable-next-line camelcase
+        const { resume, cover_letter, letter_of_recommendation } = files;
+        this.setState({
+          resumeURL: resume,
+          coverURL: cover_letter,
+          letterURL: letter_of_recommendation
+        });
+      })
+      .catch(err => console.error(err));
   }
 
   handleUploadChange() {
@@ -35,7 +59,10 @@ class UploadFiles extends React.Component {
 
     fetch(`/api/save-docs/${userJobId}-${fileType}`, config)
       .then(res => res.json())
-      .then(result => this.setState({ selectedFile: null, fileType: '' }))
+      .then(result => {
+        this.setState({ selectedFile: null, fileType: '' });
+        this.getDocList();
+      })
       .catch(err => console.error(err));
   }
 
@@ -63,7 +90,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col align-items-center'>View</button>
+            {/* conditionally render View button if link exists */}
           </form>
         </div>
         <div>
@@ -85,7 +112,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col'>View</button>
+            {/* conditionally render View button if link exists */}
           </form>
         </div>
         <div>
@@ -107,7 +134,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col'>View</button>
+            {/* conditionally render View button if link exists */}
           </form>
         </div>
       </div>
