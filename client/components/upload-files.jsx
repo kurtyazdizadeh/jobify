@@ -5,10 +5,34 @@ class UploadFiles extends React.Component {
     super(props);
     this.state = {
       selectedFile: null,
-      fileType: ''
+      fileType: '',
+      resumeURL: null,
+      coverURL: null,
+      letterURL: null
     };
     this.handleUploadChange = this.handleUploadChange.bind(this);
     this.handleUploadToServer = this.handleUploadToServer.bind(this);
+  }
+
+  componentDidMount() {
+    this.getDocList();
+  }
+
+  getDocList() {
+    const { userJobId } = this.props.params;
+
+    fetch(`/api/view-docs/${userJobId}`)
+      .then(res => res.json())
+      .then(files => {
+        // eslint-disable-next-line camelcase
+        const { resume, cover_letter, letter_of_recommendation } = files;
+        this.setState({
+          resumeURL: resume,
+          coverURL: cover_letter,
+          letterURL: letter_of_recommendation
+        });
+      })
+      .catch(err => console.error(err));
   }
 
   handleUploadChange() {
@@ -23,7 +47,7 @@ class UploadFiles extends React.Component {
   handleUploadToServer() {
     event.preventDefault();
     const { selectedFile, fileType } = this.state;
-    const { userJobId } = this.props;
+    const { userJobId } = this.props.params;
 
     const data = new FormData();
     data.append('file', selectedFile);
@@ -35,12 +59,50 @@ class UploadFiles extends React.Component {
 
     fetch(`/api/save-docs/${userJobId}-${fileType}`, config)
       .then(res => res.json())
-      .then(result => this.setState({ selectedFile: null, fileType: '' }))
+      .then(result => {
+        this.setState({ selectedFile: null, fileType: '' });
+        this.getDocList();
+      })
       .catch(err => console.error(err));
   }
 
+  renderViewButton(fileURL) {
+    if (fileURL !== null) {
+      let fileType = '';
+      const title = this.props.params.title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+      const company = this.props.params.company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+
+      switch (fileURL) {
+        case this.state.resumeURL:
+          fileType = 'resume';
+          break;
+        case this.state.coverURL:
+          fileType = 'cover-letter';
+          break;
+        case this.state.letterURL:
+          fileType = 'letter-of-rec';
+          break;
+        default:
+          break;
+      }
+
+      return (
+        <a
+          className='btn button'
+          href={`./docs/${fileURL}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          download={`${title}-${company}-${fileType}`}
+        >
+      View
+        </a>
+      );
+    }
+  }
+
   render() {
-    const { selectedFile, fileType } = this.state;
+    const { selectedFile, fileType, resumeURL, coverURL, letterURL } = this.state;
+    const docTypes = 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     return (
       <div className='container mt-4 py-3 dark-gray'>
         <div>
@@ -55,14 +117,14 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="resume"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="resume">
                 {(selectedFile && fileType === 'resume') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col align-items-center'>View</button>
+            {this.renderViewButton(resumeURL)}
           </form>
         </div>
         <div>
@@ -77,14 +139,14 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="cover_letter"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="cover_letter">
                 {(selectedFile && fileType === 'cover_letter') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col'>View</button>
+            {this.renderViewButton(coverURL)}
           </form>
         </div>
         <div>
@@ -99,14 +161,14 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="letter_of_recommendation"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="letter_of_recommendation">
                 {(selectedFile && fileType === 'letter_of_recommendation') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            <button className='button btn col'>View</button>
+            {this.renderViewButton(letterURL)}
           </form>
         </div>
       </div>

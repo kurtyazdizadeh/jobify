@@ -115,7 +115,7 @@ export default class App extends React.Component {
           searchQuery={params}
         />;
       case 'Upload Files':
-        return <UploadFiles setView={this.setView} userJobId={params} />;
+        return <UploadFiles setView={this.setView} params={params} />;
       default:
     }
 
