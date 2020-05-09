@@ -66,8 +66,19 @@ class UploadFiles extends React.Component {
       .catch(err => console.error(err));
   }
 
-  renderViewButton(fireURL) {
-    if (fireURL !== null) return <button className='btn button' onClick={() => this.viewDoc(fireURL)}>View</button>;
+  renderViewButton(fileURL) {
+    if (fileURL !== null) {
+      return (
+        <a
+          className='btn button'
+          href={`./docs/${fileURL}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+      View
+        </a>
+      );
+    }
   }
 
   render() {
