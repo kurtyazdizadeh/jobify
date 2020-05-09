@@ -66,8 +66,12 @@ class UploadFiles extends React.Component {
       .catch(err => console.error(err));
   }
 
+  renderViewButton(fireURL) {
+    if (fireURL !== null) return <button className='btn button' onClick={() => this.viewDoc(fireURL)}>View</button>;
+  }
+
   render() {
-    const { selectedFile, fileType } = this.state;
+    const { selectedFile, fileType, resumeURL, coverURL, letterURL } = this.state;
     const docTypes = 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     return (
       <div className='container mt-4 py-3 dark-gray'>
@@ -90,7 +94,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {/* conditionally render View button if link exists */}
+            {this.renderViewButton(resumeURL)}
           </form>
         </div>
         <div>
@@ -112,7 +116,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {/* conditionally render View button if link exists */}
+            {this.renderViewButton(coverURL)}
           </form>
         </div>
         <div>
@@ -134,7 +138,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {/* conditionally render View button if link exists */}
+            {this.renderViewButton(letterURL)}
           </form>
         </div>
       </div>
