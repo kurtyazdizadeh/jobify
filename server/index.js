@@ -30,9 +30,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('file');
 
-app.post('/api/save-docs/:userJobId-:fileType', (req, res, next) => {
+app.post('/api/save-docs/:userJobId-:fileType', upload, (req, res, next) => {
   const { userJobId, fileType } = req.params;
-  let fileName = '';
+  const fileName = req.file.filename;
 
   if (userJobId <= 1 ||
       (fileType !== 'resume' &&
@@ -42,34 +42,23 @@ app.post('/api/save-docs/:userJobId-:fileType', (req, res, next) => {
     res.status(400).send({ error: `either jobID: ${userJobId} or file type: ${fileType} is invalid` });
   }
 
-  upload(request, response, err => {
-    if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
-    } else if (err) {
-      return res.status(500).json(err);
-    }
-    fileName = request.file.filename;
-
-    const sql = `
-      UPDATE "UserSelectedJob" (${fileType})
+  const sql = `
+      UPDATE "UserSelectedJob"
          SET ${fileType} = $1
        WHERE "user_job_id" = $2
    RETURNING ${fileType};
     `;
-    const params = [fileName, userJobId];
+  const params = [fileName, userJobId];
 
-    db.query(sql, params)
-      .then(result => {
-        if (!result.rows[0]) {
-          res.status(404).json({ error: 'something went wrong' });
-        } else {
-          res.status(201).json(result);
-        }
-      })
-      .catch(err => next(err));
-
-    // return res.status(201).send(request.file);
-  });
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
 });
 
 app.get('/api/health-check', (req, res, next) => {
@@ -80,7 +69,7 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/saved-job/:sort', (req, res, next) => {
   const { sort } = req.params;
-  if (sort !== 'date_saved DESC' || sort !== 'date_saved ASC' && sort !== 'job_status ASC' &&
+  if (sort !== 'date_saved DESC' && sort !== 'date_saved ASC' && sort !== 'job_status ASC' &&
           sort !== 'job_status DESC' && sort !== 'job_priority ASC' && sort !== 'job_priority DESC') {
     res.status(400).send({ error: `Cannot sort by ${sort}` });
   }
