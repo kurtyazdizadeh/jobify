@@ -257,6 +257,7 @@ class JobDetails extends React.Component {
   }
 
   render() {
+    const { company, userJobId } = this.props.params;
 
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
@@ -321,7 +322,7 @@ class JobDetails extends React.Component {
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
-            <button className='m-1 btn btn-secondary' onClick={() => this.props.setView('Upload Files', this.props.params.userJobId)}>Upload Docs</button>
+            <button className='m-1 btn btn-secondary' onClick={() => this.props.setView('Upload Files', { userJobId, title, company })}>Upload Docs</button>
             <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
@@ -329,7 +330,7 @@ class JobDetails extends React.Component {
           <div>
             <h3 className='m-1'>Notes</h3>
             <button className='m-1 btn btn-secondary'
-              onClick={() => this.props.setView('Job Note', { userJobId: this.props.params.userJobId })}>
+              onClick={() => this.props.setView('Job Note', { userJobId })}>
               See All Notes
             </button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>

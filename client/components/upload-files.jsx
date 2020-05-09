@@ -19,7 +19,7 @@ class UploadFiles extends React.Component {
   }
 
   getDocList() {
-    const { userJobId } = this.props;
+    const { userJobId } = this.props.params;
 
     fetch(`/api/view-docs/${userJobId}`)
       .then(res => res.json())
@@ -47,7 +47,7 @@ class UploadFiles extends React.Component {
   handleUploadToServer() {
     event.preventDefault();
     const { selectedFile, fileType } = this.state;
-    const { userJobId } = this.props;
+    const { userJobId } = this.props.params;
 
     const data = new FormData();
     data.append('file', selectedFile);
@@ -68,12 +68,31 @@ class UploadFiles extends React.Component {
 
   renderViewButton(fileURL) {
     if (fileURL !== null) {
+      let fileType = '';
+      const title = this.props.params.title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+      const company = this.props.params.company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+
+      switch (fileURL) {
+        case this.state.resumeURL:
+          fileType = 'resume';
+          break;
+        case this.state.coverURL:
+          fileType = 'cover-letter';
+          break;
+        case this.state.letterURL:
+          fileType = 'letter-of-rec';
+          break;
+        default:
+          break;
+      }
+
       return (
         <a
           className='btn button'
           href={`./docs/${fileURL}`}
           target="_blank"
           rel="noopener noreferrer"
+          download={`${title}-${company}-${fileType}`}
         >
       View
         </a>
