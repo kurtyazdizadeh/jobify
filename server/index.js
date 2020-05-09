@@ -1,19 +1,65 @@
 require('dotenv/config');
 const express = require('express');
-const fetch = require('node-fetch');
-const gis = require('g-i-s');
-
+const path = require('path');
 const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
+const fetch = require('node-fetch');
+const gis = require('g-i-s');
+const multer = require('multer');
 
 const app = express();
 
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
-
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '/public/docs/'));
+  },
+  filename: function (req, file, cb) {
+    let ext = file.mimetype.split('/')[1];
+    if (ext === 'vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      ext = 'docx';
+    }
+    cb(null, `${Date.now()}.${ext}`);
+  }
+});
+
+const upload = multer({ storage: storage }).single('file');
+
+app.post('/api/save-docs/:userJobId-:fileType', upload, (req, res, next) => {
+  const { userJobId, fileType } = req.params;
+  const fileName = req.file.filename;
+
+  if (userJobId <= 1 ||
+      (fileType !== 'resume' &&
+       fileType !== 'cover_letter' &&
+       fileType !== 'letter_of_recommendation')
+  ) {
+    res.status(400).send({ error: `either jobID: ${userJobId} or file type: ${fileType} is invalid` });
+  }
+
+  const sql = `
+      UPDATE "UserSelectedJob"
+         SET ${fileType} = $1
+       WHERE "user_job_id" = $2
+   RETURNING ${fileType};
+    `;
+  const params = [fileName, userJobId];
+
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
 
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')
@@ -389,14 +435,14 @@ app.post('/api/job-note/:id', (req, res, next) => {
   const sql = `
   insert into "notes" ("note_title", "note_content", "note_type")
   values ($1, $2, $3)
-  returning "note_title", "note_content", "note_id", "date_posted"
+  returning "note_title", "note_content", "note_id"
   `;
   const params = [noteTitle, note, noteType];
 
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line camelcase
-      const { note_content, note_title, note_id, date_posted } = result.rows[0];
+      const { note_content, note_title, note_id } = result.rows[0];
       // eslint-disable-next-line camelcase
       if (!note_content || !note_title || !note_id) {
         return res.status(400).json({ error: 'internal server error' });
@@ -404,8 +450,7 @@ app.post('/api/job-note/:id', (req, res, next) => {
       return {
         note_title: note_title,
         note_content: note_content,
-        note_id: note_id,
-        date_posted: date_posted
+        note_id: note_id
       };
     })
     .then(note => {

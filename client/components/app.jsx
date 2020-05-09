@@ -88,12 +88,12 @@ export default class App extends React.Component {
       case 'Job Details':
         return <JobDetails
           date={this.manipulateDate}
-          params={this.state.view.params}
+          params={params}
           setView={this.setView} />;
       case 'Job Note':
         return <SpecificJobNotes
           date={this.manipulateDate}
-          params={this.state.view.params}
+          params={params}
           setView={this.setView} />;
       case 'Job Search':
         return <JobSearch setView={this.setView} />;
@@ -104,7 +104,7 @@ export default class App extends React.Component {
       case 'View Notes':
         return <NotesView
           setView={this.setView}
-          category={this.state.view.params}
+          category={params}
           date={this.manipulateDate}
         />;
       case 'Profile':
@@ -115,7 +115,7 @@ export default class App extends React.Component {
           searchQuery={params}
         />;
       case 'Upload Files':
-        return <UploadFiles setView={this.setView} />;
+        return <UploadFiles setView={this.setView} userJobId={params} />;
       default:
     }
 

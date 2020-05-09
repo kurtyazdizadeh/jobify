@@ -321,7 +321,7 @@ class JobDetails extends React.Component {
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
-            <button className='m-1 btn btn-secondary'>Upload Docs</button>
+            <button className='m-1 btn btn-secondary' onClick={() => this.props.setView('Upload Files', this.props.params.userJobId)}>Upload Docs</button>
             <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
