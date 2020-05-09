@@ -53,6 +53,11 @@ nav, footer {
   color: red;
 }
 
+.bg-dark-grey {
+  background-color: #4F4F4F;
+  color: #E0E0E0
+}
+
 /* ********************* */
 /*    Your Jobs Page     */
 /* ********************* */
@@ -148,6 +153,15 @@ input[type="submit"]:hover {
 
 .centerButton {
   font-size: .8rem;
+}
+
+/* ********** */
+/*    Goals   */
+/* ********** */
+
+.goalItems {
+  width: 90%;
+  border: 2px solid #252525;
 }
 
 .heading {

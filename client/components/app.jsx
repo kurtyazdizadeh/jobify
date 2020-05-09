@@ -23,11 +23,13 @@ export default class App extends React.Component {
         savedJobs: [],
         name: 'Home',
         params: {}
-      }
+      },
+      goals: []
     };
     this.setView = this.setView.bind(this);
     this.getSavedJobs = this.getSavedJobs.bind(this);
     this.deleteJob = this.deleteJob.bind(this);
+    this.getGoals = this.getGoals.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +39,7 @@ export default class App extends React.Component {
       .catch(err => this.setState({ message: err.message }))
       .finally(() => this.setState({ isLoading: false }));
     this.getSavedJobs('date_saved DESC');
+    this.getGoals();
   }
 
   setView(name, params) {
@@ -54,6 +57,16 @@ export default class App extends React.Component {
       .then(data => {
         this.setState({
           savedJobs: data
+        });
+      });
+  }
+
+  getGoals() {
+    fetch('/api/goals')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          goals: data
         });
       });
   }
@@ -82,7 +95,7 @@ export default class App extends React.Component {
       case 'Add New Job':
         return <AddNewJob setView={this.setView} />;
       case 'Goal':
-        return <Goals setView={this.setView} />;
+        return <Goals setView={this.setView} goals={this.state.goals}/>;
       case 'Home':
         return <YourJobs setView={this.setView} savedJobs={this.state.savedJobs} deleteJob={this.deleteJob} />;
       case 'Job Details':
