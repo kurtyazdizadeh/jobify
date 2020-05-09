@@ -8,6 +8,7 @@ const sessionMiddleware = require('./session-middleware');
 const fetch = require('node-fetch');
 const gis = require('g-i-s');
 const multer = require('multer');
+const shortid = require('shortid');
 
 const app = express();
 
@@ -23,8 +24,10 @@ const storage = multer.diskStorage({
     let ext = file.mimetype.split('/')[1];
     if (ext === 'vnd.openxmlformats-officedocument.wordprocessingml.document') {
       ext = 'docx';
+    } else if (ext === 'msword') {
+      ext = 'doc';
     }
-    cb(null, `${Date.now()}.${ext}`);
+    cb(null, `${shortid.generate()}.${ext}`);
   }
 });
 

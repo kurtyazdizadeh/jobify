@@ -41,6 +41,7 @@ class UploadFiles extends React.Component {
 
   render() {
     const { selectedFile, fileType } = this.state;
+    const docTypes = 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     return (
       <div className='container mt-4 py-3 dark-gray'>
         <div>
@@ -55,7 +56,7 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="resume"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="resume">
                 {(selectedFile && fileType === 'resume') ? selectedFile.name : 'Choose File...'}
@@ -77,7 +78,7 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="cover_letter"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="cover_letter">
                 {(selectedFile && fileType === 'cover_letter') ? selectedFile.name : 'Choose File...'}
@@ -99,7 +100,7 @@ class UploadFiles extends React.Component {
                 onChange={this.handleUploadChange}
                 className="custom-file-input dark-gray"
                 id="letter_of_recommendation"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept={docTypes}
               />
               <label className="custom-file-label" htmlFor="letter_of_recommendation">
                 {(selectedFile && fileType === 'letter_of_recommendation') ? selectedFile.name : 'Choose File...'}
