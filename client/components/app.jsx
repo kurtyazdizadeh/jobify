@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
 import JobSearch from './job-search';
@@ -135,15 +136,39 @@ export default class App extends React.Component {
   }
 
   render() {
-    // return this.state.isLoading
-    //   ? <h1>Testing connections...</h1>
-    //   : <h1>{this.state.message.toUpperCase()}</h1>;
     return (
-
       <div>
-
         <Header title={this.state.view.name} setView={this.setView} />
-        {this.renderView()}
+        <Switch>
+          <Route path="/" exact
+            render={props =>
+              <YourJobs {...props}
+                savedJobs={this.state.savedJobs}
+                deleteJob={this.deleteJob}
+                setView={this.setView}
+              />}
+          />
+          <Route path="/notes"
+            render={props =>
+              <Notes {...props}
+                setView={this.setView}
+              />}
+          />
+          <Route path="/map"
+            render={props =>
+              <MapJob {...props}
+                savedJobs={this.state.savedJobs}
+              />}
+          />
+          <Route path="/goals"
+            render={props =>
+              <Goals {...props}
+                goals={this.state.goals}
+              />}
+          />
+          <Route path="/search" component={JobSearch} />
+        </Switch>
+        {/* {this.renderView()} */}
         <FooterMenu setView={this.setView} />
       </div>
     );
