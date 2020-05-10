@@ -146,26 +146,23 @@ export default class App extends React.Component {
                 savedJobs={this.state.savedJobs}
                 deleteJob={this.deleteJob}
                 setView={this.setView}
-              />}
-          />
+              />}/>
           <Route path="/notes"
             render={props =>
               <Notes {...props}
                 setView={this.setView}
-              />}
-          />
+              />}/>
           <Route path="/map"
             render={props =>
               <MapJob {...props}
                 savedJobs={this.state.savedJobs}
-              />}
-          />
+              />}/>
           <Route path="/goals"
             render={props =>
               <Goals {...props}
                 goals={this.state.goals}
-              />}
-          />
+                setView={this.setView}
+              />}/>
           <Route path="/search" component={JobSearch} />
         </Switch>
         {/* {this.renderView()} */}
