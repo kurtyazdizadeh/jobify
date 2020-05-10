@@ -149,6 +149,18 @@ export default class App extends React.Component {
                 deleteJob={this.deleteJob}
                 setView={this.setView}
               />}/>
+          <Route path="/details/:id"
+            render={props =>
+              <JobDetails {...props}
+                date={this.manipulateDate}
+                params={params}
+                setView={this.setView}
+              />}/>
+          <Route path="/add-job"
+            render={props =>
+              <AddNewJob {...props}
+                setView={this.setView}
+              />}/>
           <Route path="/notes" exact
             render={props =>
               <Notes {...props}
