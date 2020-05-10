@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class Notes extends React.Component {
   constructor(props) {
@@ -62,6 +63,8 @@ class Notes extends React.Component {
   }
 
   viewNotes(category) {
+
+    this.props.history.push(`/notes/${category}`);
     this.props.setView('View Notes', category);
   }
 
@@ -145,4 +148,4 @@ class Notes extends React.Component {
   }
 }
 
-export default Notes;
+export default withRouter(Notes);

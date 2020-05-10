@@ -43,7 +43,7 @@ export default class App extends React.Component {
     this.getGoals();
   }
 
-  setView(name, params) {
+  setView(name, params = {}) {
     this.setState({
       view: {
         name: name,
@@ -136,35 +136,54 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { name, params } = this.state.view;
+    const { goals, savedJobs } = this.state;
     return (
       <div>
-        <Header title={this.state.view.name} setView={this.setView} />
+        <Header title={name} setView={this.setView} />
         <Switch>
           <Route path="/" exact
             render={props =>
               <YourJobs {...props}
-                savedJobs={this.state.savedJobs}
+                savedJobs={savedJobs}
                 deleteJob={this.deleteJob}
                 setView={this.setView}
               />}/>
-          <Route path="/notes"
+          <Route path="/notes" exact
             render={props =>
               <Notes {...props}
                 setView={this.setView}
               />}/>
+          <Route path="/notes/:category"
+            render={props =>
+              <NotesView {...props}
+                setView={this.setView}
+                category={params}
+                date={this.manipulateDate}
+              />}/>
           <Route path="/map"
             render={props =>
               <MapJob {...props}
-                savedJobs={this.state.savedJobs}
+                savedJobs={savedJobs}
                 setView={this.setView}
               />}/>
           <Route path="/goals"
             render={props =>
               <Goals {...props}
-                goals={this.state.goals}
+                goals={goals}
                 setView={this.setView}
               />}/>
-          <Route path="/search" component={JobSearch} />
+          <Route path="/search" exact
+            render={props =>
+              <JobSearch {...props}
+                setView={this.setView}
+              />}/>
+          <Route path="/search/results"
+            render={props =>
+              <SearchResults {...props}
+                setView={this.setView}
+                searchQuery={params}
+              />}/>
         </Switch>
         {/* {this.renderView()} */}
         <FooterMenu setView={this.setView} />

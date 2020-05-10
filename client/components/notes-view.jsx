@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class NotesView extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class NotesView extends React.Component {
   }
 
   notesView() {
-    this.props.setView('Notes', {});
+    this.props.setView('Notes');
   }
 
   render() {
@@ -52,18 +53,22 @@ class NotesView extends React.Component {
       this.state.noResults
         ? <div className="mt-5 d-flex flex-column align-items-center">
           <h5 className="py-3">{`No ${this.props.category[0].toUpperCase() + this.props.category.slice(1)} Notes`}</h5>
-          <button
-            className="btn job-listing"
-            onClick={this.notesView}>
+          <Link to="/notes">
+            <button
+              className="btn job-listing"
+              onClick={this.notesView}>
               Go Back
-          </button>
+            </button>
+          </Link>
         </div>
         : <div className="my-5 d-flex flex-column align-items-center">
           <h5 className="py-3">{`${this.state.category} Notes`}</h5>
           <div className="notes-area">
             {this.renderNoteItems()}
           </div>
-          <button className="btn bg-grey m-3" onClick={this.notesView}>Go Back</button>
+          <Link to="/notes">
+            <button className="btn bg-grey m-3" onClick={this.notesView}>Go Back</button>
+          </Link>
         </div>
     );
   }
