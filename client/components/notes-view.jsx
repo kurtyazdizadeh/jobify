@@ -58,7 +58,7 @@ class NotesView extends React.Component {
               Go Back
           </button>
         </div>
-        : <div className="mt-5 d-flex flex-column align-items-center">
+        : <div className="my-5 d-flex flex-column align-items-center">
           <h5 className="py-3">{`${this.state.category} Notes`}</h5>
           <div className="notes-area">
             {this.renderNoteItems()}

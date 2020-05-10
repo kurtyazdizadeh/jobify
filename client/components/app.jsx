@@ -156,6 +156,7 @@ export default class App extends React.Component {
             render={props =>
               <MapJob {...props}
                 savedJobs={this.state.savedJobs}
+                setView={this.setView}
               />}/>
           <Route path="/goals"
             render={props =>
