@@ -19,10 +19,11 @@ class SideBar extends React.Component {
       menu = (
         <div className='container'>
           <div className='aside'>
-            <h3 onClick={this.toggle}>Menu</h3>
-            <h6>About</h6>
-            <h6>Get Started</h6>
-            <h6>Sign In</h6>
+            <h6 onClick={this.toggle}>Saved Jobs</h6>
+            <h6>Search for Jobs</h6>
+            <h6>Notes</h6>
+            <h6>Activity Statistics</h6>
+            <h6>Goals</h6>
           </div>
         </div>
       );
