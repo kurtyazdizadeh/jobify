@@ -108,55 +108,6 @@ export default class App extends React.Component {
     const convertedDate = new Date(date.slice(0, 10));
     return convertedDate.toLocaleDateString('en-US', { timeZone: 'Europe/Helsinki' });
   }
-  /*
-  renderView() {
-    const { name, params } = this.state.view;
-
-    switch (name) {
-      case 'Add New Job':
-        return <AddNewJob setView={this.setView} />;
-      case 'Goal':
-        return <Goals setView={this.setView} goals={this.state.goals}/>;
-      case 'Add Goal':
-        return <AddNewGoal setView={this.setView} onSubmit={this.postGoal}/>;
-      case 'Home':
-        return <YourJobs setView={this.setView} savedJobs={this.state.savedJobs} deleteJob={this.deleteJob} />;
-      case 'Job Details':
-        return <JobDetails
-          date={this.manipulateDate}
-          params={params}
-          setView={this.setView} />;
-      case 'Job Note':
-        return <SpecificJobNotes
-          date={this.manipulateDate}
-          params={params}
-          setView={this.setView} />;
-      case 'Job Search':
-        return <JobSearch setView={this.setView} />;
-      case 'Map':
-        return <MapJob savedJobs={this.state.savedJobs}/>;
-      case 'Notes':
-        return <Notes setView={this.setView} />;
-      case 'View Notes':
-        return <NotesView
-          setView={this.setView}
-          category={params}
-          date={this.manipulateDate}
-        />;
-      case 'Profile':
-        return <h1 className='mt-5'>Profile in progress</h1>;
-      case 'Search Results':
-        return <SearchResults
-          setView={this.setView}
-          searchQuery={params}
-        />;
-      case 'Documents':
-        return <UploadFiles setView={this.setView} params={params} />;
-      default:
-    }
-
-  }
-  */
 
   render() {
     const { name, params } = this.state.view;
@@ -240,7 +191,6 @@ export default class App extends React.Component {
                 setView={this.setView}
               />} />
         </Switch>
-        {/* {this.renderView()} */}
         <FooterMenu setView={this.setView} />
       </div>
     );
