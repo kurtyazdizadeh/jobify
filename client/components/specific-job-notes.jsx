@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import RenderNotes from './render-notes';
 
 class SpecificJobNotes extends React.Component {
@@ -14,7 +15,7 @@ class SpecificJobNotes extends React.Component {
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleBack = this.handleBack.bind(this);
-    this.handleCancle = this.handleCancle.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,11 +23,12 @@ class SpecificJobNotes extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Job Note');
     this.getAllNotes();
   }
 
   getAllNotes() {
-    fetch(`/api/notes/${this.props.params.userJobId}`)
+    fetch(`/api/notes/${this.props.match.params.id}`)
       .then(res => res.json())
       .then(notes => {
         const { empty } = notes;
@@ -56,10 +58,10 @@ class SpecificJobNotes extends React.Component {
   }
 
   handleBack() {
-    this.props.setView('Job Details', { userJobId: this.props.params.userJobId });
+    this.props.setView('Job Details', { userJobId: this.props.match.params.id });
   }
 
-  handleCancle(event) {
+  handleCancel(event) {
     event.preventDefault();
     this.setState({
       displayAdd: false,
@@ -99,7 +101,7 @@ class SpecificJobNotes extends React.Component {
       },
       body: JSON.stringify(this.state.newNote)
     };
-    fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
+    fetch(`/api/job-note/${this.props.match.params.id}`, noteBody)
       .then(res => res.json())
       .then(data => {
         if (this.state.notes[0].note_title === 'No notes for this job') {
@@ -132,7 +134,9 @@ class SpecificJobNotes extends React.Component {
   }
 
   handleDelete(id) {
-    fetch(`api/remove-note/${id}`, { method: 'DELETE' })
+
+    fetch(`/api/remove-note/${id}`, { method: 'DELETE' })
+
       .then(res => res.json())
       .then(note => {
         const idToRemove = note.note_id;
@@ -197,24 +201,28 @@ class SpecificJobNotes extends React.Component {
             </div>
             <div className='d-flex justify-content-around mt-3'>
               <button className='btn btn-secondary'>Submit</button>
-              <button onClick={this.handleCancle} className='btn btn-secondary'>Cancle</button>
+              <button onClick={this.handleCancel} className='btn btn-secondary'>Cancel</button>
             </div>
           </form>
         </div>
         <div className={notesClass}>
           <div>
-            <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
-            <button onClick={this.handleBack} className='ml-2 mt-2 btn btn-secondary'>Back</button>
+            <button onClick={this.handleAdd} className='ml-2 my-2 btn btn-secondary'>Add</button>
+            <Link to={`/details/${this.props.match.params.id}`}>
+              <button onClick={this.handleBack} className='ml-2 my-2 btn btn-secondary'>Back</button>
+            </Link>
           </div>
-
           {
-            this.state.notes.map(note => {
+            this.state.notes.map((note, index) => {
               return <RenderNotes
                 key={note.note_id}
+                index={index}
                 title={note.note_title}
                 date={this.props.date(note.date_posted)}
                 note={note.note_content}
-                delete={() => this.handleDelete(note.note_id)}/>;
+
+                delete={() => this.handleDelete(note.note_id)} />;
+
             })
           }
         </div>

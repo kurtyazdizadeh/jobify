@@ -2,6 +2,9 @@ import React from 'react';
 import GoalItems from './goals-item';
 
 class Goals extends React.Component {
+  componentDidMount() {
+    this.props.setView('Goals');
+  }
 
   render() {
     return (
@@ -21,7 +24,7 @@ class Goals extends React.Component {
             );
           })
         }
-        <i onClick={() => this.props.setView('Add Goal', {})} className='fas fa-plus pointer mt-3'></i>
+        <i onClick={() => this.props.setView('Add Goal')} className='fas fa-plus pointer mt-3'></i>
       </div>
     );
   }

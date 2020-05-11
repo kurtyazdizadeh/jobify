@@ -37,7 +37,7 @@ class JobListingItem extends React.Component {
   }
 
   loadingImage(event) {
-    event.target.src = './images/loading.gif';
+    event.target.src = '../images/loading.gif';
   }
 
   render() {
