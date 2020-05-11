@@ -2,13 +2,20 @@ import React from 'react';
 import GoalItems from './goals-item';
 
 class Goals extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      goals: []
+    };
+
   componentDidMount() {
     this.props.setView('Goals');
   }
 
   render() {
     return (
-      <div className='d-flex flex-column align-items-center'>
+      <div className='d-flex flex-column align-items-center scroll'>
         <h1 className='mt-5'>Goals</h1>
         {
           this.props.goals.map(goal => {

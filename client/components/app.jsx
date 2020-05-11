@@ -13,6 +13,7 @@ import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
 import NotesView from './notes-view';
 import Goals from './goals';
+import AddNewGoal from './add-new-goal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class App extends React.Component {
     this.getSavedJobs = this.getSavedJobs.bind(this);
     this.deleteJob = this.deleteJob.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    this.postGoal = this.postGoal.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +74,24 @@ export default class App extends React.Component {
       });
   }
 
+  postGoal(newGoal) {
+    const request = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newGoal)
+    };
+    fetch('api/goals', request)
+      .then(response => response.json())
+      .then(data => {
+        const goal = this.state.goals.slice();
+        goal.push(data.rows[0]);
+
+        this.setState({ goals: goal });
+      });
+  }
+
   deleteJob(userJobId) {
     const req = {
       method: 'DELETE'
@@ -97,6 +117,8 @@ export default class App extends React.Component {
         return <AddNewJob setView={this.setView} />;
       case 'Goal':
         return <Goals setView={this.setView} goals={this.state.goals}/>;
+      case 'Add Goal':
+        return <AddNewGoal setView={this.setView} onSubmit={this.postGoal}/>;
       case 'Home':
         return <YourJobs setView={this.setView} savedJobs={this.state.savedJobs} deleteJob={this.deleteJob} />;
       case 'Job Details':
