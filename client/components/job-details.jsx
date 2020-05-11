@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class JobDetails extends React.Component {
   constructor(props) {
@@ -24,8 +25,10 @@ class JobDetails extends React.Component {
   }
 
   componentDidMount() {
-    this.getJob(this.props.params.userJobId);
-    this.getNote(this.props.params.userJobId);
+    const { id } = this.props.match.params;
+    this.props.setView('Job Details');
+    this.getJob(id);
+    this.getNote(id);
   }
 
   getJob(jobId) {
@@ -93,7 +96,7 @@ class JobDetails extends React.Component {
       body: JSON.stringify({ interview: this.state.interview })
     };
 
-    fetch(`/api/interview/${this.props.params.userJobId}`, params)
+    fetch(`/api/interview/${this.props.match.params.id}`, params)
       .then(date => date.json())
       .then(res => {
         const newDate = this.props.date(res.interview_date);
@@ -116,7 +119,7 @@ class JobDetails extends React.Component {
       },
       body: JSON.stringify({ status: event.target.value })
     };
-    fetch(`/api/status/${this.props.params.userJobId}`, params)
+    fetch(`/api/status/${this.props.match.params.id}`, params)
       .then(res => res.json())
       .then(data => {
         const newStatus = Object.assign(this.state.job);
@@ -186,7 +189,7 @@ class JobDetails extends React.Component {
       },
       body: JSON.stringify({ date: this.state.followUp })
     };
-    fetch(`/api/follow-up/${this.props.params.userJobId}`, params)
+    fetch(`/api/follow-up/${this.props.match.params.id}`, params)
       .then(res => res.json())
       .then(date => {
         const newDate = Object.assign(this.state.job);
@@ -237,7 +240,7 @@ class JobDetails extends React.Component {
       },
       body: JSON.stringify({ rating: star })
     };
-    fetch(`api/rating/${this.props.params.userJobId}`, params)
+    fetch(`/api/rating/${this.props.match.params.id}`, params)
       .then(res => res.json())
       .then(rating => {
         const newRating = Object.assign(this.state.job);
@@ -256,13 +259,30 @@ class JobDetails extends React.Component {
       : 'fas fa-star');
   }
 
-  render() {
-    const { company, userJobId } = this.props.params;
+  viewDocs() {
+    const { id } = this.props.match.params;
+    let { title, company } = this.state.job.job_info;
 
+    title = title.replace(/(<([^>]+)>)/ig, '');
+    title = title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+    company = company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+
+    this.props.history.push(`/details/docs/${id}/${company}/${title}`);
+    this.props.setView('Upload Files', { id, title, company });
+  }
+
+  viewJobNotes() {
+    const { id } = this.props.match.params;
+
+    this.props.history.push(`/details/notes/${id}`);
+    this.props.setView('Job Note', { id });
+  }
+
+  render() {
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
-    let title = this.state.job.job_info.title;
+    let { title } = this.state.job.job_info;
     title = title.replace(/(<([^>]+)>)/ig, '');
     const info = this.state.job.job_info;
     return (
@@ -322,7 +342,7 @@ class JobDetails extends React.Component {
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
-            <button className='m-1 btn btn-secondary' onClick={() => this.props.setView('Upload Files', { userJobId, title, company })}>Upload Docs</button>
+            <button className='m-1 btn btn-secondary' onClick={() => this.viewDocs()}>Upload Docs</button>
             <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
@@ -330,7 +350,7 @@ class JobDetails extends React.Component {
           <div>
             <h3 className='m-1'>Notes</h3>
             <button className='m-1 btn btn-secondary'
-              onClick={() => this.props.setView('Job Note', { userJobId })}>
+              onClick={() => this.viewJobNotes()}>
               See All Notes
             </button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>
@@ -343,4 +363,4 @@ class JobDetails extends React.Component {
   }
 }
 
-export default JobDetails;
+export default withRouter(JobDetails);

@@ -5,6 +5,12 @@ body {
   background-color: #E0E0E0;
   color: #4F4F4F;
 }
+a,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ********************* */
 /*     Header/Footer     */
 /* ********************* */

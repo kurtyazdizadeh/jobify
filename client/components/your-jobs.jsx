@@ -1,5 +1,6 @@
 import React from 'react';
 import YourJobsItem from './your-jobs-items';
+import { Link } from 'react-router-dom';
 
 class YourJobs extends React.Component {
   constructor(props) {
@@ -53,7 +54,9 @@ class YourJobs extends React.Component {
               </select>
             </form>
             <button onClick={this.toggleOrder} className='btn btn-secondary'>{this.state.isDesc}</button>
-            <button onClick={() => this.props.setView('Add New Job', {})} className='btn btn-secondary'>Add</button>
+            <Link to="/add-job">
+              <button onClick={() => this.props.setView('Add New Job')} className='btn btn-secondary'>Add</button>
+            </Link>
           </div>
           <table className='jobTable table table-striped text-center text-capitalize mt-2 '>
             <thead>

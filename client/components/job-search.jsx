@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class JobSearch extends React.Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class JobSearch extends React.Component {
     this.handleRadioChange = this.handleRadioChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetForm = this.resetForm.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.setView('Search');
   }
 
   getLocation(event) {
@@ -68,6 +73,7 @@ class JobSearch extends React.Component {
       jobType: jobType
     };
 
+    this.props.history.push('/search/results');
     this.props.setView('Search Results', newSearch);
     this.resetForm();
   }
@@ -206,4 +212,4 @@ class JobSearch extends React.Component {
   }
 }
 
-export default JobSearch;
+export default withRouter(JobSearch);

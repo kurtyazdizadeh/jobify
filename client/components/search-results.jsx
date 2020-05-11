@@ -1,5 +1,6 @@
 import React from 'react';
 import JobListingItem from './job-listing-item';
+import { Link } from 'react-router-dom';
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -15,11 +16,12 @@ class SearchResults extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Search Results');
     this.searchForJobs(this.state.resultsPage);
   }
 
   searchView() {
-    this.props.setView('Job Search', {});
+    this.props.setView('Job Search');
   }
 
   searchForJobs(resultsPage) {
@@ -138,11 +140,13 @@ class SearchResults extends React.Component {
           ? <div className="mt-5 p-3 d-flex flex-column align-items-center">
             <h5>No Results</h5>
             <div>
-              <button
-                className="btn bg-grey"
-                onClick={this.searchView}>
-                    Go Back
-              </button>
+              <Link to="/search">
+                <button
+                  className="btn bg-grey"
+                  onClick={() => this.props.setView('Search')}>
+                      Go Back
+                </button>
+              </Link>
             </div>
           </div>
           : <div className="mt-5 p-3 d-flex justify-content-center">

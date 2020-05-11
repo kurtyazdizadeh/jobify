@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class Notes extends React.Component {
   constructor(props) {
@@ -11,6 +12,10 @@ class Notes extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.resetForm = this.resetForm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.setView('Notes');
   }
 
   handleChange(event) {
@@ -62,6 +67,7 @@ class Notes extends React.Component {
   }
 
   viewNotes(category) {
+    this.props.history.push(`/notes/${category}`);
     this.props.setView('View Notes', category);
   }
 
@@ -145,4 +151,4 @@ class Notes extends React.Component {
   }
 }
 
-export default Notes;
+export default withRouter(Notes);

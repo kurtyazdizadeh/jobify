@@ -15,13 +15,14 @@ class UploadFiles extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Documents');
     this.getDocList();
   }
 
   getDocList() {
-    const { userJobId } = this.props.params;
+    const { id } = this.props.match.params;
 
-    fetch(`/api/view-docs/${userJobId}`)
+    fetch(`/api/view-docs/${id}`)
       .then(res => res.json())
       .then(files => {
         // eslint-disable-next-line camelcase
@@ -47,7 +48,7 @@ class UploadFiles extends React.Component {
   handleUploadToServer() {
     event.preventDefault();
     const { selectedFile, fileType } = this.state;
-    const { userJobId } = this.props.params;
+    const { id } = this.props.match.params;
 
     const data = new FormData();
     data.append('file', selectedFile);
@@ -57,7 +58,7 @@ class UploadFiles extends React.Component {
       body: data
     };
 
-    fetch(`/api/save-docs/${userJobId}-${fileType}`, config)
+    fetch(`/api/save-docs/${id}-${fileType}`, config)
       .then(res => res.json())
       .then(result => {
         this.setState({ selectedFile: null, fileType: '' });
@@ -69,8 +70,7 @@ class UploadFiles extends React.Component {
   renderViewButton(fileURL) {
     if (fileURL !== null) {
       let fileType = '';
-      const title = this.props.params.title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
-      const company = this.props.params.company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+      const { title, company } = this.props.match.params;
 
       switch (fileURL) {
         case this.state.resumeURL:
@@ -89,7 +89,7 @@ class UploadFiles extends React.Component {
       return (
         <a
           className='btn button'
-          href={`./docs/${fileURL}`}
+          href={`../../../../docs/${fileURL}`}
           target="_blank"
           rel="noopener noreferrer"
           download={`${title}-${company}-${fileType}`}

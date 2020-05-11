@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class NotesView extends React.Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class NotesView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/notes/view/${this.props.category}`)
+    const { category } = this.props.match.params;
+
+    fetch(`/api/notes/view/${category}`)
       .then(res => res.json())
       .then(notes => {
         if (!notes.length) {
@@ -22,6 +25,8 @@ class NotesView extends React.Component {
         }
       })
       .catch(err => console.error(err));
+
+    this.props.setView('View Notes');
   }
 
   renderNoteItems() {
@@ -44,26 +49,31 @@ class NotesView extends React.Component {
   }
 
   notesView() {
-    this.props.setView('Notes', {});
+    this.props.setView('Notes');
   }
 
   render() {
+    const { category } = this.props.match.params;
     return (
       this.state.noResults
         ? <div className="mt-5 d-flex flex-column align-items-center">
-          <h5 className="py-3">{`No ${this.props.category[0].toUpperCase() + this.props.category.slice(1)} Notes`}</h5>
-          <button
-            className="btn job-listing"
-            onClick={this.notesView}>
+          <h5 className="py-3">{`No ${category[0].toUpperCase() + category.slice(1)} Notes`}</h5>
+          <Link to="/notes">
+            <button
+              className="btn job-listing"
+              onClick={this.notesView}>
               Go Back
-          </button>
+            </button>
+          </Link>
         </div>
-        : <div className="mt-5 d-flex flex-column align-items-center">
-          <h5 className="py-3">{`${this.state.category} Notes`}</h5>
+        : <div className="my-5 d-flex flex-column align-items-center">
+          <h5 className="py-3">{`${category[0].toUpperCase() + category.slice(1)} Notes`}</h5>
           <div className="notes-area">
             {this.renderNoteItems()}
           </div>
-          <button className="btn bg-grey m-3" onClick={this.notesView}>Go Back</button>
+          <Link to="/notes">
+            <button className="btn bg-grey m-3" onClick={this.notesView}>Go Back</button>
+          </Link>
         </div>
     );
   }

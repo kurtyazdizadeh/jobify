@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
 import JobSearch from './job-search';
@@ -44,7 +45,7 @@ export default class App extends React.Component {
     this.getGoals();
   }
 
-  setView(name, params) {
+  setView(name, params = {}) {
     this.setState({
       view: {
         name: name,
@@ -149,7 +150,7 @@ export default class App extends React.Component {
           setView={this.setView}
           searchQuery={params}
         />;
-      case 'Upload Files':
+      case 'Documents':
         return <UploadFiles setView={this.setView} params={params} />;
       default:
     }
@@ -157,15 +158,81 @@ export default class App extends React.Component {
   }
 
   render() {
-    // return this.state.isLoading
-    //   ? <h1>Testing connections...</h1>
-    //   : <h1>{this.state.message.toUpperCase()}</h1>;
+    const { name, params } = this.state.view;
+    const { goals, savedJobs } = this.state;
     return (
-
       <div>
-
-        <Header title={this.state.view.name} setView={this.setView} />
-        {this.renderView()}
+        <Header title={name} setView={this.setView} />
+        <Switch>
+          <Route path="/map"
+            render={props =>
+              <MapJob {...props}
+                savedJobs={savedJobs}
+                setView={this.setView}
+              />} />
+          <Route path="/goals"
+            render={props =>
+              <Goals {...props}
+                goals={goals}
+                setView={this.setView}
+              />} />
+          <Route path="/add-job"
+            render={props =>
+              <AddNewJob {...props}
+                setView={this.setView}
+              />}/>
+          <Route path="/notes/:category"
+            render={props =>
+              <NotesView {...props}
+                setView={this.setView}
+                category={params}
+                date={this.manipulateDate}
+              />} />
+          <Route path="/notes"
+            render={props =>
+              <Notes {...props}
+                setView={this.setView}
+              />}/>
+          <Route path="/search/results"
+            render={props =>
+              <SearchResults {...props}
+                setView={this.setView}
+                searchQuery={params}
+              />} />
+          <Route path="/search"
+            render={props =>
+              <JobSearch {...props}
+                setView={this.setView}
+              />}/>
+          <Route path="/details/notes/:id"
+            render={props =>
+              <SpecificJobNotes {...props}
+                date={this.manipulateDate}
+                params={params}
+                setView={this.setView}
+              />} />
+          <Route path="/details/docs/:id/:company/:title"
+            render={props =>
+              <UploadFiles {...props}
+                setView={this.setView}
+                params={params}
+              />} />
+          <Route path="/details/:id"
+            render={props =>
+              <JobDetails {...props}
+                date={this.manipulateDate}
+                params={params}
+                setView={this.setView}
+              />} />
+          <Route path="/"
+            render={props =>
+              <YourJobs {...props}
+                savedJobs={savedJobs}
+                deleteJob={this.deleteJob}
+                setView={this.setView}
+              />} />
+        </Switch>
+        {/* {this.renderView()} */}
         <FooterMenu setView={this.setView} />
       </div>
     );
