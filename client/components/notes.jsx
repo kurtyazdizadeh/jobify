@@ -63,7 +63,6 @@ class Notes extends React.Component {
   }
 
   viewNotes(category) {
-
     this.props.history.push(`/notes/${category}`);
     this.props.setView('View Notes', category);
   }

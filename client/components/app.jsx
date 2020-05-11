@@ -142,28 +142,21 @@ export default class App extends React.Component {
       <div>
         <Header title={name} setView={this.setView} />
         <Switch>
-          <Route path="/" exact
+          <Route path="/map"
             render={props =>
-              <YourJobs {...props}
+              <MapJob {...props}
                 savedJobs={savedJobs}
-                deleteJob={this.deleteJob}
                 setView={this.setView}
-              />}/>
-          <Route path="/details/:id"
+              />} />
+          <Route path="/goals"
             render={props =>
-              <JobDetails {...props}
-                date={this.manipulateDate}
-                params={params}
+              <Goals {...props}
+                goals={goals}
                 setView={this.setView}
-              />}/>
+              />} />
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}
-                setView={this.setView}
-              />}/>
-          <Route path="/notes" exact
-            render={props =>
-              <Notes {...props}
                 setView={this.setView}
               />}/>
           <Route path="/notes/:category"
@@ -172,22 +165,10 @@ export default class App extends React.Component {
                 setView={this.setView}
                 category={params}
                 date={this.manipulateDate}
-              />}/>
-          <Route path="/map"
+              />} />
+          <Route path="/notes"
             render={props =>
-              <MapJob {...props}
-                savedJobs={savedJobs}
-                setView={this.setView}
-              />}/>
-          <Route path="/goals"
-            render={props =>
-              <Goals {...props}
-                goals={goals}
-                setView={this.setView}
-              />}/>
-          <Route path="/search" exact
-            render={props =>
-              <JobSearch {...props}
+              <Notes {...props}
                 setView={this.setView}
               />}/>
           <Route path="/search/results"
@@ -195,7 +176,39 @@ export default class App extends React.Component {
               <SearchResults {...props}
                 setView={this.setView}
                 searchQuery={params}
+              />} />
+          <Route path="/search"
+            render={props =>
+              <JobSearch {...props}
+                setView={this.setView}
               />}/>
+          <Route path="/details/notes/:id"
+            render={props =>
+              <SpecificJobNotes {...props}
+                date={this.manipulateDate}
+                params={params}
+                setView={this.setView}
+              />} />
+          <Route path="/details/docs/:id"
+            render={props =>
+              <UploadFiles {...props}
+                setView={this.setView}
+                params={params}
+              />} />
+          <Route path="/details/:id"
+            render={props =>
+              <JobDetails {...props}
+                date={this.manipulateDate}
+                params={params}
+                setView={this.setView}
+              />} />
+          <Route path="/"
+            render={props =>
+              <YourJobs {...props}
+                savedJobs={savedJobs}
+                deleteJob={this.deleteJob}
+                setView={this.setView}
+              />} />
         </Switch>
         {/* {this.renderView()} */}
         <FooterMenu setView={this.setView} />

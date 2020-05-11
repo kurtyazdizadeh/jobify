@@ -398,6 +398,7 @@ app.post('/api/interview/:id', (req, res, next) => {
 app.post('/api/rating/:id', (req, res, next) => {
   const { id } = req.params;
   const { rating } = req.body;
+
   if (id <= 0) {
     return res.status(404).json({ error: 'id must be a positive intiger' });
   } else if (!rating) {

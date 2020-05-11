@@ -14,7 +14,7 @@ class SpecificJobNotes extends React.Component {
     };
     this.handleAdd = this.handleAdd.bind(this);
     this.handleBack = this.handleBack.bind(this);
-    this.handleCancle = this.handleCancle.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,7 +58,7 @@ class SpecificJobNotes extends React.Component {
     this.props.setView('Job Details', { userJobId: this.props.params.userJobId });
   }
 
-  handleCancle(event) {
+  handleCancel(event) {
     event.preventDefault();
     this.setState({
       displayAdd: false,
@@ -167,7 +167,7 @@ class SpecificJobNotes extends React.Component {
             </div>
             <div className='d-flex justify-content-around mt-3'>
               <button className='btn btn-secondary'>Submit</button>
-              <button onClick={this.handleCancle} className='btn btn-secondary'>Cancle</button>
+              <button onClick={this.handleCancel} className='btn btn-secondary'>Cancel</button>
             </div>
           </form>
         </div>
