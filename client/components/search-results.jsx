@@ -1,6 +1,6 @@
 import React from 'react';
 import JobListingItem from './job-listing-item';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -16,8 +16,10 @@ class SearchResults extends React.Component {
   }
 
   componentDidMount() {
+    const searchQuery = new URLSearchParams(this.props.location.search);
+    const page = searchQuery.get('page');
     this.props.setView('Search Results');
-    this.searchForJobs(this.state.resultsPage);
+    this.searchForJobs(parseInt(page));
   }
 
   searchView() {
@@ -25,7 +27,13 @@ class SearchResults extends React.Component {
   }
 
   searchForJobs(resultsPage) {
-    const { desiredPosition, location, distance, jobType } = this.props.searchQuery;
+    const searchQuery = new URLSearchParams(this.props.location.search);
+
+    const desiredPosition = searchQuery.get('desiredPosition');
+    const location = searchQuery.get('location');
+    const distance = searchQuery.get('distance');
+    const jobType = searchQuery.get('jobType');
+    searchQuery.set('page', resultsPage);
 
     const params = {
       pageNum: resultsPage,
@@ -50,9 +58,9 @@ class SearchResults extends React.Component {
         break;
     }
 
-    const query = new URLSearchParams(params);
+    const dbQuery = new URLSearchParams(params);
 
-    fetch(`/api/search-jobs/${query}`)
+    fetch(`/api/search-jobs/${dbQuery}`)
       .then(res => res.json())
       .then(listings => {
         const newState = {
@@ -67,6 +75,7 @@ class SearchResults extends React.Component {
         if (listings.count === 0) {
           newState.noResults = true;
         }
+        this.props.history.push(`/search/results?${searchQuery}`);
         this.setState(newState);
       })
       .catch(err => console.error(err));
@@ -156,4 +165,4 @@ class SearchResults extends React.Component {
   }
 }
 
-export default SearchResults;
+export default withRouter(SearchResults);

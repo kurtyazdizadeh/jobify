@@ -68,7 +68,7 @@ class NotesView extends React.Component {
         </div>
         : <div className="my-5 d-flex flex-column align-items-center">
           <h5 className="py-3">{`${category[0].toUpperCase() + category.slice(1)} Notes`}</h5>
-          <div className="notes-area">
+          <div className="notes-area w-100">
             {this.renderNoteItems()}
           </div>
           <Link to="/notes">

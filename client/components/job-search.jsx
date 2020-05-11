@@ -67,13 +67,18 @@ class JobSearch extends React.Component {
     const { desiredPosition, location, distance, jobType } = this.state;
 
     const newSearch = {
+      page: 1,
       desiredPosition: desiredPosition,
       location: location,
       distance: distance,
       jobType: jobType
     };
 
-    this.props.history.push('/search/results');
+    const query = new URLSearchParams(newSearch);
+
+    this.props.history.push(
+      `/search/results?${query}`
+    );
     this.props.setView('Search Results', newSearch);
     this.resetForm();
   }
