@@ -156,3 +156,21 @@ input[type="submit"]:hover {
 .star-rating {
   color: #d1b902;
 }
+
+/* ************************ */
+/*        Side Bar          */
+/* ************************ */
+
+
+.container {
+  font-family: 'Manrope', sans-serif;
+  background-color: lightgrey;
+}
+
+.aside {
+  background-color: white;
+  width: 25%;
+  height: 97vh;
+  z-index: 1;
+  padding: 1rem;
+}
