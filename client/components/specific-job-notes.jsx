@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RenderNotes from './render-notes';
 
 class SpecificJobNotes extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class SpecificJobNotes extends React.Component {
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -131,6 +133,35 @@ class SpecificJobNotes extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleDelete(id) {
+    fetch(`/api/remove-note/${id}`, { method: 'DELETE' })
+      .then(res => res.json())
+      .then(note => {
+        const idToRemove = note.note_id;
+        const newNotes = Object.assign(this.state.notes);
+        for (let i = 0; i < this.state.notes.length; i++) {
+          if (newNotes[i].job_note_id === idToRemove) {
+            newNotes.splice(i, 1);
+          }
+        }
+        if (!newNotes[0]) {
+          this.setState({
+            notes: [{
+              note_title: 'No notes for this job',
+              note_content: '',
+              date_posted: '',
+              note_id: 1
+            }]
+          });
+        } else {
+          this.setState({
+            notes: newNotes
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
     if (!this.state.notes) {
       return <h1>Notes</h1>;
@@ -179,20 +210,15 @@ class SpecificJobNotes extends React.Component {
               <button onClick={this.handleBack} className='ml-2 my-2 btn btn-secondary'>Back</button>
             </Link>
           </div>
-
           {
             this.state.notes.map((note, index) => {
-              let bgColor = '';
-              if (index % 2 === 0) {
-                bgColor = 'bg-grey';
-              }
-              return (
-                <div key={note.note_id} className={`text-center ${bgColor}`}>
-                  <h4>{note.note_title}</h4>
-                  <p>{() => this.props.date(note.date_posted)}</p>
-                  <p>{note.note_content}</p>
-                </div>
-              );
+              return <RenderNotes
+                key={note.note_id}
+                index={index}
+                title={note.note_title}
+                date={this.props.date(note.date_posted)}
+                note={note.note_content}
+                delete={() => this.handleDelete(note.note_id)} />;
             })
           }
         </div>
