@@ -164,6 +164,10 @@ input[type="submit"]:hover {
   border: 2px solid #252525;
 }
 
+.goalInput {
+  width: 60%
+}
+
 .heading {
   margin: 10px;
   border-radius: 5px;

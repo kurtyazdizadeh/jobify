@@ -5,7 +5,7 @@ class Goals extends React.Component {
 
   render() {
     return (
-      <div className='d-flex flex-column align-items-center'>
+      <div className='d-flex flex-column align-items-center overflow-auto'>
         <h1 className='mt-5'>Goals</h1>
         {
           this.props.goals.map(goal => {
