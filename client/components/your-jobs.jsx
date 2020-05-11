@@ -42,7 +42,7 @@ class YourJobs extends React.Component {
   render() {
     if (this.props.savedJobs !== undefined) {
       return (
-        <div className='mt-4'>
+        <div className='mt-4 scroll'>
           <div className="form-group d-flex justify-content-around mt-5">
             <form>
               <select className='form-control pointer btn btn-secondary' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>

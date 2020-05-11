@@ -31,6 +31,7 @@ export default class App extends React.Component {
     this.getSavedJobs = this.getSavedJobs.bind(this);
     this.deleteJob = this.deleteJob.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    this.postGoal = this.postGoal.bind(this);
   }
 
   componentDidMount() {
@@ -84,7 +85,8 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const goal = this.state.goals.slice();
-        goal.push(data);
+        goal.push(data.rows[0]);
+
         this.setState({ goals: goal });
       });
   }

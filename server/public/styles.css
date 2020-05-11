@@ -58,6 +58,10 @@ nav, footer {
   color: #E0E0E0
 }
 
+.scroll {
+  overflow: scroll;
+}
+
 /* ********************* */
 /*    Your Jobs Page     */
 /* ********************* */
