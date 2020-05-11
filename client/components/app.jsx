@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import YourJobs from './your-jobs';
 import JobDetails from './job-details';
 import JobSearch from './job-search';
@@ -128,7 +128,7 @@ export default class App extends React.Component {
           setView={this.setView}
           searchQuery={params}
         />;
-      case 'Upload Files':
+      case 'Documents':
         return <UploadFiles setView={this.setView} params={params} />;
       default:
     }
@@ -189,7 +189,7 @@ export default class App extends React.Component {
                 params={params}
                 setView={this.setView}
               />} />
-          <Route path="/details/docs/:id"
+          <Route path="/details/docs/:id/:company/:title"
             render={props =>
               <UploadFiles {...props}
                 setView={this.setView}

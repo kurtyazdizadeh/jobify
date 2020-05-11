@@ -1,5 +1,4 @@
 import React from 'react';
-import RenderNotes from './render-notes';
 import { Link } from 'react-router-dom';
 
 class SpecificJobNotes extends React.Component {
@@ -22,11 +21,12 @@ class SpecificJobNotes extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Job Note');
     this.getAllNotes();
   }
 
   getAllNotes() {
-    fetch(`/api/notes/${this.props.params.userJobId}`)
+    fetch(`/api/notes/${this.props.match.params.id}`)
       .then(res => res.json())
       .then(notes => {
         const { empty } = notes;
@@ -56,7 +56,7 @@ class SpecificJobNotes extends React.Component {
   }
 
   handleBack() {
-    this.props.setView('Job Details', { userJobId: this.props.params.userJobId });
+    this.props.setView('Job Details', { userJobId: this.props.match.params.id });
   }
 
   handleCancel(event) {
@@ -99,7 +99,7 @@ class SpecificJobNotes extends React.Component {
       },
       body: JSON.stringify(this.state.newNote)
     };
-    fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
+    fetch(`/api/job-note/${this.props.match.params.id}`, noteBody)
       .then(res => res.json())
       .then(data => {
         if (this.state.notes[0].note_title === 'No Notes for this job') {
@@ -174,17 +174,25 @@ class SpecificJobNotes extends React.Component {
         </div>
         <div className={notesClass}>
           <div>
-            <button onClick={this.handleAdd} className='ml-2 mt-2 btn btn-secondary'>Add</button>
-            <button onClick={this.handleBack} className='ml-2 mt-2 btn btn-secondary'>Back</button>
+            <button onClick={this.handleAdd} className='ml-2 my-2 btn btn-secondary'>Add</button>
+            <Link to={`/details/${this.props.match.params.id}`}>
+              <button onClick={this.handleBack} className='ml-2 my-2 btn btn-secondary'>Back</button>
+            </Link>
           </div>
 
           {
-            this.state.notes.map(note => {
-              return <RenderNotes
-                key={note.note_id}
-                title={note.note_title}
-                date={this.props.date(note.date_posted)}
-                note={note.note_content} />;
+            this.state.notes.map((note, index) => {
+              let bgColor = '';
+              if (index % 2 === 0) {
+                bgColor = 'bg-grey';
+              }
+              return (
+                <div key={note.note_id} className={`text-center ${bgColor}`}>
+                  <h4>{note.note_title}</h4>
+                  <p>{() => this.props.date(note.date_posted)}</p>
+                  <p>{note.note_content}</p>
+                </div>
+              );
             })
           }
         </div>

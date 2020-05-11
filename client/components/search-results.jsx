@@ -16,6 +16,7 @@ class SearchResults extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Search Results');
     this.searchForJobs(this.state.resultsPage);
   }
 
