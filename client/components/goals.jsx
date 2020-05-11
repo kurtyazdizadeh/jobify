@@ -1,13 +1,14 @@
 import React from 'react';
 import GoalItems from './goals-item';
+import { Link } from 'react-router-dom';
 
 class Goals extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       goals: []
     };
+  }
 
   componentDidMount() {
     this.props.setView('Goals');
@@ -31,7 +32,9 @@ class Goals extends React.Component {
             );
           })
         }
-        <i onClick={() => this.props.setView('Add Goal')} className='fas fa-plus pointer mt-3'></i>
+        <Link to="/add-goal">
+          <i onClick={() => this.props.setView('Add Goal')} className='fas fa-plus pointer mt-3'></i>
+        </Link>
       </div>
     );
   }

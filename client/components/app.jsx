@@ -108,7 +108,7 @@ export default class App extends React.Component {
     const convertedDate = new Date(date.slice(0, 10));
     return convertedDate.toLocaleDateString('en-US', { timeZone: 'Europe/Helsinki' });
   }
-
+  /*
   renderView() {
     const { name, params } = this.state.view;
 
@@ -156,6 +156,7 @@ export default class App extends React.Component {
     }
 
   }
+  */
 
   render() {
     const { name, params } = this.state.view;
@@ -176,6 +177,13 @@ export default class App extends React.Component {
                 goals={goals}
                 setView={this.setView}
               />} />
+          <Route path="/add-goal"
+            render={props =>
+              <AddNewGoal {...props}
+                setView={this.setView}
+                onSubmit={this.postGoal}
+              />}
+          />
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}

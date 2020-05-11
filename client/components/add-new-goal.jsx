@@ -13,6 +13,10 @@ class AddNewGoal extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.setView('Add Goal');
+  }
+
   handleChange(event) {
     const change = {};
     switch (event.target.id) {
