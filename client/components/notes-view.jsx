@@ -13,7 +13,7 @@ class NotesView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/notes/view/${this.props.category}`)
+    fetch(`/api/notes/view/${this.props.match.params.category}`)
       .then(res => res.json())
       .then(notes => {
         if (!notes.length) {
@@ -49,10 +49,11 @@ class NotesView extends React.Component {
   }
 
   render() {
+    const { category } = this.props.match.params;
     return (
       this.state.noResults
         ? <div className="mt-5 d-flex flex-column align-items-center">
-          <h5 className="py-3">{`No ${this.props.category[0].toUpperCase() + this.props.category.slice(1)} Notes`}</h5>
+          <h5 className="py-3">{`No ${category[0].toUpperCase() + category.slice(1)} Notes`}</h5>
           <Link to="/notes">
             <button
               className="btn job-listing"
@@ -62,7 +63,7 @@ class NotesView extends React.Component {
           </Link>
         </div>
         : <div className="my-5 d-flex flex-column align-items-center">
-          <h5 className="py-3">{`${this.state.category} Notes`}</h5>
+          <h5 className="py-3">{`${category[0].toUpperCase() + category.slice(1)} Notes`}</h5>
           <div className="notes-area">
             {this.renderNoteItems()}
           </div>
