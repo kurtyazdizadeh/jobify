@@ -1,4 +1,5 @@
 import React from 'react';
+import DatePicker from 'react-datepicker';
 import { withRouter } from 'react-router-dom';
 
 class JobDetails extends React.Component {
@@ -8,9 +9,9 @@ class JobDetails extends React.Component {
       job: null,
       note: null,
       interviewModal: false,
-      interview: null,
+      interview: new Date(),
       followUpModal: false,
-      followUp: null
+      followUp: new Date()
     };
     this.handleStatus = this.handleStatus.bind(this);
     this.changeRating = this.changeRating.bind(this);
@@ -47,16 +48,15 @@ class JobDetails extends React.Component {
     if (this.state.interviewModal === true) {
 
       view = (
-        <div className='form-group'>
-          <form onSubmit={this.handleSendInterview} className='d-flex flex-row align-items-center'>
-            <input
-              className='form-control input-width'
-              onChange={this.handleDateChange}
-              maxLength='10'
-              required
-              placeholder='mm/dd/yyy' type="text" />
-            <button className='btn btn-secondary'>Add</button>
-          </form>
+        <div className='d-flex flex-row align-items-center'>
+          <DatePicker
+            selected={this.state.interview}
+            onChange={this.handleDateChange}
+          />
+          <button
+            onClick={this.handleSendInterview}
+            className='btn btn-secondary'
+          >Add</button>
         </div>
       );
     } else if (view === 'No' || view === 'no' || view === null) {
@@ -79,15 +79,14 @@ class JobDetails extends React.Component {
     });
   }
 
-  handleDateChange(event) {
-    event.preventDefault();
+  handleDateChange(date) {
     this.setState({
-      interview: event.target.value
+      interview: date
     });
   }
 
   handleSendInterview(event) {
-    event.preventDefault();
+
     const params = {
       method: 'POST',
       headers: {
@@ -141,18 +140,15 @@ class JobDetails extends React.Component {
     const followUpDate = this.state.job.follow_up_date;
     if (this.state.followUpModal === true) {
       return (
-        <div className='form-group'>
-          <form
-            onSubmit={this.handleAddFollowUp}
-            className='d-flex flex-row align-items-center'>
-            <input
-              className='form-control input-width'
-              onChange={this.handleFollowUpText}
-              maxLength='10'
-              required
-              placeholder='mm/dd/yyy' type="text" />
-            <button className='btn btn-secondary'>Add</button>
-          </form>
+        <div className='d-flex flex-row align-items-center'>
+          <DatePicker
+            selected={this.state.followUp}
+            onChange={this.handleFollowUpText}
+          />
+          <button
+            onClick={this.handleAddFollowUp}
+            className='btn btn-secondary'
+          >Add</button>
         </div>
       );
     } else if (followUpDate === null) {
@@ -173,15 +169,14 @@ class JobDetails extends React.Component {
     });
   }
 
-  handleFollowUpText(event) {
-    event.preventDefault();
+  handleFollowUpText(date) {
+
     this.setState({
-      followUp: event.target.value
+      followUp: date
     });
   }
 
   handleAddFollowUp(event) {
-    event.preventDefault();
     const params = {
       method: 'POST',
       headers: {

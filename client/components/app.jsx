@@ -13,6 +13,7 @@ import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
 import NotesView from './notes-view';
 import Goals from './goals';
+import AddNewGoal from './add-new-goal';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class App extends React.Component {
     this.getSavedJobs = this.getSavedJobs.bind(this);
     this.deleteJob = this.deleteJob.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    this.postGoal = this.postGoal.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +74,24 @@ export default class App extends React.Component {
       });
   }
 
+  postGoal(newGoal) {
+    const request = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newGoal)
+    };
+    fetch('api/goals', request)
+      .then(response => response.json())
+      .then(data => {
+        const goal = this.state.goals.slice();
+        goal.push(data.rows[0]);
+
+        this.setState({ goals: goal });
+      });
+  }
+
   deleteJob(userJobId) {
     const req = {
       method: 'DELETE'
@@ -108,6 +128,13 @@ export default class App extends React.Component {
                 goals={goals}
                 setView={this.setView}
               />} />
+          <Route path="/add-goal"
+            render={props =>
+              <AddNewGoal {...props}
+                setView={this.setView}
+                onSubmit={this.postGoal}
+              />}
+          />
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}

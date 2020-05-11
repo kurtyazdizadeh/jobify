@@ -64,6 +64,10 @@ nav, footer {
   color: #E0E0E0
 }
 
+.scroll {
+  overflow: scroll;
+}
+
 /* ********************* */
 /*    Your Jobs Page     */
 /* ********************* */
@@ -168,6 +172,10 @@ input[type="submit"]:hover {
 .goalItems {
   width: 90%;
   border: 2px solid #252525;
+}
+
+.goalInput {
+  width: 60%
 }
 
 .heading {
