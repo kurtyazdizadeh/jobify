@@ -18,6 +18,7 @@ class SpecificJobNotes extends React.Component {
     this.handleTitle = this.handleTitle.bind(this);
     this.handleNote = this.handleNote.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +33,7 @@ class SpecificJobNotes extends React.Component {
         if (empty) {
           this.setState({
             notes: [{
-              note_title: 'No Notes for this job',
+              note_title: 'No notes for this job',
               note_content: '',
               date_posted: '',
               note_id: 1
@@ -101,13 +102,13 @@ class SpecificJobNotes extends React.Component {
     fetch(`/api/job-note/${this.props.params.userJobId}`, noteBody)
       .then(res => res.json())
       .then(data => {
-        if (this.state.notes[0].note_title === 'No Notes for this job') {
+        if (this.state.notes[0].note_title === 'No notes for this job') {
           this.setState({
             notes: [data],
             displayAdd: false,
             displayNotes: true,
             newNote: {
-              jobType: 'Job',
+              noteType: 'Job',
               note: '',
               noteTitle: ''
             }
@@ -120,10 +121,39 @@ class SpecificJobNotes extends React.Component {
             displayAdd: false,
             displayNotes: true,
             newNote: {
-              jobType: 'Job',
+              noteType: 'Job',
               note: '',
               noteTitle: ''
             }
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleDelete(id) {
+    fetch(`api/remove-note/${id}`, { method: 'DELETE' })
+      .then(res => res.json())
+      .then(note => {
+        const idToRemove = note.note_id;
+        const newNotes = Object.assign(this.state.notes);
+        for (let i = 0; i < this.state.notes.length; i++) {
+          if (newNotes[i].job_note_id === idToRemove) {
+            newNotes.splice(i, 1);
+          }
+        }
+        if (!newNotes[0]) {
+          this.setState({
+            notes: [{
+              note_title: 'No notes for this job',
+              note_content: '',
+              date_posted: '',
+              note_id: 1
+            }]
+          });
+        } else {
+          this.setState({
+            notes: newNotes
           });
         }
       })
@@ -151,7 +181,7 @@ class SpecificJobNotes extends React.Component {
               <h4 className='text-center font-weight-bold'>Title</h4>
               <input
                 onChange={this.handleTitle}
-                value={this.state.newNote.noteTitle}
+                // value={this.state.newNote.noteTitle}
                 type="text"
                 required/>
             </div>
@@ -183,7 +213,8 @@ class SpecificJobNotes extends React.Component {
                 key={note.note_id}
                 title={note.note_title}
                 date={this.props.date(note.date_posted)}
-                note={note.note_content} />;
+                note={note.note_content}
+                delete={() => this.handleDelete(note.note_id)}/>;
             })
           }
         </div>
