@@ -218,6 +218,40 @@ app.post('/api/manual-save', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/goals/', (req, res, next) => {
+  const goal = req.body;
+  if (!parseInt(goal.endGoal, 10) || parseInt(goal.endGoal, 10) < 0) {
+    return res.status(400).json({
+      error: 'endGoal must be a positive integer'
+    });
+  }
+  if (!goal.title) {
+    return res.status(400).json({
+      error: 'title must be included'
+    });
+  }
+  if (!goal.type) {
+    return res.status(400).json({
+      error: 'type must be included'
+    });
+  }
+  const sql = `
+    INSERT INTO "UsersGoal" ("user_goal_id", "user_id", "goal_achieved", "currently_active", "current_progress", "end_goal", "goal_title", "goal_type", "deadline_date")
+            VALUES (default, 1, default, default, default, $1, $2, $3, $4)
+            RETURNING *;
+  `;
+  const params = [goal.endGoal, goal.title, goal.type, goal.deadline];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/notes/', (req, res, next) => {
   const { title, content, category } = req.body;
 
@@ -338,10 +372,6 @@ app.delete('/api/remove-note/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/romove-job-note/:id', (req, res, next) => {
-
-});
-
 app.post('/api/status/:id', (req, res, next) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -455,20 +485,20 @@ app.post('/api/job-note/:id', (req, res, next) => {
   if (id <= 0 || !id) {
     return res.status(404).json({ error: `id is a required field expects integer but got ${id}` });
   } else if (!note || !noteType || !noteTitle) {
-    return res.status(404).json({ error: 'noteTitle, note, and noteType are required in the body' });
+    return res.status(404).json({ error: `noteTitle, note, and noteType are required in the body, instead got ${noteTitle}, ${noteType}, ${note}` });
   }
 
   const sql = `
   insert into "notes" ("note_title", "note_content", "note_type")
   values ($1, $2, $3)
-  returning "note_title", "note_content", "note_id"
+  returning "note_title", "note_content", "note_id", "date_posted"
   `;
   const params = [noteTitle, note, noteType];
 
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line camelcase
-      const { note_content, note_title, note_id } = result.rows[0];
+      const { note_content, note_title, note_id, date_posted } = result.rows[0];
       // eslint-disable-next-line camelcase
       if (!note_content || !note_title || !note_id) {
         return res.status(400).json({ error: 'internal server error' });
@@ -476,7 +506,8 @@ app.post('/api/job-note/:id', (req, res, next) => {
       return {
         note_title: note_title,
         note_content: note_content,
-        note_id: note_id
+        note_id: note_id,
+        date_posted: date_posted
       };
     })
     .then(note => {

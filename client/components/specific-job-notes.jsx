@@ -35,7 +35,7 @@ class SpecificJobNotes extends React.Component {
         if (empty) {
           this.setState({
             notes: [{
-              note_title: 'No Notes for this job',
+              note_title: 'No notes for this job',
               note_content: '',
               date_posted: '',
               note_id: 1
@@ -104,13 +104,13 @@ class SpecificJobNotes extends React.Component {
     fetch(`/api/job-note/${this.props.match.params.id}`, noteBody)
       .then(res => res.json())
       .then(data => {
-        if (this.state.notes[0].note_title === 'No Notes for this job') {
+        if (this.state.notes[0].note_title === 'No notes for this job') {
           this.setState({
             notes: [data],
             displayAdd: false,
             displayNotes: true,
             newNote: {
-              jobType: 'Job',
+              noteType: 'Job',
               note: '',
               noteTitle: ''
             }
@@ -123,7 +123,7 @@ class SpecificJobNotes extends React.Component {
             displayAdd: false,
             displayNotes: true,
             newNote: {
-              jobType: 'Job',
+              noteType: 'Job',
               note: '',
               noteTitle: ''
             }
@@ -134,7 +134,9 @@ class SpecificJobNotes extends React.Component {
   }
 
   handleDelete(id) {
+
     fetch(`/api/remove-note/${id}`, { method: 'DELETE' })
+
       .then(res => res.json())
       .then(note => {
         const idToRemove = note.note_id;
@@ -183,7 +185,7 @@ class SpecificJobNotes extends React.Component {
               <h4 className='text-center font-weight-bold'>Title</h4>
               <input
                 onChange={this.handleTitle}
-                value={this.state.newNote.noteTitle}
+                // value={this.state.newNote.noteTitle}
                 type="text"
                 required/>
             </div>
@@ -218,7 +220,9 @@ class SpecificJobNotes extends React.Component {
                 title={note.note_title}
                 date={this.props.date(note.date_posted)}
                 note={note.note_content}
+
                 delete={() => this.handleDelete(note.note_id)} />;
+
             })
           }
         </div>
