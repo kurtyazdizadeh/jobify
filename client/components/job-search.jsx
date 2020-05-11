@@ -17,6 +17,10 @@ class JobSearch extends React.Component {
     this.resetForm = this.resetForm.bind(this);
   }
 
+  componentDidMount() {
+    this.props.setView('Search');
+  }
+
   getLocation(event) {
     const success = position => {
       const { latitude, longitude } = position.coords;

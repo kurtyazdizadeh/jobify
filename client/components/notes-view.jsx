@@ -13,7 +13,9 @@ class NotesView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/notes/view/${this.props.match.params.category}`)
+    const { category } = this.props.match.params;
+
+    fetch(`/api/notes/view/${category}`)
       .then(res => res.json())
       .then(notes => {
         if (!notes.length) {
@@ -23,6 +25,8 @@ class NotesView extends React.Component {
         }
       })
       .catch(err => console.error(err));
+
+    this.props.setView('View Notes');
   }
 
   renderNoteItems() {

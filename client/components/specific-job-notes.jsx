@@ -1,5 +1,6 @@
 import React from 'react';
 import RenderNotes from './render-notes';
+import { Link } from 'react-router-dom';
 
 class SpecificJobNotes extends React.Component {
   constructor(props) {
