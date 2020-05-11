@@ -181,6 +181,7 @@ export default class App extends React.Component {
             render={props =>
               <AddNewGoal {...props}
                 setView={this.setView}
+                onSubmit={this.postGoal}
               />}
           />
           <Route path="/add-job"
