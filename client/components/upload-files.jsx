@@ -67,10 +67,12 @@ class UploadFiles extends React.Component {
       .catch(err => console.error(err));
   }
 
-  renderViewButton(fileURL) {
+  renderDownloadButton(fileURL) {
     if (fileURL !== null) {
       let fileType = '';
-      const { title, company } = this.props.match.params;
+      const queryString = new URLSearchParams(this.props.location.search);
+      const title = queryString.get('title');
+      const company = queryString.get('company');
 
       switch (fileURL) {
         case this.state.resumeURL:
@@ -94,7 +96,7 @@ class UploadFiles extends React.Component {
           rel="noopener noreferrer"
           download={`${title}-${company}-${fileType}`}
         >
-      View
+          Download
         </a>
       );
     }
@@ -124,7 +126,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {this.renderViewButton(resumeURL)}
+            {this.renderDownloadButton(resumeURL)}
           </form>
         </div>
         <div>
@@ -146,7 +148,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {this.renderViewButton(coverURL)}
+            {this.renderDownloadButton(coverURL)}
           </form>
         </div>
         <div>
@@ -168,7 +170,7 @@ class UploadFiles extends React.Component {
               </label>
             </div>
             <button type='submit' className='btn button'>Upload</button>
-            {this.renderViewButton(letterURL)}
+            {this.renderDownloadButton(letterURL)}
           </form>
         </div>
       </div>

@@ -1,8 +1,6 @@
 import React from 'react';
 
 function RenderNotes(props) {
-
-
   let bgColor = '';
   if (props.index % 2 === 0) {
     bgColor = 'bg-grey';

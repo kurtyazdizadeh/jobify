@@ -262,7 +262,7 @@ class JobDetails extends React.Component {
     title = title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
     company = company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
 
-    this.props.history.push(`/details/docs/${id}/${company}/${title}`);
+    this.props.history.push(`/details/docs/${id}?company=${company}&title=${title}`);
     this.props.setView('Upload Files', { id, title, company });
   }
 

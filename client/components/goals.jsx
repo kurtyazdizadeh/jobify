@@ -32,7 +32,7 @@ class Goals extends React.Component {
             );
           })
         }
-        <Link to="/add-goal">
+        <Link to="/goals/add">
           <i onClick={() => this.props.setView('Add Goal')} className='fas fa-plus pointer mt-3'></i>
         </Link>
       </div>

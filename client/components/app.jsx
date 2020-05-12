@@ -122,24 +122,23 @@ export default class App extends React.Component {
                 savedJobs={savedJobs}
                 setView={this.setView}
               />} />
+          <Route path="/goals/add"
+            render={props =>
+              <AddNewGoal {...props}
+                setView={this.setView}
+                onSubmit={this.postGoal}
+              />} />
           <Route path="/goals"
             render={props =>
               <Goals {...props}
                 goals={goals}
                 setView={this.setView}
               />} />
-          <Route path="/add-goal"
-            render={props =>
-              <AddNewGoal {...props}
-                setView={this.setView}
-                onSubmit={this.postGoal}
-              />}
-          />
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}
                 setView={this.setView}
-              />}/>
+              />} />
           <Route path="/notes/:category"
             render={props =>
               <NotesView {...props}
@@ -151,7 +150,7 @@ export default class App extends React.Component {
             render={props =>
               <Notes {...props}
                 setView={this.setView}
-              />}/>
+              />} />
           <Route path="/search/results"
             render={props =>
               <SearchResults {...props}
@@ -162,7 +161,7 @@ export default class App extends React.Component {
             render={props =>
               <JobSearch {...props}
                 setView={this.setView}
-              />}/>
+              />} />
           <Route path="/details/notes/:id"
             render={props =>
               <SpecificJobNotes {...props}
@@ -170,7 +169,7 @@ export default class App extends React.Component {
                 params={params}
                 setView={this.setView}
               />} />
-          <Route path="/details/docs/:id/:company/:title"
+          <Route path="/details/docs/:id"
             render={props =>
               <UploadFiles {...props}
                 setView={this.setView}
