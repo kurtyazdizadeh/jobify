@@ -1,5 +1,6 @@
 import React from 'react';
 import JobListingItem from './job-listing-item';
+import { Link, withRouter } from 'react-router-dom';
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -15,15 +16,24 @@ class SearchResults extends React.Component {
   }
 
   componentDidMount() {
-    this.searchForJobs(this.state.resultsPage);
+    const searchQuery = new URLSearchParams(this.props.location.search);
+    const page = searchQuery.get('page');
+    this.props.setView('Search Results');
+    this.searchForJobs(parseInt(page));
   }
 
   searchView() {
-    this.props.setView('Job Search', {});
+    this.props.setView('Job Search');
   }
 
   searchForJobs(resultsPage) {
-    const { desiredPosition, location, distance, jobType } = this.props.searchQuery;
+    const searchQuery = new URLSearchParams(this.props.location.search);
+
+    const desiredPosition = searchQuery.get('desiredPosition');
+    const location = searchQuery.get('location');
+    const distance = searchQuery.get('distance');
+    const jobType = searchQuery.get('jobType');
+    searchQuery.set('page', resultsPage);
 
     const params = {
       pageNum: resultsPage,
@@ -48,9 +58,9 @@ class SearchResults extends React.Component {
         break;
     }
 
-    const query = new URLSearchParams(params);
+    const dbQuery = new URLSearchParams(params);
 
-    fetch(`/api/search-jobs/${query}`)
+    fetch(`/api/search-jobs/${dbQuery}`)
       .then(res => res.json())
       .then(listings => {
         const newState = {
@@ -65,6 +75,7 @@ class SearchResults extends React.Component {
         if (listings.count === 0) {
           newState.noResults = true;
         }
+        this.props.history.push(`/search/results?${searchQuery}`);
         this.setState(newState);
       })
       .catch(err => console.error(err));
@@ -72,7 +83,7 @@ class SearchResults extends React.Component {
 
   renderJobListings() {
     const jobListingElements = this.state.searchResults.map(listing => {
-      const { id, latitude, longitude, location, contract_time, redirect_url, description } = listing;
+      const { id, latitude, longitude, location, contract_time: contract, redirect_url: url, description } = listing;
 
       const company = listing.company.display_name;
       const city = location.area[3];
@@ -86,13 +97,13 @@ class SearchResults extends React.Component {
         <JobListingItem
           key={id}
           id={id}
-          url={redirect_url}
+          url={url}
           title={title}
           company={company}
           city={city}
           state={state}
           county={county}
-          contract={contract_time}
+          contract={contract}
           latitude={latitude}
           longitude={longitude}
           description={description}
@@ -138,11 +149,13 @@ class SearchResults extends React.Component {
           ? <div className="mt-5 p-3 d-flex flex-column align-items-center">
             <h5>No Results</h5>
             <div>
-              <button
-                className="btn job-listing"
-                onClick={this.searchView}>
-                    Go Back
-              </button>
+              <Link to="/search">
+                <button
+                  className="btn bg-grey"
+                  onClick={() => this.props.setView('Search')}>
+                      Go Back
+                </button>
+              </Link>
             </div>
           </div>
           : <div className="mt-5 p-3 d-flex justify-content-center">
@@ -152,4 +165,4 @@ class SearchResults extends React.Component {
   }
 }
 
-export default SearchResults;
+export default withRouter(SearchResults);

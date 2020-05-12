@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class Notes extends React.Component {
   constructor(props) {
@@ -11,6 +12,10 @@ class Notes extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.resetForm = this.resetForm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.setView('Notes');
   }
 
   handleChange(event) {
@@ -48,7 +53,6 @@ class Notes extends React.Component {
     };
     fetch('/api/notes', config)
       .then(res => res.json())
-      .then(note => console.log(note))
       .catch(err => console.error(err));
 
     this.resetForm();
@@ -62,14 +66,40 @@ class Notes extends React.Component {
     });
   }
 
+  viewNotes(category) {
+    this.props.history.push(`/notes/${category}`);
+    this.props.setView('View Notes', category);
+  }
+
   render() {
     return (
       <div className="mt-5 d-flex flex-column align-items-center">
         <h5 className="py-3">View Notes</h5>
         <div className="container">
-          <button className="btn btn-block notes-button">General Notes</button>
-          <button className="btn btn-block notes-button">Networking Events</button>
-          <button className="btn btn-block notes-button">Resume Notes</button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('general');
+            }}
+          >
+              General Notes
+          </button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('networking');
+            }}
+          >
+              Networking Events
+          </button>
+          <button
+            className="btn btn-block notes-button"
+            onClick={() => {
+              this.viewNotes('resume');
+            }}
+          >
+              Resume Notes
+          </button>
         </div>
         <h5 className="py-3">Add Note</h5>
         <form className="d-flex flex-column align-items-center" onSubmit={this.handleSubmit}>
@@ -111,8 +141,8 @@ class Notes extends React.Component {
             </textarea>
           </div>
           <div className="buttons">
-            <button className="notes-button mx-3" type="submit">Submit Note</button>
-            <button className="notes-button mx-3" onClick={this.resetForm}>Cancel</button>
+            <button className="btn notes-button mx-3" type="submit">Submit Note</button>
+            <button className="btn notes-button mx-3" onClick={this.resetForm}>Cancel</button>
           </div>
         </form>
       </div>
@@ -121,4 +151,4 @@ class Notes extends React.Component {
   }
 }
 
-export default Notes;
+export default withRouter(Notes);

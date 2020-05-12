@@ -1,19 +1,35 @@
 import React from 'react';
+import DatePicker from 'react-datepicker';
+import { withRouter } from 'react-router-dom';
 
 class JobDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       job: null,
-      note: null
+      note: null,
+      interviewModal: false,
+      interview: new Date(),
+      followUpModal: false,
+      followUp: new Date()
     };
     this.handleStatus = this.handleStatus.bind(this);
     this.changeRating = this.changeRating.bind(this);
+    this.handleSetDate = this.handleSetDate.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleSendInterview = this.handleSendInterview.bind(this);
+    this.handleFollowUpModal = this.handleFollowUpModal.bind(this);
+    this.handleFollowUpText = this.handleFollowUpText.bind(this);
+    this.handleAddFollowUp = this.handleAddFollowUp.bind(this);
+    this.handleUpdateInterview = this.handleUpdateInterview.bind(this);
+    this.handleUpdateFollowUp = this.handleUpdateFollowUp.bind(this);
   }
 
   componentDidMount() {
-    this.getJob(this.props.params.userJobId);
-    this.getNote(this.props.params.userJobId);
+    const { id } = this.props.match.params;
+    this.props.setView('Job Details');
+    this.getJob(id);
+    this.getNote(id);
   }
 
   getJob(jobId) {
@@ -22,6 +38,72 @@ class JobDetails extends React.Component {
       .then(job => {
         this.setState({
           job: job
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleInterview() {
+    let view = this.state.job.interview_date;
+    if (this.state.interviewModal === true) {
+
+      view = (
+        <div className='d-flex flex-row align-items-center'>
+          <DatePicker
+            selected={this.state.interview}
+            onChange={this.handleDateChange}
+          />
+          <button
+            onClick={this.handleSendInterview}
+            className='btn btn-secondary'
+          >Add</button>
+        </div>
+      );
+    } else if (view === 'No' || view === 'no' || view === null) {
+      view = <button onClick={this.handleSetDate} className='btn btn-secondary'>Set Date</button>;
+    } else {
+      view = (
+        <>
+          <h3>{this.props.date(view)}</h3>
+          <i onClick={this.handleUpdateInterview} className="fas fa-edit"></i>
+        </>
+      );
+    }
+    return view;
+  }
+
+  handleSetDate(event) {
+    event.preventDefault();
+    this.setState({
+      interviewModal: true
+    });
+  }
+
+  handleDateChange(date) {
+    this.setState({
+      interview: date
+    });
+  }
+
+  handleSendInterview(event) {
+
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ interview: this.state.interview })
+    };
+
+    fetch(`/api/interview/${this.props.match.params.id}`, params)
+      .then(date => date.json())
+      .then(res => {
+        const newDate = this.props.date(res.interview_date);
+        const date = Object.assign(this.state.job);
+        date.interview_date = newDate;
+        this.setState({
+          job: date,
+          interviewModal: false
         });
       })
       .catch(err => console.error(err));
@@ -36,7 +118,7 @@ class JobDetails extends React.Component {
       },
       body: JSON.stringify({ status: event.target.value })
     };
-    fetch(`/api/status/${this.props.params.userJobId}`, params)
+    fetch(`/api/status/${this.props.match.params.id}`, params)
       .then(res => res.json())
       .then(data => {
         const newStatus = Object.assign(this.state.job);
@@ -46,6 +128,79 @@ class JobDetails extends React.Component {
         });
       })
       .catch(err => console.error(err));
+  }
+
+  handleUpdateInterview(event) {
+    this.setState({
+      interviewModal: true
+    });
+  }
+
+  toggleFollowUp() {
+    const followUpDate = this.state.job.follow_up_date;
+    if (this.state.followUpModal === true) {
+      return (
+        <div className='d-flex flex-row align-items-center'>
+          <DatePicker
+            selected={this.state.followUp}
+            onChange={this.handleFollowUpText}
+          />
+          <button
+            onClick={this.handleAddFollowUp}
+            className='btn btn-secondary'
+          >Add</button>
+        </div>
+      );
+    } else if (followUpDate === null) {
+      return <button onClick={this.handleFollowUpModal} className='btn btn-secondary'>Set Date</button>;
+    } else {
+      return (
+        <>
+          <h3>{this.props.date(followUpDate)}</h3>
+          <i onClick={this.handleUpdateFollowUp} className="fas fa-edit"></i>
+        </>
+      );
+    }
+  }
+
+  handleFollowUpModal(event) {
+    this.setState({
+      followUpModal: true
+    });
+  }
+
+  handleFollowUpText(date) {
+
+    this.setState({
+      followUp: date
+    });
+  }
+
+  handleAddFollowUp(event) {
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ date: this.state.followUp })
+    };
+    fetch(`/api/follow-up/${this.props.match.params.id}`, params)
+      .then(res => res.json())
+      .then(date => {
+        const newDate = Object.assign(this.state.job);
+        newDate.follow_up_date = date.follow_up_date;
+        this.setState({
+          job: newDate,
+          followUpModal: false
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleUpdateFollowUp(event) {
+    this.setState({
+      followUpModal: true
+    });
   }
 
   getNote(jobId) {
@@ -80,7 +235,7 @@ class JobDetails extends React.Component {
       },
       body: JSON.stringify({ rating: star })
     };
-    fetch(`api/rating/${this.props.params.userJobId}`, params)
+    fetch(`/api/rating/${this.props.match.params.id}`, params)
       .then(res => res.json())
       .then(rating => {
         const newRating = Object.assign(this.state.job);
@@ -99,18 +254,32 @@ class JobDetails extends React.Component {
       : 'fas fa-star');
   }
 
+  viewDocs() {
+    const { id } = this.props.match.params;
+    let { title, company } = this.state.job.job_info;
+
+    title = title.replace(/(<([^>]+)>)/ig, '');
+    title = title.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+    company = company.split('').filter(char => char !== '/' && char !== ' ' && char !== '.').join('');
+
+    this.props.history.push(`/details/docs/${id}/${company}/${title}`);
+    this.props.setView('Upload Files', { id, title, company });
+  }
+
+  viewJobNotes() {
+    const { id } = this.props.match.params;
+
+    this.props.history.push(`/details/notes/${id}`);
+    this.props.setView('Job Note', { id });
+  }
+
   render() {
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
     }
-    let title = this.state.job.job_info.title;
+    let { title } = this.state.job.job_info;
     title = title.replace(/(<([^>]+)>)/ig, '');
     const info = this.state.job.job_info;
-
-    let interview = this.state.job.interview_date;
-    if (interview === 'No' || interview === 'no' || interview === null) {
-      interview = 'No';
-    }
     return (
       <>
         <div className='text-center mt-5 py-2 dark-gray'>
@@ -118,7 +287,7 @@ class JobDetails extends React.Component {
           <h5>{info.company}</h5>
           <h5>{`${info.city || info.county}, ${info.state}`}</h5>
         </div>
-        <div className='d-flex justify-content-around py-3 light-green'>
+        <div className='d-flex justify-content-around py-2 light-green'>
           <h3>Job Post</h3>
           <button className='btn btn-secondary'>
             <a href={info.url} className='text-light'>Click to Apply</a>
@@ -137,9 +306,9 @@ class JobDetails extends React.Component {
           <i className={this.getRating(5)}
             onClick={() => this.changeRating(5)}></i>
         </div>
-        <div className='d-flex justify-content-around py-2 light-green'>
-          <h3>Interview?</h3>
-          <h3>{interview}</h3>
+        <div className='d-flex justify-content-around align-items-center py-2 light-green'>
+          <h3>Interview</h3>
+          {this.handleInterview()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <h3>Status</h3>
@@ -161,14 +330,14 @@ class JobDetails extends React.Component {
             </form>
           </div>
         </div>
-        <div className='d-flex justify-content-around py-2 light-green'>
+        <div className='d-flex justify-content-around align-items-center py-2 light-green'>
           <h3>Follow up by:</h3>
-          <h3>6/10/20</h3>
+          {this.toggleFollowUp()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
             <h3 className='m-1'>Documents</h3>
-            <button className='m-1 btn btn-secondary'>Upload Docs</button>
+            <button className='m-1 btn btn-secondary' onClick={() => this.viewDocs()}>Upload Docs</button>
             <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
             <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
@@ -176,7 +345,7 @@ class JobDetails extends React.Component {
           <div>
             <h3 className='m-1'>Notes</h3>
             <button className='m-1 btn btn-secondary'
-              onClick={() => this.props.setView('Job Note', { userJobId: this.props.params.userJobId })}>
+              onClick={() => this.viewJobNotes()}>
               See All Notes
             </button>
             <h6 className='m-1'>{this.state.note.note_title}</h6>
@@ -189,4 +358,4 @@ class JobDetails extends React.Component {
   }
 }
 
-export default JobDetails;
+export default withRouter(JobDetails);

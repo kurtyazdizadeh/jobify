@@ -1,27 +1,175 @@
 import React from 'react';
 
 class UploadFiles extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedFile: null,
+      fileType: '',
+      resumeURL: null,
+      coverURL: null,
+      letterURL: null
+    };
+    this.handleUploadChange = this.handleUploadChange.bind(this);
+    this.handleUploadToServer = this.handleUploadToServer.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.setView('Documents');
+    this.getDocList();
+  }
+
+  getDocList() {
+    const { id } = this.props.match.params;
+
+    fetch(`/api/view-docs/${id}`)
+      .then(res => res.json())
+      .then(files => {
+        // eslint-disable-next-line camelcase
+        const { resume, cover_letter, letter_of_recommendation } = files;
+        this.setState({
+          resumeURL: resume,
+          coverURL: cover_letter,
+          letterURL: letter_of_recommendation
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleUploadChange() {
+    event.preventDefault();
+
+    this.setState({
+      selectedFile: event.target.files[0],
+      fileType: event.target.name
+    });
+  }
+
+  handleUploadToServer() {
+    event.preventDefault();
+    const { selectedFile, fileType } = this.state;
+    const { id } = this.props.match.params;
+
+    const data = new FormData();
+    data.append('file', selectedFile);
+
+    const config = {
+      method: 'POST',
+      body: data
+    };
+
+    fetch(`/api/save-docs/${id}-${fileType}`, config)
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ selectedFile: null, fileType: '' });
+        this.getDocList();
+      })
+      .catch(err => console.error(err));
+  }
+
+  renderViewButton(fileURL) {
+    if (fileURL !== null) {
+      let fileType = '';
+      const { title, company } = this.props.match.params;
+
+      switch (fileURL) {
+        case this.state.resumeURL:
+          fileType = 'resume';
+          break;
+        case this.state.coverURL:
+          fileType = 'cover-letter';
+          break;
+        case this.state.letterURL:
+          fileType = 'letter-of-rec';
+          break;
+        default:
+          break;
+      }
+
+      return (
+        <a
+          className='btn button'
+          href={`../../../../docs/${fileURL}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          download={`${title}-${company}-${fileType}`}
+        >
+      View
+        </a>
+      );
+    }
+  }
 
   render() {
+    const { selectedFile, fileType, resumeURL, coverURL, letterURL } = this.state;
+    const docTypes = 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     return (
-      <div className='container mt-5 py-3 dark-gray'>
+      <div className='container mt-4 py-3 dark-gray'>
         <div>
           <h4 className='title align-middle text-center'>Resume</h4>
-          <button className='button btn col align-items-center'>View</button>
-          <button className='button btn col'>Upload</button>
-          <button className='button col btn'>Delete</button>
+          <form
+            onSubmit={this.handleUploadToServer}
+            encType="multipart/form-data">
+            <div className="custom-file">
+              <input
+                type="file"
+                name="resume"
+                onChange={this.handleUploadChange}
+                className="custom-file-input dark-gray"
+                id="resume"
+                accept={docTypes}
+              />
+              <label className="custom-file-label" htmlFor="resume">
+                {(selectedFile && fileType === 'resume') ? selectedFile.name : 'Choose File...'}
+              </label>
+            </div>
+            <button type='submit' className='btn button'>Upload</button>
+            {this.renderViewButton(resumeURL)}
+          </form>
         </div>
         <div>
           <h4 className='title align-middle text-center'>Cover Letter</h4>
-          <button className='button btn col'>View</button>
-          <button className='button btn col'>Upload</button>
-          <button className='button col btn '>Delete</button>
+          <form
+            onSubmit={this.handleUploadToServer}
+            encType="multipart/form-data">
+            <div className="custom-file">
+              <input
+                type="file"
+                name="cover_letter"
+                onChange={this.handleUploadChange}
+                className="custom-file-input dark-gray"
+                id="cover_letter"
+                accept={docTypes}
+              />
+              <label className="custom-file-label" htmlFor="cover_letter">
+                {(selectedFile && fileType === 'cover_letter') ? selectedFile.name : 'Choose File...'}
+              </label>
+            </div>
+            <button type='submit' className='btn button'>Upload</button>
+            {this.renderViewButton(coverURL)}
+          </form>
         </div>
         <div>
-          <h4 className='title align-middle text-center '>Letter of Recommendation</h4>
-          <button className='button btn col'>View</button>
-          <button className='button btn col'>Upload</button>
-          <button className='button btn col'>Delete</button>
+          <h4 className='title align-middle text-center'>Letter of Recommendation</h4>
+          <form
+            onSubmit={this.handleUploadToServer}
+            encType="multipart/form-data">
+            <div className="custom-file">
+              <input
+                type="file"
+                name="letter_of_recommendation"
+                onChange={this.handleUploadChange}
+                className="custom-file-input dark-gray"
+                id="letter_of_recommendation"
+                accept={docTypes}
+              />
+              <label className="custom-file-label" htmlFor="letter_of_recommendation">
+                {(selectedFile && fileType === 'letter_of_recommendation') ? selectedFile.name : 'Choose File...'}
+              </label>
+            </div>
+            <button type='submit' className='btn button'>Upload</button>
+            {this.renderViewButton(letterURL)}
+          </form>
         </div>
       </div>
     );

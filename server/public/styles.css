@@ -1,10 +1,18 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
   background-color: #E0E0E0;
   color: #4F4F4F;
 }
+a,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ********************* */
 /*     Header/Footer     */
 /* ********************* */
@@ -40,15 +48,26 @@ nav, footer {
   color: #4F4F4F;
 }
 .grey {
-  color: #CACFCF;
+  color: #CFCFCF;
 }
-
+.bg-grey {
+  background-color: #CFCFCF;
+}
 .gold {
   color: gold;
 }
 
 .red {
   color: red;
+}
+
+.bg-dark-grey {
+  background-color: #4F4F4F;
+  color: #E0E0E0
+}
+
+.scroll {
+  overflow: scroll;
 }
 
 /* ********************* */
@@ -86,7 +105,8 @@ input[type="submit"]:hover {
 /* ************************ */
 /*    Job Search Results    */
 /* ************************ */
-.job-listing {
+.job-listing,
+.dark-button {
   background-color: #CFCFCF;
 }
 .like-button {
@@ -112,8 +132,6 @@ input[type="submit"]:hover {
   font-size: .8rem;
 }
 
-
-
 /* ************************ */
 /*       Upload Files       */
 /* ************************ */
@@ -132,16 +150,37 @@ input[type="submit"]:hover {
   margin: 2rem;
 }
 
-
 /* ************************ */
 /*       Job Map Results    */
 /* ************************ */
-
 .mapJobs {
   height: 500px;
+  width: 90%;
+  border: 5px solid #275727;
+}
+
+.centerButtons-row {
   width: 100%;
 }
-.heading{
+
+.centerButton {
+  font-size: .8rem;
+}
+
+/* ********** */
+/*    Goals   */
+/* ********** */
+
+.goalItems {
+  width: 90%;
+  border: 2px solid #252525;
+}
+
+.goalInput {
+  width: 60%
+}
+
+.heading {
   margin: 10px;
   border-radius: 5px;
   color: #2F575D;
@@ -160,11 +199,7 @@ input[type="submit"]:hover {
 /* ************************ */
 /*        Side Bar          */
 /* ************************ */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+
 .shaded {
   background-color: rgba(0, 0, 0, 0.33);
   position: absolute;
@@ -191,4 +226,26 @@ input[type="submit"]:hover {
 .fade {
   opacity: 0;
   pointer-events: none;
+  
+/* **************** */
+/*  modal position  */
+/* **************** */
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.input-width {
+  width: 7rem;
+}
+
+/* ********** */
+/*   hidden   */
+/* ********** */
+
+.hidden {
+  display: none;
 }
