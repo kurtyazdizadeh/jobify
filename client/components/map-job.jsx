@@ -8,6 +8,7 @@ class MapJob extends React.Component {
     this.createMarker = this.createMarker.bind(this);
     this.map = null;
     this.state = {
+      savedJobs: [],
       openMarkerId: ''
     };
     this.handleToggleClose = this.handleToggleClose.bind(this);
@@ -36,7 +37,7 @@ class MapJob extends React.Component {
   createGoogleMap() {
     let coordinate = { lat: 33.683414, lng: -117 };
 
-    if (this.props.savedJobs[0] !== undefined) {
+    if (this.props.savedJobs !== undefined) {
       const jobInfo = this.props.savedJobs[0].job_info;
       coordinate = { lat: jobInfo.latitude, lng: jobInfo.longitude };
     }
@@ -53,8 +54,10 @@ class MapJob extends React.Component {
     const bounds = new google.maps.LatLngBounds();
     const jobs = this.props.savedJobs;
     const allJobs = [];
-    for (let i = 0; i < jobs.length; i++) {
-      allJobs.push(jobs[i].job_info);
+    if (jobs !== undefined) {
+      for (let i = 0; i < jobs.length; i++) {
+        allJobs.push(jobs[i].job_info);
+      }
     }
     for (let i = 0; i < allJobs.length; i++) {
       const currentJob = allJobs[i];
@@ -86,23 +89,25 @@ class MapJob extends React.Component {
   }
 
   createCenterButton() {
-    return (
-      <div>
-        <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto'>
-          {this.props.savedJobs.map((job, index) => {
-            const words = job.job_info.company.split(' ');
-            // eslint-disable-next-line no-prototype-builtins
-            if (job.job_info.hasOwnProperty('latitude') && job.job_info.hasOwnProperty('longitude')) {
-              return (
-                <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
-                  {words[0]}
-                </button>
-              );
-            }
-          })}
+    if (this.props.savedJobs !== undefined) {
+      return (
+        <div>
+          <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto'>
+            {this.props.savedJobs.map((job, index) => {
+              const words = job.job_info.company.split(' ');
+              // eslint-disable-next-line no-prototype-builtins
+              if (job.job_info.hasOwnProperty('latitude') && job.job_info.hasOwnProperty('longitude')) {
+                return (
+                  <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
+                    {words[0]}
+                  </button>
+                );
+              }
+            })}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   centerMap(lat, lng) {
@@ -111,6 +116,7 @@ class MapJob extends React.Component {
   }
 
   render() {
+    this.createMarker();
     const centerButton = this.createCenterButton();
     return (
       <div className=' d-flex flex-column align-items-center'>
