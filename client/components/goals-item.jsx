@@ -17,7 +17,15 @@ function GoalItems(props) {
     <div className={backgroundColor}>
       <i className={starColor}></i>
       <h4 className='text-center'>{props.title}</h4>
-      <p>{props.current} / {props.end}</p>
+      <div className='w-100 p-3 d-flex justify-content-between'>
+        <button className='btn btn-secondary'>
+          <i className='fas fa-minus'></i>
+        </button>
+        <p>{props.current} / {props.end}</p>
+        <button className='btn btn-secondary'>
+          <i className='fas fa-plus'></i>
+        </button>
+      </div>
     </div>
   );
 }
