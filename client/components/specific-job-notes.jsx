@@ -185,7 +185,7 @@ class SpecificJobNotes extends React.Component {
               <h4 className='text-center font-weight-bold'>Title</h4>
               <input
                 onChange={this.handleTitle}
-                // value={this.state.newNote.noteTitle}
+                // value={this.state.newNote.noteTitle}This is a test
                 type="text"
                 required/>
             </div>

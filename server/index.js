@@ -168,6 +168,7 @@ app.get('/api/notes/:jobId', (req, res, next) => {
     FROM "notes"
     JOIN "JobNotes" using ("note_id")
    WHERE "user_job_id" = $1
+   order by "job_note_id" DESC
   `;
 
   const params = [jobId];
