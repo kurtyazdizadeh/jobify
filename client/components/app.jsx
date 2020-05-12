@@ -34,6 +34,7 @@ export default class App extends React.Component {
     this.deleteJob = this.deleteJob.bind(this);
     this.getGoals = this.getGoals.bind(this);
     this.postGoal = this.postGoal.bind(this);
+    this.saveJob = this.saveJob.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +54,25 @@ export default class App extends React.Component {
         params: params
       }
     });
+  }
+
+  saveJob(event, props) {
+    const heart = event.target;
+    const params = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(props)
+    };
+
+    fetch('/api/save-job', params)
+      .then(res => res.json())
+      .then(job => {
+        heart.className = 'fas fa-heart like-button';
+        const jobs = this.state.savedJobs.slice();
+        jobs.push(job.rows[0]);
+        this.setState({ savedJobs: jobs });
+      })
+      .catch(err => console.error(err));
   }
 
   getSavedJobs(order) {
@@ -83,7 +103,7 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(newGoal)
     };
-    fetch('api/goals', request)
+    fetch('/api/goals', request)
       .then(response => response.json())
       .then(data => {
         const goal = this.state.goals.slice();
@@ -157,6 +177,7 @@ export default class App extends React.Component {
               <SearchResults {...props}
                 setView={this.setView}
                 searchQuery={params}
+                saveJob={this.saveJob}
               />} />
           <Route path="/search"
             render={props =>
@@ -189,6 +210,7 @@ export default class App extends React.Component {
                 savedJobs={savedJobs}
                 deleteJob={this.deleteJob}
                 setView={this.setView}
+                getSavedJobs={this.getSavedJobs}
               />} />
         </Switch>
         <FooterMenu setView={this.setView} />
