@@ -30,20 +30,20 @@ class YourJobs extends React.Component {
       order = 'ASC';
     }
     if (event.target.value === 'Date') {
-      this.getSavedJobs(`date_saved ${order}`);
+      this.props.getSavedJobs(`date_saved ${order}`);
     }
     if (event.target.value === 'Status') {
-      this.getSavedJobs(`job_status ${order}`);
+      this.props.getSavedJobs(`job_status ${order}`);
     }
     if (event.target.value === 'Rating') {
-      this.getSavedJobs(`job_priority ${order}`);
+      this.props.getSavedJobs(`job_priority ${order}`);
     }
   }
 
   render() {
     if (this.props.savedJobs !== undefined) {
       return (
-        <div className='mt-4 scroll'>
+        <div className='mt-4 mb-5 scroll'>
           <div className="form-group d-flex justify-content-around mt-5">
             <form>
               <select className='form-control pointer btn btn-secondary' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>

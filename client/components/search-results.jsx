@@ -107,6 +107,7 @@ class SearchResults extends React.Component {
           latitude={latitude}
           longitude={longitude}
           description={description}
+          saveJob={this.props.saveJob}
         />
       );
     });
