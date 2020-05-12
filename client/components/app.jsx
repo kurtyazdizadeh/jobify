@@ -11,6 +11,7 @@ import MapJob from './map-job';
 import AddNewJob from './add-new-job';
 import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
+import SideBar from './side-bar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -82,6 +83,8 @@ export default class App extends React.Component {
           setView={this.setView}
           searchQuery={params}
         />;
+      case 'Side Bar':
+        return <SideBar setView={this.setView} />;
       case 'Upload Files':
         return <UploadFiles setView={this.setView} />;
       default:
