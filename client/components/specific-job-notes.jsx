@@ -184,6 +184,7 @@ class SpecificJobNotes extends React.Component {
             <div className='d-flex flex-column'>
               <h4 className='text-center font-weight-bold'>Title</h4>
               <input
+                className='form-control form-style'
                 onChange={this.handleTitle}
                 // value={this.state.newNote.noteTitle}This is a test
                 type="text"

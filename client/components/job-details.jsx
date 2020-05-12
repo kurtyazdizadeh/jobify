@@ -50,6 +50,7 @@ class JobDetails extends React.Component {
       view = (
         <div className='d-flex flex-row align-items-center'>
           <DatePicker
+            className='form-control form-style'
             selected={this.state.interview}
             onChange={this.handleDateChange}
           />
@@ -142,6 +143,7 @@ class JobDetails extends React.Component {
       return (
         <div className='d-flex flex-row align-items-center'>
           <DatePicker
+            className='form-control form-style'
             selected={this.state.followUp}
             onChange={this.handleFollowUpText}
           />
