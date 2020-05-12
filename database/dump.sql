@@ -157,9 +157,11 @@ CREATE TABLE public."UsersGoal" (
     user_id integer NOT NULL,
     goal_achieved boolean DEFAULT false NOT NULL,
     currently_active boolean DEFAULT true NOT NULL,
-    current_progress integer NOT NULL,
+    current_progress integer DEFAULT 0 NOT NULL,
     end_goal integer NOT NULL,
-    deadline_date date
+    deadline_date date,
+    goal_title text,
+    goal_type text
 );
 
 
@@ -350,6 +352,7 @@ COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_saved, job
 46	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1521287825","url":"https://www.adzuna.com/land/ad/1521287825?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=0540C172E67AA5B511AA5B0E3BFB5CDBCBF80E8B","title":"Sr. Web Applications Developer","company":"Marquee Staffing","city":"Irvine","state":"California","county":"Orange County","contract":"full_time","latitude":33.751486,"longitude":-117.75493,"description":"Senior Web Applications Developer Creates user information solutions by developing, implementing, and maintaining Internetintranet applications leading team of developers. Job Duties Defines site objectives by analyzing user requirements envisioning system features and functionality. Designs and develops user interfaces to Internetintranet applications by setting expectations and features priorities throughout development life cycle determining design methodologies and tool sets completing prog…"}	\N	\N	\N	\N
 47	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1536963719","url":"https://www.adzuna.com/land/ad/1536963719?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=8FC46D39F7F41560335E766A9172D12F06D72C32","title":"Senior Web Application Developer","company":"SAIC","city":"Santa Ana","state":"California","county":"Orange County","contract":"full_time","latitude":33.746392,"longitude":-117.860447,"description":"Description SAIC is looking for an accomplished Senior Web Application Developer to play a pivotal role in supporting the County of Orange, Probation department. This position is responsible for the design, development and implementation of new computer software systems as well as maintaining and enhancing large and complex existing system. Essential Duties and Responsibilities Develop, test, implement, and maintain software programs Integrate best software development practices in software des…"}	\N	\N	\N	\N
 48	1	Interested	2020-05-08	1	\N	\N	\N	{"id":"1521282681","url":"https://www.adzuna.com/land/ad/1521282681?se=tHBH1F-R6hGTiue8IJMjaA&utm_medium=api&utm_source=e4056c10&v=1B415C87297866B32E1D43D00432A3442989EF6C","title":"Sr. Software Developer / Web Developer","company":"Confidential","city":"Costa Mesa","state":"California","county":"Orange County","contract":"full_time","latitude":33.683414,"longitude":-117.907324,"description":"This is a permanent salary position with great benefits (stock options, 401k, health benefits, flexible time off, etc). Working with cutting edge technology in an exciting environment. What Yoursquoll Do Build solutions that meet our customerrsquos needs and are maintainable, cost-effective and responsive. Partner with our product, design and infrastructure teams to build or enhance applications and services. Own the reliability of the application and services by partnering. operations and infr…"}	\N	\N	\N	\N
+52	1	interested	2020-05-08	1	\N	\N	\N	{"company":"Hello","title":"Full-Stack Developer"}	\N	\N	\N	\N
 \.
 
 
@@ -357,8 +360,10 @@ COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_saved, job
 -- Data for Name: UsersGoal; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."UsersGoal" (user_goal_id, user_id, goal_achieved, currently_active, current_progress, end_goal, deadline_date) FROM stdin;
-1	1	f	t	0	3	\N
+COPY public."UsersGoal" (user_goal_id, user_id, goal_achieved, currently_active, current_progress, end_goal, deadline_date, goal_title, goal_type) FROM stdin;
+1	1	f	t	0	3	\N	Number of Application Applied	Applying
+2	1	t	f	3	3	\N	Number of Network Attended	Network
+19	1	f	t	0	7	\N	Number of Jobs Saved	Saving
 \.
 
 
@@ -399,14 +404,14 @@ SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, true);
 -- Name: UserSelectedJob_user_job_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 51, true);
+SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 52, true);
 
 
 --
 -- Name: UsersGoal_user_goal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UsersGoal_user_goal_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."UsersGoal_user_goal_id_seq"', 19, true);
 
 
 --
@@ -504,3 +509,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
