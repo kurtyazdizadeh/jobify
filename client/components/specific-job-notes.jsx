@@ -168,13 +168,13 @@ class SpecificJobNotes extends React.Component {
     if (!this.state.notes) {
       return <h1>Notes</h1>;
     }
-    let addClass = 'hidden';
+    let addClass = 'hidden-note';
     let notesClass = '';
     if (this.state.displayAdd) {
       addClass = 'pt-3 form-group';
     }
     if (!this.state.displayNotes) {
-      notesClass = 'hidden';
+      notesClass = 'hidden-note';
     }
 
     return (
