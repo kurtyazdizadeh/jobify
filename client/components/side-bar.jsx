@@ -6,10 +6,10 @@ class SideBar extends React.Component {
     this.state = {
       isClicked: false
     };
-    this.toggle = this.toggle.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  toggle() {
+  handleClick() {
     this.setState({ isClicked: !this.state.isClicked });
   }
 
@@ -18,7 +18,7 @@ class SideBar extends React.Component {
     if (this.state.isClicked === true) {
       menu = (
         <div className='container'>
-          <div onClick={this.toggle} className='aside'>
+          <div onClick={this.handleClick} className={`side-menu${this.state.isMenuOpen ? '' : ' hidden'}`}>
             <h6 onClick={() => props.setView('Saved Jobs', {})} >Saved Jobs</h6>
             <h6 onClick={() => props.setView('Search for Jobs', {})}>Search for Jobs</h6>
             <h6 onClick={() => props.setView('Notes', {})}>Notes</h6>
@@ -30,8 +30,8 @@ class SideBar extends React.Component {
     } else if (this.state.isClicked === false) {
       menu = (
         <div>
-          <div className='aside'>
-            <h3 onClick={this.toggle} className='bars'>&#9776;</h3>
+          <div className={`shaded${this.state.isMenuOpen ? '' : ' fade'}`}>
+            <h3 onClick={this.handleClick} className='bars'>&#9776;</h3>
           </div>
         </div>
       );
