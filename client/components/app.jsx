@@ -9,7 +9,7 @@ import FooterMenu from './footer-menu';
 import UploadFiles from './upload-files';
 import MapJob from './map-job';
 import AddNewJob from './add-new-job';
-import SpecificJobNotes from './specific-job-ntes';
+import SpecificJobNotes from './specific-job-notes';
 import Notes from './notes';
 import SideBar from './side-bar';
 
