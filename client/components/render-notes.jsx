@@ -6,17 +6,16 @@ function RenderNotes(props) {
     bgColor = 'bg-grey';
   }
 
-  let icon = <i className="fas fa-trash-alt" onClick={props.delete}></i>;
+  let icon = <i className="fas fa-trash float-right red" onClick={props.delete}></i>;
   if (props.title === 'No notes for this job') {
     icon = '';
   }
   return (
     <>
-      <div className={`${bgColor} text-center`}>
-        <h4>{props.title}</h4>
+      <div className={`${bgColor} p-3`}>
+        <h4>{props.title}{icon}</h4>
         <p>{props.date}</p>
         <p>{props.note}</p>
-        {icon}
       </div>
     </>
   );

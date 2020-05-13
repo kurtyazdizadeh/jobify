@@ -15,6 +15,7 @@ import Notes from './notes';
 import NotesView from './notes-view';
 import Goals from './goals';
 import AddNewGoal from './add-new-goal';
+import Splash from './splash';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class App extends React.Component {
     this.plusGoal = this.plusGoal.bind(this);
     this.minusGoal = this.minusGoal.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
+    this.manualAddJob = this.manualAddJob.bind(this);
   }
 
   componentDidMount() {
@@ -76,6 +78,26 @@ export default class App extends React.Component {
         this.setState({ savedJobs: jobs });
       })
       .catch(err => console.error(err));
+  }
+
+  manualAddJob(event, newJob) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newJob)
+    };
+    fetch('/api/manual-save', params)
+      .then(res => res.json())
+      .then(data => {
+        const job = this.state.savedJobs.slice();
+        job.unshift(data);
+        this.setState({
+          savedJobs: job
+        });
+      });
   }
 
   getSavedJobs(order) {
@@ -178,9 +200,14 @@ export default class App extends React.Component {
     const { name, params } = this.state.view;
     const { goals, savedJobs } = this.state;
     return (
-      <div>
-        <Header title={name} setView={this.setView} />
+      <>
+        <Header title={name} setView={this.setView}/>
         <Switch>
+          <Route path="/login"
+            render={props =>
+              <Splash {...props}
+                setView={this.setView}
+              />} />
           <Route path="/map"
             render={props =>
               <MapJob {...props}
@@ -204,6 +231,7 @@ export default class App extends React.Component {
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}
+                addJob={this.manualAddJob}
                 setView={this.setView}
               />} />
           <Route path="/notes/:category"
@@ -260,7 +288,7 @@ export default class App extends React.Component {
               />} />
         </Switch>
         <FooterMenu setView={this.setView} />
-      </div>
+      </>
     );
   }
 }

@@ -1,3 +1,7 @@
+@font-face {
+  font-family: DaysOne;
+  src: url(./fonts/DaysOne-Regular.ttf);
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,6 +15,26 @@ a,
 a:visited {
   color: inherit;
   text-decoration: none;
+}
+
+.splash {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  background-color: #6D9197;
+  color: #2F575D;
+  text-shadow: 0px 4px 7px rgba(0, 0, 0, 0.25);
+  z-index: 1500;
+}
+.splash h1 {
+  font-family: DaysOne;
+}
+.splash-content {
+  width: 75%;
+  height: 35%;
+}
+.splash-logo {
+  width: 50%;
 }
 
 /* ********************* */
@@ -52,6 +76,7 @@ nav, footer {
 }
 .bg-grey {
   background-color: #CFCFCF;
+  border: 1px solid #BFBFBF;
 }
 .gold {
   color: gold;
@@ -59,6 +84,10 @@ nav, footer {
 
 .red {
   color: red;
+}
+
+.green {
+  color: green;
 }
 
 .bg-dark-grey {
@@ -87,8 +116,7 @@ input[type="number"],
 input[type="number"]:focus,
 input[type="submit"],
 .form-style,
-.form-style:focus,
-.notes-button {
+.form-style:focus {
   background-color: #C4C4C4;
   color: #252525;
 }
@@ -143,8 +171,6 @@ input[type="submit"]:hover {
   border-radius: 5px;
   width: 95px;
   height: 35px;
-  background-color: #B1B4B5;
-  color: #2F575D ;
 }
 .title {
   margin: 2rem;
@@ -171,17 +197,13 @@ input[type="submit"]:hover {
 /*    Goals   */
 /* ********** */
 
-.goalItems {
-  width: 90%;
-  border: 2px solid #252525;
-}
-
 .goalInput {
   width: 60%
 }
 
 .heading {
   margin: 10px;
+  margin-bottom: 0;
   border-radius: 5px;
   color: #2F575D;
 }
@@ -201,21 +223,28 @@ input[type="submit"]:hover {
 /* ************************ */
 
 .shaded {
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   height: 100vh;
   width: 100%;
+  top: 0;
   opacity: 1;
   transition: opacity 0.5s;
 }
 .side-menu {
-  background-color: white;
+  background-color: #6D9197;
+  color: #E0E0E0;
   display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  padding: 2rem;
+  font-weight: lighter;
   flex-direction: column;
   position: absolute;
   height: 100vh;
   width: 300px;
   left: 0;
+
   box-shadow: 5px 5px 10px grey;
   transition: all 0.5s;
 }
@@ -227,6 +256,7 @@ input[type="submit"]:hover {
   opacity: 0;
   pointer-events: none;
 }
+
 /* **************** */
 /*  modal position  */
 /* **************** */
