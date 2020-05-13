@@ -294,6 +294,18 @@ class JobDetails extends React.Component {
     this.props.setView('Job Note', { id });
   }
 
+  getCity() {
+    let city = '';
+    const location = this.state.job.job_info;
+    if (location.city || location.county) {
+      city = `${location.city} ${location.county}, `;
+    }
+    if (location.state) {
+      city += location.state;
+    }
+    return city;
+  }
+
   render() {
     if (this.state.job === null || this.state.note === null) {
       return <h1>Job</h1>;
@@ -306,7 +318,7 @@ class JobDetails extends React.Component {
         <div className='text-center mt-5 py-2 dark-gray'>
           <h4>{title}</h4>
           <h5>{info.company}</h5>
-          <h5>{`${info.city || info.county}, ${info.state}`}</h5>
+          <h5>{this.getCity()}</h5>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
           <h4>Job Post</h4>
