@@ -168,13 +168,13 @@ class SpecificJobNotes extends React.Component {
     if (!this.state.notes) {
       return <h1>Notes</h1>;
     }
-    let addClass = 'hidden';
+    let addClass = 'hidden-note';
     let notesClass = '';
     if (this.state.displayAdd) {
       addClass = 'pt-3 form-group';
     }
     if (!this.state.displayNotes) {
-      notesClass = 'hidden';
+      notesClass = 'hidden-note';
     }
 
     return (
@@ -184,8 +184,9 @@ class SpecificJobNotes extends React.Component {
             <div className='d-flex flex-column'>
               <h4 className='text-center font-weight-bold'>Title</h4>
               <input
+                className='form-control form-style'
                 onChange={this.handleTitle}
-                // value={this.state.newNote.noteTitle}
+                // value={this.state.newNote.noteTitle}This is a test
                 type="text"
                 required/>
             </div>

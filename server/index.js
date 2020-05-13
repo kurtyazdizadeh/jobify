@@ -168,6 +168,7 @@ app.get('/api/notes/:jobId', (req, res, next) => {
     FROM "notes"
     JOIN "JobNotes" using ("note_id")
    WHERE "user_job_id" = $1
+   order by "job_note_id" DESC
   `;
 
   const params = [jobId];
@@ -300,6 +301,34 @@ app.get('/api/notes/view/:category', (req, res, next) => {
     .then(result => res.status(200).json(result.rows))
     .catch(err => console.error(err));
 
+});
+
+app.delete('/api/notes/view/:id', (req, res, next) => {
+  const { id } = req.params;
+  if (id <= 0) {
+    return res.status(400).json({
+      error: '"noteID" must be a positive integer'
+    });
+  }
+
+  const sql = `
+    DELETE FROM "notes"
+    WHERE       "note_id" = $1
+    RETURNING *;
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      const deletedNote = result.rows;
+      if (!deletedNote[0]) {
+        res.status(404).json({
+          error: `note ${id} is not found`
+        });
+      } else {
+        res.status(200).json(deletedNote);
+      }
+    })
+    .catch(err => next(err));
 });
 
 app.delete('/api/saved-job/:id', (req, res, next) => {

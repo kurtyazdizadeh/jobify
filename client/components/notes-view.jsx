@@ -10,9 +10,14 @@ class NotesView extends React.Component {
       noResults: false
     };
     this.notesView = this.notesView.bind(this);
+    this.deleteNote = this.deleteNote.bind(this);
   }
 
   componentDidMount() {
+    this.loadNotes();
+  }
+
+  loadNotes() {
     const { category } = this.props.match.params;
 
     fetch(`/api/notes/view/${category}`)
@@ -29,6 +34,18 @@ class NotesView extends React.Component {
     this.props.setView('View Notes');
   }
 
+  deleteNote(event) {
+    const id = event.target.getAttribute('note_id');
+
+    fetch(`/api/notes/view/${id}`, { method: 'DELETE' })
+      .then(result => result.json())
+      .then(deletedNote => {
+        this.loadNotes();
+      })
+      .catch(err => console.error(err));
+
+  }
+
   renderNoteItems() {
     const noteItemsElements = this.state.notes.map((note, index) => {
       const { date_posted: date, note_content: content, note_title: title, note_id: id } = note;
@@ -39,13 +56,17 @@ class NotesView extends React.Component {
       }
       return (
         <div key={id} className={`${bgColor} p-3`}>
-          <h6>{title}</h6>
+          <h6>{title}
+            <i className="fas fa-trash float-right red"
+              onClick={this.deleteNote}
+              note_id={id}></i>
+          </h6>
           <h6>Added: {this.props.date(date)}</h6>
           <p>{content}</p>
         </div>
       );
     });
-    return noteItemsElements;
+    return noteItemsElements.reverse();
   }
 
   notesView() {

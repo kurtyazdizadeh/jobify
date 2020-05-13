@@ -16,8 +16,8 @@ class Goals extends React.Component {
 
   render() {
     return (
-      <div className='d-flex flex-column align-items-center scroll'>
-        <h1 className='mt-5'>Goals</h1>
+      <div className='d-flex flex-column align-items-center scroll my-5'>
+        <h1>Goals</h1>
         {
           this.props.goals.map(goal => {
             return (
@@ -32,7 +32,7 @@ class Goals extends React.Component {
             );
           })
         }
-        <Link to="/add-goal">
+        <Link to="/goals/add">
           <i onClick={() => this.props.setView('Add Goal')} className='fas fa-plus pointer mt-3'></i>
         </Link>
       </div>

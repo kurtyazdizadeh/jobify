@@ -6,7 +6,6 @@ class JobListingItem extends React.Component {
     this.state = {
       logo: ''
     };
-    this.saveJob = this.saveJob.bind(this);
     this.loadingImage = this.loadingImage.bind(this);
   }
 
@@ -15,23 +14,6 @@ class JobListingItem extends React.Component {
       .then(res => res.json())
       .then(imgURL => {
         this.setState({ logo: imgURL });
-      })
-      .catch(err => console.error(err));
-  }
-
-  saveJob(event) {
-    const heart = event.target;
-
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.props)
-    };
-
-    fetch('/api/save-job', params)
-      .then(res => res.json())
-      .then(job => {
-        heart.className = 'fas fa-heart like-button';
       })
       .catch(err => console.error(err));
   }
@@ -73,7 +55,7 @@ class JobListingItem extends React.Component {
         <div className="job-list-buttons ml-auto d-flex flex-column justify-content-between align-items-end">
           <i
             className="far fa-heart like-button"
-            onClick={this.saveJob}
+            onClick={() => this.props.saveJob(event, this.props)}
           ></i>
           <button
             className="btn job-link"
