@@ -215,6 +215,7 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: space-evenly;
   padding: 10px;
+  padding: 2rem;
   font-weight: lighter;
   flex-direction: column;
   position: absolute;
