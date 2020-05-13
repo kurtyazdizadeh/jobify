@@ -160,7 +160,7 @@ CREATE TABLE public."UsersGoal" (
     user_id integer NOT NULL,
     goal_achieved boolean DEFAULT false NOT NULL,
     currently_active boolean DEFAULT true NOT NULL,
-    current_progress integer NOT NULL,
+    current_progress integer DEFAULT 0 NOT NULL,
     end_goal integer NOT NULL,
     deadline_date date,
     goal_title text,
@@ -562,4 +562,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
