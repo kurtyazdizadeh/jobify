@@ -11,7 +11,9 @@ class AddNewJob extends React.Component {
       position: '',
       dateOfApplication: new Date(),
       followUp: new Date(),
-      location: '',
+      city: '',
+      county: '',
+      state: '',
       rating: 0,
       isInterviewScheduled: false,
       interviewDate: ''
@@ -58,14 +60,14 @@ class AddNewJob extends React.Component {
       case 'position':
         change.position = event.target.value;
         break;
-      case 'dateOfApplication':
-        change.dateOfApplication = event.target.value;
+      case 'city':
+        change.city = event.target.value;
         break;
-      case 'followUp':
-        change.followUp = event.target.value;
+      case 'state':
+        change.state = event.target.value;
         break;
-      case 'location':
-        change.location = event.target.value;
+      case 'county':
+        change.county = event.target.value;
         break;
       default:
         break;
@@ -137,9 +139,11 @@ class AddNewJob extends React.Component {
       position,
       dateOfApplication,
       followUp,
-      location,
+      city,
+      state,
       rating,
-      interviewDate
+      interviewDate,
+      county
     } = this.state;
     const newJob = {
       companyName: companyName,
@@ -148,7 +152,10 @@ class AddNewJob extends React.Component {
       followUp: followUp,
       location: location,
       rating: rating,
-      interviewDate: interviewDate
+      interviewDate: interviewDate,
+      city: city,
+      state: state,
+      county: county
     };
     this.resetForm();
     return newJob;
@@ -217,15 +224,43 @@ class AddNewJob extends React.Component {
               selected={this.state.followUp}/>
           </label>
           <label className='heading'>
-            Location:<br></br>
+            City:<br></br>
             <input
-              id='location'
+              id='city'
               className='text form-control light-gray'
               type='text'
               name='location'
               size='30'
-              placeholder='ex. City, State'
-              value={this.state.location}
+              placeholder='ex. Huntington Beach'
+              value={this.state.city}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+          <label className='heading'>
+            County:<br></br>
+            <input
+              id='county'
+              className='text form-control light-gray'
+              type='text'
+              name='location'
+              size='30'
+              placeholder='ex. Orange County'
+              value={this.state.county}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+          <label className='heading'>
+            State:<br></br>
+            <input
+              id='state'
+              className='text form-control light-gray'
+              type='text'
+              name='location'
+              size='30'
+              placeholder='ex. CA'
+              value={this.state.state}
               onChange={this.handleChange}
               required
             />
