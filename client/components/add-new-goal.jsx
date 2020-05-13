@@ -56,11 +56,12 @@ class AddNewGoal extends React.Component {
   }
 
   render() {
+    const formRowClasses = 'form-group d-flex flex-column align-items-center p-3';
     return (
-      <div>
-        <form className='mt-5 align-middle text-center' onSubmit={this.handleSubmit}>
-          <h3 className='heading mb-4'>
-            Goal Title:
+      <>
+        <form className='mt-5 pt-3 align-middle text-center' onSubmit={this.handleSubmit}>
+          <div className={formRowClasses}>
+            <label htmlFor="title">Goal Title:</label>
             <input
               id='title'
               className='text form-control light-gray'
@@ -70,9 +71,9 @@ class AddNewGoal extends React.Component {
               value={this.state.title}
               onChange={this.handleChange}
             />
-          </h3>
-          <h3 className='heading mb-4'>
-            Goal Type:
+          </div>
+          <div className={formRowClasses}>
+            <label htmlFor="type">Goal Type:</label>
             <input
               id='type'
               className='text form-control light-gray'
@@ -82,9 +83,9 @@ class AddNewGoal extends React.Component {
               value={this.state.type}
               onChange={this.handleChange}
             />
-          </h3>
-          <h3 className='heading mb-4'>
-            Goal End Goal:
+          </div>
+          <div className={formRowClasses}>
+            <label htmlFor="endGoal">Goal End Goal:</label>
             <input
               id='endGoal'
               className='text form-control light-gray'
@@ -94,17 +95,15 @@ class AddNewGoal extends React.Component {
               value={this.state.endGoal}
               onChange={this.handleChange}
             />
-          </h3>
-          <div>
-            <button type='submit' className='button btn col'>
-              Submit
-            </button>
-            <button type='reset' className='button btn col'>
-              Cancel
-            </button>
           </div>
+          <button type='submit' className='btn button bg-grey col'>
+              Submit
+          </button>
+          <button type='reset' className='btn button bg-grey col'>
+              Cancel
+          </button>
         </form>
-      </div>
+      </>
     );
   }
 }
