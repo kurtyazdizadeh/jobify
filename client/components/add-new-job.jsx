@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
 
 class AddNewJob extends React.Component {
   constructor(props) {
@@ -7,11 +9,12 @@ class AddNewJob extends React.Component {
     this.state = {
       companyName: '',
       position: '',
-      dateOfApplication: '',
-      followUp: '',
+      dateOfApplication: new Date(),
+      followUp: new Date(),
       location: '',
       rating: 0,
-      isInterviewScheduled: false
+      isInterviewScheduled: false,
+      interviewDate: new Date()
     };
     this.handleClickInterviewYes = this.handleClickInterviewYes.bind(this);
     this.handleClickInterviewNo = this.handleClickInterviewNo.bind(this);
@@ -19,6 +22,9 @@ class AddNewJob extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.handleApplicationDate = this.handleApplicationDate.bind(this);
+    this.handleFollowUpBy = this.handleFollowUpBy.bind(this);
+    this.setInterview = this.setInterview.bind(this);
   }
 
   componentDidMount() {
@@ -26,8 +32,6 @@ class AddNewJob extends React.Component {
   }
 
   handleClickInterviewYes() {
-    event.preventDefault();
-
     if (this.state.isInterviewScheduled === false) {
       this.setState(state => ({
         isInterviewScheduled: true
@@ -69,9 +73,54 @@ class AddNewJob extends React.Component {
     this.setState(change);
   }
 
+  handleApplicationDate(date) {
+    this.setState({
+      dateOfApplication: date
+    });
+  }
+
+  handleFollowUpBy(date) {
+    this.setState({
+      followUp: date
+    });
+  }
+
   handleClickRating(num) {
     event.preventDefault();
     this.setState({ rating: num });
+  }
+
+  scheduleInterview() {
+    const interview = this.state.isInterviewScheduled;
+    if (!interview) {
+      return (
+        <>
+          <button
+            className='button btn col'
+            onClick={this.handleClickInterviewYes}>
+            Yes
+          </button>
+          <button
+            className='button btn col'
+            onClick={this.handleClickInterviewNo}>
+            No
+          </button>
+        </>
+      );
+    } else if (interview) {
+      return (
+        <DatePicker
+          className='form-control form-style'
+          selected={this.state.interview}
+          onChange={this.setInterview}/>
+      );
+    }
+  }
+
+  setInterview(date) {
+    this.setState({
+      interview: date
+    });
   }
 
   getRating(num) {
@@ -90,7 +139,7 @@ class AddNewJob extends React.Component {
       followUp,
       location,
       rating,
-      isInterviewScheduled
+      interviewDate
     } = this.state;
     const newJob = {
       companyName: companyName,
@@ -99,7 +148,7 @@ class AddNewJob extends React.Component {
       followUp: followUp,
       location: location,
       rating: rating,
-      isInterviewScheduled: isInterviewScheduled
+      interviewDate: interviewDate
     };
     this.resetForm();
     return newJob;
@@ -109,11 +158,12 @@ class AddNewJob extends React.Component {
     this.setState({
       companyName: '',
       position: '',
-      dateOfApplication: '',
-      followUp: '',
+      dateOfApplication: new Date(),
+      followUp: new Date(),
       location: '',
       rating: false,
-      isInterviewScheduled: false
+      isInterviewScheduled: false,
+      interviewDate: new Date()
     });
     this.props.history.push('/');
     this.props.setView('Home');
@@ -136,6 +186,7 @@ class AddNewJob extends React.Component {
               size='30'
               value={this.state.companyName}
               onChange={this.handleChange}
+              required
             />
           </label>
           <label className='heading'>
@@ -148,31 +199,22 @@ class AddNewJob extends React.Component {
               size='30'
               value={this.state.position}
               onChange={this.handleChange}
+              required
             />
           </label>
           <label className='heading'>
             Date of Application:<br></br>
-            <input
-              id='dateOfApplication'
-              className='text form-control light-gray'
-              type='text'
-              name='application'
-              size='30'
-              value={this.state.dateOfApplication}
-              onChange={this.handleChange}
-            />
+            <DatePicker
+              className='form-control form-style'
+              selected={this.state.dateOfApplication}
+              onChange={this.handleApplicationDate}/>
           </label>
           <label className='heading'>
             Follow up by:<br></br>
-            <input
-              id='followUp'
-              className='text form-control light-gray'
-              type='text'
-              name='followUp'
-              size='30'
-              value={this.state.followUp}
-              onChange={this.handleChange}
-            />
+            <DatePicker
+              className='form-control form-style'
+              onChange={this.handleFollowUpBy}
+              selected={this.state.followUp}/>
           </label>
           <label className='heading'>
             Location:<br></br>
@@ -185,6 +227,7 @@ class AddNewJob extends React.Component {
               placeholder='ex. City, State'
               value={this.state.location}
               onChange={this.handleChange}
+              required
             />
           </label>
           <div>
@@ -222,18 +265,8 @@ class AddNewJob extends React.Component {
           </div>
           <label className='heading'>
             Interview Scheduled?<br></br>
-            <button
-              className='btn button bg-grey col'
-              onClick={this.handleClickInterviewYes}>
-              Yes
-            </button>
-            <button
-              className='btn button bg-grey col'
-              onClick={this.handleClickInterviewNo}>
-              No
-            </button>
+            {this.scheduleInterview()}
           </label>
-
           <div className='heading'>
             Notes:
             <textarea
@@ -254,7 +287,7 @@ class AddNewJob extends React.Component {
             </button>
             <button
               className='btn button bg-grey col'
-              onClick={this.resetForm }>
+              onClick={this.resetForm}>
               Cancel
             </button>
           </div>
@@ -264,4 +297,4 @@ class AddNewJob extends React.Component {
   }
 }
 
-export default AddNewJob;
+export default withRouter(AddNewJob);
