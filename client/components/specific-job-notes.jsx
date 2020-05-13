@@ -7,9 +7,9 @@ class SpecificJobNotes extends React.Component {
     super(props);
     this.state = {
       notes: null,
-      newNote: {
-        noteType: 'Job'
-      },
+      noteType: 'Job',
+      noteTitle: '',
+      note: '',
       displayAdd: false,
       displayNotes: true
     };
@@ -66,40 +66,37 @@ class SpecificJobNotes extends React.Component {
     this.setState({
       displayAdd: false,
       displayNotes: true,
-      newNote: {
-        noteType: 'Job',
-        note: '',
-        noteTitle: ''
-      }
+      noteType: 'Job',
+      noteBody: '',
+      noteTitle: ''
     });
   }
 
   handleTitle(event) {
-    event.preventDefault();
-    const previous = Object.assign(this.state.newNote);
-    previous.noteTitle = event.target.value;
     this.setState({
-      newNote: previous
+      noteTitle: event.target.value
     });
   }
 
   handleNote(event) {
-    event.preventDefault();
-    const previous = Object.assign(this.state.newNote);
-    previous.note = event.target.value;
     this.setState({
-      newNote: previous
+      note: event.target.value
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
+    const newNote = {
+      note: this.state.note,
+      noteType: this.state.noteType,
+      noteTitle: this.state.noteTitle
+    };
     const noteBody = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.newNote)
+      body: JSON.stringify(newNote)
     };
     fetch(`/api/job-note/${this.props.match.params.id}`, noteBody)
       .then(res => res.json())
@@ -109,24 +106,20 @@ class SpecificJobNotes extends React.Component {
             notes: [data],
             displayAdd: false,
             displayNotes: true,
-            newNote: {
-              noteType: 'Job',
-              note: '',
-              noteTitle: ''
-            }
+            noteType: 'Job',
+            note: '',
+            noteTitle: ''
           });
         } else {
           const newNote = this.state.notes;
-          newNote.push(data);
+          newNote.unshift(data);
           this.setState({
             notes: newNote,
             displayAdd: false,
             displayNotes: true,
-            newNote: {
-              noteType: 'Job',
-              note: '',
-              noteTitle: ''
-            }
+            noteType: 'Job',
+            note: '',
+            noteTitle: ''
           });
         }
       })
@@ -141,8 +134,8 @@ class SpecificJobNotes extends React.Component {
       .then(note => {
         const idToRemove = note.note_id;
         const newNotes = Object.assign(this.state.notes);
-        for (let i = 0; i < this.state.notes.length; i++) {
-          if (newNotes[i].job_note_id === idToRemove) {
+        for (let i = 0; i < newNotes.length; i++) {
+          if (newNotes[i].note_id === idToRemove) {
             newNotes.splice(i, 1);
           }
         }
@@ -186,7 +179,7 @@ class SpecificJobNotes extends React.Component {
               <input
                 className='form-control form-style'
                 onChange={this.handleTitle}
-                // value={this.state.newNote.noteTitle}This is a test
+                value={this.state.noteTitle}
                 type="text"
                 required/>
             </div>
@@ -194,7 +187,7 @@ class SpecificJobNotes extends React.Component {
               <h4 className='text-center font-weight-bold'>Note</h4>
               <textarea
                 onChange={this.handleNote}
-                value={this.state.newNote.note}
+                value={this.state.note}
                 cols='40'
                 rows='10'
                 required
