@@ -202,13 +202,17 @@ app.post('/api/manual-save', (req, res, next) => {
       error: 'position must be included'
     });
   }
+  let interview = null;
+  if (job.interviewDate) {
+    interview = job.interviewDate;
+  }
   const json = JSON.stringify({ company: job.companyName, title: job.position, location: job.location });
   const sql = `
-    INSERT INTO "UserSelectedJob" ("user_job_id", "user_id", "job_status", "date_saved", "job_priority", "follow_up_date", "date_applied", "job_info")
-    VALUES (default, 1, 'interested', default, $1, $2, $3, $4)
+    INSERT INTO "UserSelectedJob" ("user_job_id", "user_id", "job_status", "date_saved", "job_priority", "follow_up_date", "date_applied", "job_info", "interview_date")
+    VALUES (default, 1, 'interested', default, $1, $2, $3, $4, $5)
     returning *;
   `;
-  const params = [job.rating, job.followUp, job.dateOfApplication, json];
+  const params = [job.rating, job.followUp, job.dateOfApplication, json, interview];
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {

@@ -96,12 +96,12 @@ class AddNewJob extends React.Component {
       return (
         <>
           <button
-            className='button btn col'
+            className='btn button bg-grey col'
             onClick={this.handleClickInterviewYes}>
             Yes
           </button>
           <button
-            className='button btn col'
+            className='btn button bg-grey col'
             onClick={this.handleClickInterviewNo}>
             No
           </button>
@@ -111,7 +111,7 @@ class AddNewJob extends React.Component {
       return (
         <DatePicker
           className='form-control form-style'
-          selected={this.state.interview}
+          selected={this.state.interviewDate}
           onChange={this.setInterview}/>
       );
     }
@@ -119,7 +119,7 @@ class AddNewJob extends React.Component {
 
   setInterview(date) {
     this.setState({
-      interview: date
+      interviewDate: date
     });
   }
 
