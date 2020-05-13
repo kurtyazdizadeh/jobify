@@ -18,7 +18,7 @@ class Goals extends React.Component {
     return (
       <div className='d-flex flex-column align-items-center scroll my-5 pt-3'>
         {
-          this.props.goals.map(goal => {
+          this.props.goals.map((goal, index) => {
             return (
               <GoalItems
                 key = {goal.user_goal_id}
@@ -26,6 +26,7 @@ class Goals extends React.Component {
                 title = {goal.goal_title}
                 isAchieved = {goal.goal_achieved}
                 isActive = {goal.currently_active}
+                isStripe = {index % 2 === 0}
                 current = {goal.current_progress}
                 end = {goal.end_goal}
                 plusGoal = {this.props.plusGoal}
