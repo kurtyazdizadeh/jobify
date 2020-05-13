@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class AddNewGoal extends React.Component {
   constructor(props) {
@@ -44,6 +45,8 @@ class AddNewGoal extends React.Component {
     };
     this.props.onSubmit(newGoal);
     this.resetForm(event);
+    this.props.history.push('/goals');
+    this.props.setView('Goals');
   }
 
   resetForm(event) {
@@ -108,4 +111,4 @@ class AddNewGoal extends React.Component {
   }
 }
 
-export default AddNewGoal;
+export default withRouter(AddNewGoal);
