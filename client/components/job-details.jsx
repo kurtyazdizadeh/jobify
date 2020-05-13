@@ -356,7 +356,7 @@ class JobDetails extends React.Component {
                 <option value='' defaultValue>{this.state.job.job_status}</option>
                 <option value="None">None</option>
                 <option value="Pending">Pending</option>
-                <option value="In-Progress">In Progress</option>
+                <option value="In-Progress">In-Progress</option>
                 <option value="Interview">Interview Scheduled</option>
                 <option value="Denied">Denied</option>
               </select>
