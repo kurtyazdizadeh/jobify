@@ -115,7 +115,9 @@ class MapJob extends React.Component {
   }
 
   render() {
-    this.createMarker();
+    if (this.map) {
+      this.createMarker();
+    }
     const centerButton = this.createCenterButton();
     return (
       <div className=' d-flex flex-column align-items-center'>
