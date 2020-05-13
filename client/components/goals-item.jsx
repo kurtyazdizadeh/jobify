@@ -11,7 +11,7 @@ class GoalItems extends React.Component {
   createBackground() {
     let backgroundColor = '';
 
-    if (this.props.isActive) {
+    if (this.props.isStripe) {
       backgroundColor = 'dark-gray';
     } else {
       backgroundColor = 'light-gray';
