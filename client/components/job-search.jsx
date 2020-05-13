@@ -209,7 +209,7 @@ class JobSearch extends React.Component {
           <input
             type="submit"
             value="Search"
-            className={'btn w-50'}
+            className="btn bg-grey w-50"
           />
         </div>
       </form>

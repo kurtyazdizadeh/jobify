@@ -11,7 +11,10 @@ class JobDetails extends React.Component {
       interviewModal: false,
       interview: new Date(),
       followUpModal: false,
-      followUp: new Date()
+      followUp: new Date(),
+      resume: null,
+      coverLetter: null,
+      letterOfRec: null
     };
     this.handleStatus = this.handleStatus.bind(this);
     this.changeRating = this.changeRating.bind(this);
@@ -30,6 +33,7 @@ class JobDetails extends React.Component {
     this.props.setView('Job Details');
     this.getJob(id);
     this.getNote(id);
+    this.getDocStatus(id);
   }
 
   getJob(jobId) {
@@ -38,6 +42,21 @@ class JobDetails extends React.Component {
       .then(job => {
         this.setState({
           job: job
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  getDocStatus(jobId) {
+    fetch(`/api/view-docs/${jobId}`)
+      .then(data => data.json())
+      .then(docs => {
+        // eslint-disable-next-line camelcase
+        const { resume, letter_of_recommendation, cover_letter } = docs;
+        this.setState({
+          resume: resume,
+          letterOfRec: letter_of_recommendation,
+          coverLetter: cover_letter
         });
       })
       .catch(err => console.error(err));
@@ -56,16 +75,16 @@ class JobDetails extends React.Component {
           />
           <button
             onClick={this.handleSendInterview}
-            className='btn btn-secondary'
+            className='btn bg-grey'
           >Add</button>
         </div>
       );
     } else if (view === 'No' || view === 'no' || view === null) {
-      view = <button onClick={this.handleSetDate} className='btn btn-secondary'>Set Date</button>;
+      view = <button onClick={this.handleSetDate} className='btn bg-grey'>Set Date</button>;
     } else {
       view = (
         <>
-          <h3>{this.props.date(view)}</h3>
+          <h4>{this.props.date(view)}</h4>
           <i onClick={this.handleUpdateInterview} className="fas fa-edit"></i>
         </>
       );
@@ -149,16 +168,16 @@ class JobDetails extends React.Component {
           />
           <button
             onClick={this.handleAddFollowUp}
-            className='btn btn-secondary'
+            className='btn bg-grey'
           >Add</button>
         </div>
       );
     } else if (followUpDate === null) {
-      return <button onClick={this.handleFollowUpModal} className='btn btn-secondary'>Set Date</button>;
+      return <button onClick={this.handleFollowUpModal} className='btn bg-grey'>Set Date</button>;
     } else {
       return (
         <>
-          <h3>{this.props.date(followUpDate)}</h3>
+          <h4>{this.props.date(followUpDate)}</h4>
           <i onClick={this.handleUpdateFollowUp} className="fas fa-edit"></i>
         </>
       );
@@ -290,13 +309,13 @@ class JobDetails extends React.Component {
           <h5>{`${info.city || info.county}, ${info.state}`}</h5>
         </div>
         <div className='d-flex justify-content-around py-2 light-green'>
-          <h3>Job Post</h3>
-          <button className='btn btn-secondary'>
-            <a href={info.url} className='text-light'>Click to Apply</a>
+          <h4>Job Post</h4>
+          <button className='btn bg-grey'>
+            <a href={info.url}>Click to Apply</a>
           </button>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
-          <h3>Rating</h3>
+          <h4>Rating</h4>
           <i className={this.getRating(1)}
             onClick={() => this.changeRating(1)}></i>
           <i className={this.getRating(2)}
@@ -309,17 +328,17 @@ class JobDetails extends React.Component {
             onClick={() => this.changeRating(5)}></i>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 light-green'>
-          <h3>Interview</h3>
+          <h4>Interview:</h4>
           {this.handleInterview()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
-          <h3>Status</h3>
+          <h4>Status</h4>
           <div>
             <form action="submit">
               <select
                 name="status"
                 id="status"
-                className='form-control pointer btn btn-secondary'
+                className='form-control pointer btn bg-grey'
                 value='this.state.job.job_status'
                 onChange={this.handleStatus}>
                 <option value='' defaultValue>{this.state.job.job_status}</option>
@@ -333,20 +352,20 @@ class JobDetails extends React.Component {
           </div>
         </div>
         <div className='d-flex justify-content-around align-items-center py-2 light-green'>
-          <h3>Follow up by:</h3>
+          <h4>Follow up by:</h4>
           {this.toggleFollowUp()}
         </div>
         <div className='d-flex justify-content-around py-2 dark-gray'>
           <div className='d-flex flex-column'>
-            <h3 className='m-1'>Documents</h3>
-            <button className='m-1 btn btn-secondary' onClick={() => this.viewDocs()}>Upload Docs</button>
-            <h6 className='m-1'>Resume <i className="fas fa-file-pdf"></i></h6>
-            <h6 className='m-1'>Cover Letter <i className="fas fa-file-pdf"></i></h6>
-            <h6 className='m-1'>Letter of Rec <i className="fas fa-file-pdf"></i></h6>
+            <h4 className='m-1'>Documents</h4>
+            <button className='m-1 btn bg-grey' onClick={() => this.viewDocs()}>Upload Docs</button>
+            <h6 className='m-1'><i className={`${this.state.resume ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Resume</h6>
+            <h6 className='m-1'><i className={`${this.state.coverLetter ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Cover Letter</h6>
+            <h6 className='m-1'><i className={`${this.state.letterOfRec ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Letter of Rec</h6>
           </div>
           <div>
-            <h3 className='m-1'>Notes</h3>
-            <button className='m-1 btn btn-secondary'
+            <h4 className='m-1'>Notes</h4>
+            <button className='m-1 btn bg-grey'
               onClick={() => this.viewJobNotes()}>
               See All Notes
             </button>
