@@ -12,6 +12,7 @@ body {
   color: #4F4F4F;
 }
 a,
+a:hover,
 a:visited {
   color: inherit;
   text-decoration: none;
@@ -232,6 +233,7 @@ input[type="submit"]:hover {
   width: 100%;
   top: 0;
   opacity: 1;
+  z-index: 1500;
   transition: opacity 0.5s;
 }
 .side-menu {
@@ -247,8 +249,8 @@ input[type="submit"]:hover {
   height: 100vh;
   width: 300px;
   left: 0;
-
-  box-shadow: 5px 5px 10px grey;
+  z-index: 1500;
+  /* box-shadow: 5px 5px 10px grey; */
   transition: all 0.5s;
 }
 .hidden {
