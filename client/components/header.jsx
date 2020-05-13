@@ -17,13 +17,13 @@ class Header extends React.Component {
     let menu;
     if (this.state.isClicked === true) {
       menu = (
-        <div className='container'>
-          <nav className="navbar fixed-top dark-green">
+        <div className='container '>
+          <nav className="navbar fixed-top dark-green ">
             <i onClick={this.handleClick} className="fas fa-bars pointer"></i>
             {this.props.title}
             <i onClick={() => this.props.setView('Profile', {})} className="fas fa-user-circle pointer"></i>
           </nav>
-          <div onClick={this.handleClick} className={`side-menu${this.state.isClicked ? '' : ' hidden'}`}>
+          <div onClick={this.handleClick} className="side-menu">
             <h6 onClick={() => props.setView('Saved Jobs', {})} >Saved Jobs</h6>
             <h6 onClick={() => props.setView('Search for Jobs', {})}>Search for Jobs</h6>
             <h6 onClick={() => props.setView('Notes', {})}>Notes</h6>
@@ -36,11 +36,11 @@ class Header extends React.Component {
       menu = (
         <div>
           <nav className="navbar fixed-top dark-green">
-            <i className="fas fa-bars pointer"></i>
+            <i onClick={this.handleClick} className="fas fa-bars pointer"></i>
             {this.props.title}
             <i onClick={() => this.props.setView('Profile', {})} className="fas fa-user-circle pointer"></i>
           </nav>
-          <div className={`shaded${this.state.isClicked ? '' : ' fade'}`}>
+          <div >
           </div>
         </div>
       );

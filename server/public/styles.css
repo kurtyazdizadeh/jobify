@@ -209,8 +209,12 @@ input[type="submit"]:hover {
   transition: opacity 0.5s;
 }
 .side-menu {
-  background-color: white;
+  background-color: #6D9197;
+  color: #E0E0E0;
   display: flex;
+  justify-content: space-evenly;
+  padding: .5rem;
+  font-weight: lighter;
   flex-direction: column;
   position: absolute;
   height: 100vh;
