@@ -8,7 +8,6 @@ class MapJob extends React.Component {
     this.createMarker = this.createMarker.bind(this);
     this.map = null;
     this.state = {
-      savedJobs: [],
       openMarkerId: ''
     };
     this.handleToggleClose = this.handleToggleClose.bind(this);
