@@ -8,6 +8,7 @@ class MapJob extends React.Component {
     this.createMarker = this.createMarker.bind(this);
     this.map = null;
     this.state = {
+      savedJobs: [],
       openMarkerId: ''
     };
     this.handleToggleClose = this.handleToggleClose.bind(this);
@@ -115,7 +116,9 @@ class MapJob extends React.Component {
   }
 
   render() {
-    this.createMarker();
+    if (this.map) {
+      this.createMarker();
+    }
     const centerButton = this.createCenterButton();
     return (
       <div className=' d-flex flex-column align-items-center'>
