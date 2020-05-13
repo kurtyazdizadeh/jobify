@@ -14,7 +14,7 @@ class AddNewJob extends React.Component {
       location: '',
       rating: 0,
       isInterviewScheduled: false,
-      interviewDate: new Date()
+      interviewDate: ''
     };
     this.handleClickInterviewYes = this.handleClickInterviewYes.bind(this);
     this.handleClickInterviewNo = this.handleClickInterviewNo.bind(this);
