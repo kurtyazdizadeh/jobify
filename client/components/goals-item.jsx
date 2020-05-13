@@ -41,7 +41,7 @@ class GoalItems extends React.Component {
         <h4 className='text-center'>{this.props.title}</h4>
         <div className='w-100 p-3 d-flex justify-content-between'>
           <button className='btn btn-secondary'>
-            <i className='fas fa-minus'></i>
+            <i onClick={() => this.props.minusGoal(this.props.id)} className='fas fa-minus'></i>
           </button>
           <p>{this.props.current} / {this.props.end}</p>
           <button className='btn btn-secondary'>

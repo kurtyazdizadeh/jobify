@@ -112,6 +112,7 @@ app.get('/api/goals', (req, res, next) => {
   const sql = `
     SELECT  *
     FROM    "UsersGoal"
+    ORDER BY "user_goal_id"
   `;
   db.query(sql)
     .then(result => {
@@ -260,7 +261,7 @@ app.patch('/api/goals/', (req, res, next) => {
       error: 'id must be a positive integer'
     });
   }
-  if (!parseInt(goal.current_progress, 10) || parseInt(goal.current_progress, 10) < 0) {
+  if (!goal.current_progress || goal.current_progress < 0) {
     return res.status(400).json({
       error: 'progress must be a positive integer'
     });

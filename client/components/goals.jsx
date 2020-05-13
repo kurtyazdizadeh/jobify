@@ -30,6 +30,7 @@ class Goals extends React.Component {
                 current = {goal.current_progress}
                 end = {goal.end_goal}
                 plusGoal={this.props.plusGoal}
+                minusGoal={this.props.minusGoal}
               />
             );
           })
