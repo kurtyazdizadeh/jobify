@@ -14,7 +14,7 @@ function RenderNotes(props) {
     <>
       <div className={`${bgColor} p-3`}>
         <h4>{props.title}{icon}</h4>
-        <p>{props.date}</p>
+        <p>{props.date === 'Invalid Date' ? '' : props.date}</p>
         <p>{props.note}</p>
       </div>
     </>

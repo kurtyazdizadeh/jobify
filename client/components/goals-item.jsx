@@ -4,9 +4,21 @@ class GoalItems extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.createBackground = this.createBackground.bind(this);
     this.createStarColor = this.createStarColor.bind(this);
   }
 
+  createBackground() {
+    let backgroundColor = '';
+
+    if (this.props.isActive) {
+      backgroundColor = 'dark-gray';
+    } else {
+      backgroundColor = 'light-gray';
+    }
+
+    return backgroundColor;
+  }
 
   createStarColor() {
     let starColor = '';
@@ -19,10 +31,10 @@ class GoalItems extends React.Component {
   }
 
   render() {
-    const backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
+    const backgroundColor = this.createBackground();
     const starColor = this.createStarColor();
     return (
-      <div className={`${backgroundColor} w-100 my-2 d-flex flex-column align-items-center`}>
+      <div className={`${backgroundColor} w-100 d-flex flex-column align-items-center`}>
         <i className={`${starColor} align-self-end p-2`}></i>
         <h4 className='text-center'>{this.props.title}</h4>
         <div className='w-100 p-3 d-flex justify-content-between'>

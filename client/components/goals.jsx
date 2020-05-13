@@ -21,15 +21,15 @@ class Goals extends React.Component {
           this.props.goals.map(goal => {
             return (
               <GoalItems
-                key={goal.user_goal_id}
-                id={goal.user_goal_id}
+                key = {goal.user_goal_id}
+                id = {goal.user_goal_id}
                 title = {goal.goal_title}
                 isAchieved = {goal.goal_achieved}
                 isActive = {goal.currently_active}
                 current = {goal.current_progress}
                 end = {goal.end_goal}
-                plusGoal={this.props.plusGoal}
-                minusGoal={this.props.minusGoal}
+                plusGoal = {this.props.plusGoal}
+                minusGoal = {this.props.minusGoal}
               />
             );
           })
