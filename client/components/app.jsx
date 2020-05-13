@@ -37,10 +37,7 @@ export default class App extends React.Component {
     this.saveJob = this.saveJob.bind(this);
     this.plusGoal = this.plusGoal.bind(this);
     this.minusGoal = this.minusGoal.bind(this);
-    this.goalReached = this.goalReached.bind(this);
-    this.goalNotReached = this.goalNotReached.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
-    this.updateGoalAchieve = this.updateGoalAchieve.bind(this);
   }
 
   componentDidMount() {
@@ -122,17 +119,17 @@ export default class App extends React.Component {
     const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
     if (updateGoal.current_progress < updateGoal.end_goal) {
       updateGoal.current_progress++;
-      this.updateProgress(updateGoal);
       if (updateGoal.current_progress === updateGoal.end_goal) {
-        this.goalReached(id);
+        updateGoal.goal_achieved = true;
       }
+      this.updateProgress(updateGoal);
     }
   }
 
   minusGoal(id) {
     const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
     if (updateGoal.current_progress === updateGoal.end_goal) {
-      this.goalNotReached(id);
+      updateGoal.goal_achieved = false;
     }
     if (updateGoal.current_progress > 0) {
       updateGoal.current_progress--;
@@ -149,38 +146,6 @@ export default class App extends React.Component {
       body: JSON.stringify(updateGoal)
     };
     fetch('/api/goals', request)
-      .then(response => response.json())
-      .then(data => {
-        const goals = this.state.goals.slice();
-        const index = goals.findIndex(goals => goals.id === updateGoal.user_goal_id);
-        goals[index] = data.row;
-        this.setState({
-          goals: goals
-        });
-      });
-  }
-
-  goalReached(id) {
-    const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
-    updateGoal.isAchieved = true;
-    this.updateGoalAchieve(updateGoal);
-  }
-
-  goalNotReached(id) {
-    const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
-    updateGoal.isAchieved = false;
-    this.updateGoalAchieve(updateGoal);
-  }
-
-  updateGoalAchieve(updateGoal) {
-    const request = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updateGoal)
-    };
-    fetch('/api/goal-status/', request)
       .then(response => response.json())
       .then(data => {
         const goals = this.state.goals.slice();

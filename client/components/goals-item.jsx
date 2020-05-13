@@ -6,25 +6,12 @@ class GoalItems extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.createBackground = this.createBackground.bind(this);
     this.createStarColor = this.createStarColor.bind(this);
-  }
-
-  createBackground() {
-    let backgroundColor = '';
-
-    if (this.props.isActive) {
-      backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
-    } else {
-      backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
-    }
-
-    return backgroundColor;
   }
 
   createStarColor() {
     let starColor = '';
-    if (this.props.isAchieved) {
+    if (this.props.current === this.props.end) {
       starColor = 'gold fas fa-star align-self-end';
     } else {
       starColor = 'fas fa-star align-self-end';
@@ -33,7 +20,7 @@ class GoalItems extends React.Component {
   }
 
   render() {
-    const backgroundColor = this.createBackground();
+    const backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
     const starColor = this.createStarColor();
     return (
       <div className={backgroundColor}>

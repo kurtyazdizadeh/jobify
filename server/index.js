@@ -266,12 +266,18 @@ app.patch('/api/goals/', (req, res, next) => {
       error: 'progress must be a positive integer'
     });
   }
+  if (goal.goal_achieved === undefined) {
+    return res.status(400).json({
+      error: 'goal_achieved must be included'
+    });
+  }
   const sql = `
     UPDATE "UsersGoal"
-    SET "current_progress" = $1
+    SET "current_progress" = $1,
+        "goal_achieved" = $3
     WHERE "user_goal_id" = $2
   `;
-  const params = [goal.current_progress, goal.user_goal_id];
+  const params = [goal.current_progress, goal.user_goal_id, goal.goal_achieved];
   db.query(sql, params)
     .then(result => {
       if (!result) {
