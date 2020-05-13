@@ -46,16 +46,16 @@ class YourJobs extends React.Component {
         <div className='mt-4 mb-5 scroll'>
           <div className="form-group d-flex justify-content-around mt-5">
             <form>
-              <select className='form-control pointer btn btn-secondary' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
+              <select className='form-control pointer btn bg-grey' name="sort" id="sort" onChange={this.handleChange} value = {this.state.value}>
                 <option value="" disabled defaultValue>Sort By:</option>
                 <option value="Date">Date</option>
                 <option value="Rating">Rating</option>
                 <option value="Status">Status</option>
               </select>
             </form>
-            <button onClick={this.toggleOrder} className='btn btn-secondary'>{this.state.isDesc}</button>
+            <button onClick={this.toggleOrder} className='btn bg-grey'>{this.state.isDesc}</button>
             <Link to="/add-job">
-              <button onClick={() => this.props.setView('Add New Job')} className='btn btn-secondary'>Add</button>
+              <button onClick={() => this.props.setView('Add New Job')} className='btn bg-grey'>Add</button>
             </Link>
           </div>
           <table className='jobTable table table-striped text-center text-capitalize mt-2 '>

@@ -77,7 +77,7 @@ class Notes extends React.Component {
         <h5 className="py-3">View Notes</h5>
         <div className="container">
           <button
-            className="btn btn-block notes-button"
+            className="btn btn-block bg-grey"
             onClick={() => {
               this.viewNotes('general');
             }}
@@ -85,7 +85,7 @@ class Notes extends React.Component {
               General Notes
           </button>
           <button
-            className="btn btn-block notes-button"
+            className="btn btn-block bg-grey"
             onClick={() => {
               this.viewNotes('networking');
             }}
@@ -93,7 +93,7 @@ class Notes extends React.Component {
               Networking Events
           </button>
           <button
-            className="btn btn-block notes-button"
+            className="btn btn-block bg-grey"
             onClick={() => {
               this.viewNotes('resume');
             }}
@@ -141,8 +141,8 @@ class Notes extends React.Component {
             </textarea>
           </div>
           <div className="buttons">
-            <button className="btn notes-button mx-3" type="submit">Submit Note</button>
-            <button className="btn notes-button mx-3" onClick={this.resetForm}>Cancel</button>
+            <button className="btn bg-grey mx-3" type="submit">Submit Note</button>
+            <button className="btn bg-grey mx-3" onClick={this.resetForm}>Cancel</button>
           </div>
         </form>
       </div>

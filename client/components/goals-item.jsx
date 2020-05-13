@@ -1,6 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
-import { render } from 'react-dom';
 
 class GoalItems extends React.Component {
   constructor(props) {
@@ -14,9 +12,9 @@ class GoalItems extends React.Component {
     let backgroundColor = '';
 
     if (this.props.isActive) {
-      backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
+      backgroundColor = 'light-gray';
     } else {
-      backgroundColor = 'light-grey goalItems my-2 d-flex flex-column align-items-center';
+      backgroundColor = 'dark-gray';
     }
 
     return backgroundColor;
@@ -25,9 +23,9 @@ class GoalItems extends React.Component {
   createStarColor() {
     let starColor = '';
     if (this.props.isAchieved) {
-      starColor = 'gold fas fa-star align-self-end';
+      starColor = 'gold fas fa-star';
     } else {
-      starColor = 'fas fa-star align-self-end';
+      starColor = 'fas fa-star';
     }
     return starColor;
   }
@@ -36,15 +34,15 @@ class GoalItems extends React.Component {
     const backgroundColor = this.createBackground();
     const starColor = this.createStarColor();
     return (
-      <div className={backgroundColor}>
-        <i className={starColor}></i>
+      <div className={`${backgroundColor} goalItems my-2 d-flex flex-column align-items-center`}>
+        <i className={`${starColor} align-self-end p-2`}></i>
         <h4 className='text-center'>{this.props.title}</h4>
         <div className='w-100 p-3 d-flex justify-content-between'>
-          <button className='btn btn-secondary'>
+          <button className='btn bg-grey'>
             <i className='fas fa-minus'></i>
           </button>
           <p>{this.props.current} / {this.props.end}</p>
-          <button className='btn btn-secondary'>
+          <button className='btn bg-grey'>
             <i className='fas fa-plus'></i>
           </button>
         </div>

@@ -52,6 +52,7 @@ nav, footer {
 }
 .bg-grey {
   background-color: #CFCFCF;
+  border: 1px solid #BFBFBF;
 }
 .gold {
   color: gold;
@@ -59,6 +60,10 @@ nav, footer {
 
 .red {
   color: red;
+}
+
+.green {
+  color: green;
 }
 
 .bg-dark-grey {
@@ -87,8 +92,7 @@ input[type="number"],
 input[type="number"]:focus,
 input[type="submit"],
 .form-style,
-.form-style:focus,
-.notes-button {
+.form-style:focus {
   background-color: #C4C4C4;
   color: #252525;
 }
@@ -182,6 +186,7 @@ input[type="submit"]:hover {
 
 .heading {
   margin: 10px;
+  margin-bottom: 0;
   border-radius: 5px;
   color: #2F575D;
 }

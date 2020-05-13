@@ -164,7 +164,7 @@ class SpecificJobNotes extends React.Component {
     let addClass = 'hidden-note';
     let notesClass = '';
     if (this.state.displayAdd) {
-      addClass = 'pt-3 form-group';
+      addClass = 'pt-3 mx-3 form-group';
     }
     if (!this.state.displayNotes) {
       notesClass = 'hidden-note';
@@ -194,16 +194,16 @@ class SpecificJobNotes extends React.Component {
                 className='form-control form-style'></textarea>
             </div>
             <div className='d-flex justify-content-around mt-3'>
-              <button className='btn btn-secondary'>Submit</button>
-              <button onClick={this.handleCancel} className='btn btn-secondary'>Cancel</button>
+              <button className='btn bg-grey'>Submit</button>
+              <button onClick={this.handleCancel} className='btn bg-grey'>Cancel</button>
             </div>
           </form>
         </div>
         <div className={notesClass}>
           <div>
-            <button onClick={this.handleAdd} className='ml-2 my-2 btn btn-secondary'>Add</button>
+            <button onClick={this.handleAdd} className='ml-2 my-2 btn bg-grey'>Add</button>
             <Link to={`/details/${this.props.match.params.id}`}>
-              <button onClick={this.handleBack} className='ml-2 my-2 btn btn-secondary'>Back</button>
+              <button onClick={this.handleBack} className='ml-2 my-2 btn bg-grey'>Back</button>
             </Link>
           </div>
           {

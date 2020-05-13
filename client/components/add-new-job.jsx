@@ -153,7 +153,7 @@ class AddNewJob extends React.Component {
             />
           </label>
           <label className='heading'>
-            Date of Applicaiton:<br></br>
+            Date of Application:<br></br>
             <input
               id='dateOfApplication'
               className='text form-control light-gray'
