@@ -255,7 +255,7 @@ class AddNewJob extends React.Component {
             </button>
             <button
               className='button btn col'
-              onClick={this.resetForm}>
+              onClick={this.resetForm }>
               Cancel
             </button>
           </div>

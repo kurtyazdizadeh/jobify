@@ -201,21 +201,28 @@ input[type="submit"]:hover {
 /* ************************ */
 
 .shaded {
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   height: 100vh;
   width: 100%;
+  top: 0;
   opacity: 1;
   transition: opacity 0.5s;
 }
 .side-menu {
-  background-color: white;
+  background-color: #6D9197;
+  color: #E0E0E0;
   display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  padding: 2rem;
+  font-weight: lighter;
   flex-direction: column;
   position: absolute;
   height: 100vh;
   width: 300px;
   left: 0;
+
   box-shadow: 5px 5px 10px grey;
   transition: all 0.5s;
 }
@@ -227,6 +234,7 @@ input[type="submit"]:hover {
   opacity: 0;
   pointer-events: none;
 }
+
 /* **************** */
 /*  modal position  */
 /* **************** */

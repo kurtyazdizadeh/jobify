@@ -135,7 +135,7 @@ export default class App extends React.Component {
     const { goals, savedJobs } = this.state;
     return (
       <div>
-        <Header title={name} setView={this.setView} />
+        <Header title={name} setView={this.setView}/>
         <Switch>
           <Route path="/map"
             render={props =>
