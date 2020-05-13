@@ -233,19 +233,6 @@ class AddNewJob extends React.Component {
               No
             </button>
           </label>
-
-          <div className='heading'>
-            Notes:
-            <textarea
-              id='notes'
-              className='text light-gray p-2'
-              name='Notes'
-              cols='40'
-              rows='2'
-              value={this.state.notes}
-              onChange={this.handleChange}>
-            </textarea>
-          </div>
           <div>
             <button
               className='btn button bg-grey col'
@@ -254,7 +241,7 @@ class AddNewJob extends React.Component {
             </button>
             <button
               className='btn button bg-grey col'
-              onClick={this.resetForm }>
+              onClick={this.resetForm}>
               Cancel
             </button>
           </div>

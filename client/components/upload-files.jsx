@@ -90,7 +90,7 @@ class UploadFiles extends React.Component {
 
       return (
         <a
-          className='btn button'
+          className='btn button bg-grey anchorBtn'
           href={`../../../../docs/${fileURL}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -125,7 +125,7 @@ class UploadFiles extends React.Component {
                 {(selectedFile && fileType === 'resume') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
-            <button type='submit' className='btn button'>Upload</button>
+            <button type='submit' className='btn button bg-grey'>Upload</button>
             {this.renderDownloadButton(resumeURL)}
           </form>
         </div>
@@ -147,7 +147,7 @@ class UploadFiles extends React.Component {
                 {(selectedFile && fileType === 'cover_letter') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
-            <button type='submit' className='btn button'>Upload</button>
+            <button type='submit' className='btn button bg-grey'>Upload</button>
             {this.renderDownloadButton(coverURL)}
           </form>
         </div>
@@ -169,7 +169,7 @@ class UploadFiles extends React.Component {
                 {(selectedFile && fileType === 'letter_of_recommendation') ? selectedFile.name : 'Choose File...'}
               </label>
             </div>
-            <button type='submit' className='btn button'>Upload</button>
+            <button type='submit' className='btn button bg-grey'>Upload</button>
             {this.renderDownloadButton(letterURL)}
           </form>
         </div>

@@ -315,7 +315,7 @@ class JobDetails extends React.Component {
     const info = this.state.job.job_info;
     return (
       <>
-        <div className='text-center mt-5 py-2 dark-gray'>
+        <div className='text-center mt-5 py-2 light-gray'>
           <h4>{title}</h4>
           <h5>{info.company}</h5>
           <h5>{this.getCity()}</h5>
@@ -326,7 +326,7 @@ class JobDetails extends React.Component {
             <a href={info.url}>Click to Apply</a>
           </button>
         </div>
-        <div className='d-flex justify-content-around align-items-center py-2 dark-gray'>
+        <div className='d-flex justify-content-around align-items-center py-2 light-gray'>
           <h4>Rating</h4>
           <i className={this.getRating(1)}
             onClick={() => this.changeRating(1)}></i>
@@ -343,7 +343,7 @@ class JobDetails extends React.Component {
           <h4>Interview:</h4>
           {this.handleInterview()}
         </div>
-        <div className='d-flex justify-content-around py-2 dark-gray'>
+        <div className='d-flex justify-content-around py-2 light-gray'>
           <h4>Status</h4>
           <div>
             <form action="submit">
@@ -367,7 +367,7 @@ class JobDetails extends React.Component {
           <h4>Follow up by:</h4>
           {this.toggleFollowUp()}
         </div>
-        <div className='d-flex justify-content-around py-2 dark-gray'>
+        <div className='d-flex justify-content-around py-2 light-gray'>
           <div className='d-flex flex-column'>
             <h4 className='m-1'>Documents</h4>
             <button className='m-1 btn bg-grey' onClick={() => this.viewDocs()}>Upload Docs</button>
