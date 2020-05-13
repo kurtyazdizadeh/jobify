@@ -91,8 +91,8 @@ class MapJob extends React.Component {
   createCenterButton() {
     if (this.props.savedJobs !== undefined) {
       return (
-        <>
-          <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto'>
+        <div>
+          <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto scroll'>
             {this.props.savedJobs.map((job, index) => {
               const words = job.job_info.company.split(' ');
               // eslint-disable-next-line no-prototype-builtins

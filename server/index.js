@@ -112,6 +112,7 @@ app.get('/api/goals', (req, res, next) => {
   const sql = `
     SELECT  *
     FROM    "UsersGoal"
+    ORDER BY "user_goal_id"
   `;
   db.query(sql)
     .then(result => {
@@ -246,6 +247,70 @@ app.post('/api/goals/', (req, res, next) => {
     .then(result => {
       if (!result.rows[0]) {
         res.status(404).json({ error: 'something went wrong' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.patch('/api/goals/', (req, res, next) => {
+  const goal = req.body;
+  if (!parseInt(goal.user_goal_id, 10) || parseInt(goal.user_goal_id, 10) < 0) {
+    return res.status(400).json({
+      error: 'id must be a positive integer'
+    });
+  }
+  if (typeof (parseInt(goal.current_progress, 10)) !== 'number' || parseInt(goal.current_progress, 10) < 0) {
+    return res.status(400).json({
+      error: 'progress must be a positive integer'
+    });
+  }
+  if (goal.goal_achieved === undefined) {
+    return res.status(400).json({
+      error: 'goal_achieved must be included'
+    });
+  }
+  const sql = `
+    UPDATE "UsersGoal"
+    SET "current_progress" = $1,
+        "goal_achieved" = $3
+    WHERE "user_goal_id" = $2
+  `;
+  const params = [goal.current_progress, goal.user_goal_id, goal.goal_achieved];
+  db.query(sql, params)
+    .then(result => {
+      if (!result) {
+        res.status(404).json({ error: 'id not found' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.patch('/api/goal-status/', (req, res, next) => {
+  const goal = req.body;
+  if (!parseInt(goal.user_goal_id, 10) || parseInt(goal.user_goal_id, 10) < 0) {
+    return res.status(400).json({
+      error: 'id must be a positive integer'
+    });
+  }
+  if (goal.isAchieved === undefined) {
+    return res.status(400).json({
+      error: 'goal_achieved must be included'
+    });
+  }
+  const sql = `
+    UPDATE "UsersGoal"
+    SET "goal_achieved" = $1
+    WHERE "user_goal_id" = $2
+  `;
+  const params = [goal.isAchieved, goal.user_goal_id];
+  db.query(sql, params)
+    .then(result => {
+      if (!result) {
+        res.status(404).json({ error: 'id not found' });
       } else {
         res.status(201).json(result);
       }
