@@ -213,7 +213,7 @@ app.post('/api/manual-save', (req, res, next) => {
       if (!result.rows[0]) {
         res.status(404).json({ error: 'something went wrong' });
       } else {
-        res.status(201).json(result);
+        res.status(201).json(result.rows[0]);
       }
     })
     .catch(err => next(err));

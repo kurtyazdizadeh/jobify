@@ -11,8 +11,7 @@ class AddNewJob extends React.Component {
       followUp: '',
       location: '',
       rating: 0,
-      isInterviewScheduled: false,
-      notes: ''
+      isInterviewScheduled: false
     };
     this.handleClickInterviewYes = this.handleClickInterviewYes.bind(this);
     this.handleClickInterviewNo = this.handleClickInterviewNo.bind(this);
@@ -60,9 +59,6 @@ class AddNewJob extends React.Component {
       case 'location':
         change.location = event.target.value;
         break;
-      case 'notes':
-        change.notes = event.target.value;
-        break;
       default:
         break;
     }
@@ -82,8 +78,7 @@ class AddNewJob extends React.Component {
     );
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit() {
     const {
       companyName,
       position,
@@ -91,10 +86,8 @@ class AddNewJob extends React.Component {
       followUp,
       location,
       rating,
-      isInterviewScheduled,
-      notes
+      isInterviewScheduled
     } = this.state;
-
     const newJob = {
       companyName: companyName,
       position: position,
@@ -102,11 +95,10 @@ class AddNewJob extends React.Component {
       followUp: followUp,
       location: location,
       rating: rating,
-      isInterviewScheduled: isInterviewScheduled,
-      notes: notes
+      isInterviewScheduled: isInterviewScheduled
     };
-    // this.props.setView('Add New Job', newJob);
     this.resetForm();
+    return newJob;
   }
 
   resetForm() {
@@ -117,9 +109,10 @@ class AddNewJob extends React.Component {
       followUp: '',
       location: '',
       rating: false,
-      isInterviewScheduled: false,
-      notes: ''
+      isInterviewScheduled: false
     });
+    this.props.history.push('/');
+    this.props.setView('Home');
   }
 
   render() {
@@ -127,6 +120,7 @@ class AddNewJob extends React.Component {
       <div>
         <form
           className='addJob align-middle text-center'
+          onSubmit={() => this.props.addJob(event, this.handleSubmit())}
         >
           <label className='heading'>
             Company Name:<br></br>
@@ -235,22 +229,9 @@ class AddNewJob extends React.Component {
               No
             </button>
           </label>
-          <div className='heading'>
-            Notes:
-            <textarea
-              id='notes'
-              className='text light-gray'
-              name='Notes'
-              cols='40'
-              rows='2'
-              value={this.state.notes}
-              onChange={this.handleChange}>
-            </textarea>
-          </div>
           <div>
             <button
-              className='button btn col'
-              onSubmit={this.handleSubmit}>
+              className='button btn col'>
             Submit
             </button>
             <button
