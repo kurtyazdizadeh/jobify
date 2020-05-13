@@ -36,6 +36,7 @@ export default class App extends React.Component {
     this.getGoals = this.getGoals.bind(this);
     this.postGoal = this.postGoal.bind(this);
     this.saveJob = this.saveJob.bind(this);
+    this.manualAddJob = this.manualAddJob.bind(this);
   }
 
   componentDidMount() {
@@ -74,6 +75,26 @@ export default class App extends React.Component {
         this.setState({ savedJobs: jobs });
       })
       .catch(err => console.error(err));
+  }
+
+  manualAddJob(event, newJob) {
+    event.preventDefault();
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newJob)
+    };
+    fetch('/api/manual-save', params)
+      .then(res => res.json())
+      .then(data => {
+        const job = this.state.savedJobs.slice();
+        job.unshift(data);
+        this.setState({
+          savedJobs: job
+        });
+      });
   }
 
   getSavedJobs(order) {
@@ -164,6 +185,7 @@ export default class App extends React.Component {
           <Route path="/add-job"
             render={props =>
               <AddNewJob {...props}
+                addJob={this.manualAddJob}
                 setView={this.setView}
               />} />
           <Route path="/notes/:category"
