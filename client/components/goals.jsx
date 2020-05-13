@@ -23,11 +23,13 @@ class Goals extends React.Component {
             return (
               <GoalItems
                 key={goal.user_goal_id}
+                id={goal.user_goal_id}
                 title = {goal.goal_title}
                 isAchieved = {goal.goal_achieved}
                 isActive = {goal.currently_active}
                 current = {goal.current_progress}
                 end = {goal.end_goal}
+                plusGoal={this.props.plusGoal}
               />
             );
           })

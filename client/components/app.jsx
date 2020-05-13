@@ -35,6 +35,7 @@ export default class App extends React.Component {
     this.getGoals = this.getGoals.bind(this);
     this.postGoal = this.postGoal.bind(this);
     this.saveJob = this.saveJob.bind(this);
+    this.plusGoal = this.plusGoal.bind(this);
   }
 
   componentDidMount() {
@@ -113,6 +114,30 @@ export default class App extends React.Component {
       });
   }
 
+  plusGoal(id) {
+    const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
+    if (updateGoal.current_progress < updateGoal.end_goal) {
+      updateGoal.current_progress++;
+      const request = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateGoal)
+      };
+      fetch('/api/goals', request)
+        .then(response => response.json())
+        .then(data => {
+          const goals = this.state.goals.slice();
+          const index = goals.findIndex(goals => goals.id === id);
+          goals[index] = data.row;
+          this.setState({
+            goals: goals
+          });
+        });
+    }
+  }
+
   deleteJob(userJobId) {
     const req = {
       method: 'DELETE'
@@ -154,6 +179,7 @@ export default class App extends React.Component {
               <Goals {...props}
                 goals={goals}
                 setView={this.setView}
+                plusGoal={this.plusGoal}
               />} />
           <Route path="/add-job"
             render={props =>

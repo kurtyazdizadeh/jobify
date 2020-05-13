@@ -253,6 +253,35 @@ app.post('/api/goals/', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.patch('/api/goals/', (req, res, next) => {
+  const goal = req.body;
+  if (!parseInt(goal.user_goal_id, 10) || parseInt(goal.user_goal_id, 10) < 0) {
+    return res.status(400).json({
+      error: 'id must be a positive integer'
+    });
+  }
+  if (!parseInt(goal.current_progress, 10) || parseInt(goal.current_progress, 10) < 0) {
+    return res.status(400).json({
+      error: 'progress must be a positive integer'
+    });
+  }
+  const sql = `
+    UPDATE "UsersGoal"
+    SET "current_progress" = $1
+    WHERE "user_goal_id" = $2
+  `;
+  const params = [goal.current_progress, goal.user_goal_id];
+  db.query(sql, params)
+    .then(result => {
+      if (!result) {
+        res.status(404).json({ error: 'id not found' });
+      } else {
+        res.status(201).json(result);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/notes/', (req, res, next) => {
   const { title, content, category } = req.body;
 

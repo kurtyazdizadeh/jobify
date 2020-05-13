@@ -45,7 +45,7 @@ class GoalItems extends React.Component {
           </button>
           <p>{this.props.current} / {this.props.end}</p>
           <button className='btn btn-secondary'>
-            <i className='fas fa-plus'></i>
+            <i onClick={() => this.props.plusGoal(this.props.id)} className='fas fa-plus'></i>
           </button>
         </div>
       </div>
