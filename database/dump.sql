@@ -20,12 +20,14 @@ ALTER TABLE ONLY public."user" DROP CONSTRAINT user_user_name_key;
 ALTER TABLE ONLY public."user" DROP CONSTRAINT user_phone_number_key;
 ALTER TABLE ONLY public."user" DROP CONSTRAINT user_email_key;
 ALTER TABLE ONLY public.notes DROP CONSTRAINT notes_pkey;
+ALTER TABLE ONLY public.files DROP CONSTRAINT files_pkey;
 ALTER TABLE ONLY public."UsersStats" DROP CONSTRAINT "UsersStats_pkey";
 ALTER TABLE ONLY public."UsersGoal" DROP CONSTRAINT "UsersGoal_pkey";
 ALTER TABLE ONLY public."UserSelectedJob" DROP CONSTRAINT "UserSelectedJob_pkey";
 ALTER TABLE ONLY public."JobNotes" DROP CONSTRAINT "JobNotes_pkey";
 ALTER TABLE public."user" ALTER COLUMN user_id DROP DEFAULT;
 ALTER TABLE public.notes ALTER COLUMN note_id DROP DEFAULT;
+ALTER TABLE public.files ALTER COLUMN files_id DROP DEFAULT;
 ALTER TABLE public."UsersStats" ALTER COLUMN user_stats_id DROP DEFAULT;
 ALTER TABLE public."UsersGoal" ALTER COLUMN user_goal_id DROP DEFAULT;
 ALTER TABLE public."UserSelectedJob" ALTER COLUMN user_job_id DROP DEFAULT;
@@ -34,6 +36,8 @@ DROP SEQUENCE public.user_user_id_seq;
 DROP TABLE public."user";
 DROP SEQUENCE public.notes_note_id_seq;
 DROP TABLE public.notes;
+DROP SEQUENCE public.files_files_id_seq;
+DROP TABLE public.files;
 DROP SEQUENCE public."UsersStats_user_stats_id_seq";
 DROP TABLE public."UsersStats";
 DROP SEQUENCE public."UsersGoal_user_goal_id_seq";
@@ -118,7 +122,6 @@ CREATE TABLE public."UserSelectedJob" (
     date_saved date DEFAULT now(),
     job_priority integer DEFAULT 1 NOT NULL,
     follow_up_date date,
-    files_id bigint,
     interview_date date,
     job_info json NOT NULL,
     date_applied date,
@@ -157,7 +160,7 @@ CREATE TABLE public."UsersGoal" (
     user_id integer NOT NULL,
     goal_achieved boolean DEFAULT false NOT NULL,
     currently_active boolean DEFAULT true NOT NULL,
-    current_progress integer DEFAULT 0 NOT NULL,
+    current_progress integer NOT NULL,
     end_goal integer NOT NULL,
     deadline_date date,
     goal_title text,
@@ -216,6 +219,38 @@ CREATE SEQUENCE public."UsersStats_user_stats_id_seq"
 --
 
 ALTER SEQUENCE public."UsersStats_user_stats_id_seq" OWNED BY public."UsersStats".user_stats_id;
+
+
+--
+-- Name: files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.files (
+    files_id integer NOT NULL,
+    resume text,
+    cover_letter text,
+    letter_of_recommendation text
+);
+
+
+--
+-- Name: files_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.files_files_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: files_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.files_files_id_seq OWNED BY public.files.files_id;
 
 
 --
@@ -319,6 +354,13 @@ ALTER TABLE ONLY public."UsersStats" ALTER COLUMN user_stats_id SET DEFAULT next
 
 
 --
+-- Name: files files_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files ALTER COLUMN files_id SET DEFAULT nextval('public.files_files_id_seq'::regclass);
+
+
+--
 -- Name: notes note_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -337,7 +379,6 @@ ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.
 --
 
 COPY public."JobNotes" (job_note_id, user_job_id, note_id) FROM stdin;
-1	4	1
 \.
 
 
@@ -345,14 +386,7 @@ COPY public."JobNotes" (job_note_id, user_job_id, note_id) FROM stdin;
 -- Data for Name: UserSelectedJob; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_saved, job_priority, follow_up_date, files_id, interview_date, job_info, date_applied, resume, cover_letter, letter_of_recommendation) FROM stdin;
-44	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1539235406","url":"https://www.adzuna.com/land/ad/1539235406?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=548301090E7C3D1D48747B6088CC679586A03FD2","title":"Fullstack Web Developer (Python/ custom e-commerce platform)","company":"KORE1","city":"Laguna Beach","state":"California","county":"Orange County","contract":"full_time","latitude":33.52603,"longitude":-117.71093,"description":"No 3rd Parties Must be willing to go onsite in Irvine, CA when it's safe (so must either be local or willing to make yourself local) Fulltime Direct Hire PLEASE NOTE In light of the COVID-19 pandemic, the majority of our clients have already moved their staff to working remotely. Most clients have also amended their hiring process to include phone and video interviews and to having new hires start work remotely until it is deemed safe to go into the office. This varies from client to client and…"}	\N	\N	\N	\N
-43	1	Interested	2020-05-07	2	\N	\N	\N	{"id":"1521282681","url":"https://www.adzuna.com/land/ad/1521282681?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=1B415C87297866B32E1D43D00432A3442989EF6C","title":"Sr. Software Developer / Web Developer","company":"Crescent Solutions Inc","city":"Costa Mesa","state":"California","county":"Orange County","contract":"full_time","latitude":33.683414,"longitude":-117.907324,"description":"This is a permanent salary position with great benefits (stock options, 401k, health benefits, flexible time off, etc). Working with cutting edge technology in an exciting environment. What Yoursquoll Do Build solutions that meet our customerrsquos needs and are maintainable, cost-effective and responsive. Partner with our product, design and infrastructure teams to build or enhance applications and services. Own the reliability of the application and services by partnering. operations and infr…"}	\N	\N	\N	\N
-45	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1533100978","url":"https://www.adzuna.com/land/ad/1533100978?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=7857F46FA1106CF86C8DD4AF2D59D40F0C9ADC49","title":"Sr Web Application Developer","company":"CGS Business Solutions","city":"Newport Beach","state":"California","county":"Orange County","contract":"full_time","latitude":33.59743,"longitude":-117.837004,"description":"CGS Business Solutions is committed to helping you, as an esteemed IT Professional, find the next right step in your career. We match professionals like you to rewarding consulting or full-time opportunities in your area of expertise. We are currently seeking Technical Professionals who are searching for challenging and rewarding jobs for the following opportunity Our Financial client close to Newport Beach, CA is looking for a permanent Sr Web Application Developer. You will be responsible for…"}	\N	\N	\N	\N
-46	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1521287825","url":"https://www.adzuna.com/land/ad/1521287825?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=0540C172E67AA5B511AA5B0E3BFB5CDBCBF80E8B","title":"Sr. Web Applications Developer","company":"Marquee Staffing","city":"Irvine","state":"California","county":"Orange County","contract":"full_time","latitude":33.751486,"longitude":-117.75493,"description":"Senior Web Applications Developer Creates user information solutions by developing, implementing, and maintaining Internetintranet applications leading team of developers. Job Duties Defines site objectives by analyzing user requirements envisioning system features and functionality. Designs and develops user interfaces to Internetintranet applications by setting expectations and features priorities throughout development life cycle determining design methodologies and tool sets completing prog…"}	\N	\N	\N	\N
-47	1	Interested	2020-05-07	1	\N	\N	\N	{"id":"1536963719","url":"https://www.adzuna.com/land/ad/1536963719?se=0hr375qQ6hGv0qLjsLRhXw&utm_medium=api&utm_source=e4056c10&v=8FC46D39F7F41560335E766A9172D12F06D72C32","title":"Senior Web Application Developer","company":"SAIC","city":"Santa Ana","state":"California","county":"Orange County","contract":"full_time","latitude":33.746392,"longitude":-117.860447,"description":"Description SAIC is looking for an accomplished Senior Web Application Developer to play a pivotal role in supporting the County of Orange, Probation department. This position is responsible for the design, development and implementation of new computer software systems as well as maintaining and enhancing large and complex existing system. Essential Duties and Responsibilities Develop, test, implement, and maintain software programs Integrate best software development practices in software des…"}	\N	\N	\N	\N
-48	1	Interested	2020-05-08	1	\N	\N	\N	{"id":"1521282681","url":"https://www.adzuna.com/land/ad/1521282681?se=tHBH1F-R6hGTiue8IJMjaA&utm_medium=api&utm_source=e4056c10&v=1B415C87297866B32E1D43D00432A3442989EF6C","title":"Sr. Software Developer / Web Developer","company":"Confidential","city":"Costa Mesa","state":"California","county":"Orange County","contract":"full_time","latitude":33.683414,"longitude":-117.907324,"description":"This is a permanent salary position with great benefits (stock options, 401k, health benefits, flexible time off, etc). Working with cutting edge technology in an exciting environment. What Yoursquoll Do Build solutions that meet our customerrsquos needs and are maintainable, cost-effective and responsive. Partner with our product, design and infrastructure teams to build or enhance applications and services. Own the reliability of the application and services by partnering. operations and infr…"}	\N	\N	\N	\N
-52	1	interested	2020-05-08	1	\N	\N	\N	{"company":"Hello","title":"Full-Stack Developer"}	\N	\N	\N	\N
+COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_saved, job_priority, follow_up_date, interview_date, job_info, date_applied, resume, cover_letter, letter_of_recommendation) FROM stdin;
 \.
 
 
@@ -361,9 +395,6 @@ COPY public."UserSelectedJob" (user_job_id, user_id, job_status, date_saved, job
 --
 
 COPY public."UsersGoal" (user_goal_id, user_id, goal_achieved, currently_active, current_progress, end_goal, deadline_date, goal_title, goal_type) FROM stdin;
-1	1	f	t	0	3	\N	Number of Application Applied	Applying
-2	1	t	f	3	3	\N	Number of Network Attended	Network
-19	1	f	t	0	7	\N	Number of Jobs Saved	Saving
 \.
 
 
@@ -376,11 +407,18 @@ COPY public."UsersStats" (user_stats_id, number_job_applied_total, days_checked_
 
 
 --
+-- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.files (files_id, resume, cover_letter, letter_of_recommendation) FROM stdin;
+\.
+
+
+--
 -- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.notes (note_id, note_title, note_content, date_posted, note_type) FROM stdin;
-1	Testing	A dummy note for testing only	2020-05-05	Job
 \.
 
 
@@ -397,7 +435,7 @@ COPY public."user" (user_id, first_name, last_name, city, image, email, phone_nu
 -- Name: JobNotes_job_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."JobNotes_job_note_id_seq"', 14, true);
 
 
 --
@@ -411,7 +449,7 @@ SELECT pg_catalog.setval('public."UserSelectedJob_user_job_id_seq"', 52, true);
 -- Name: UsersGoal_user_goal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."UsersGoal_user_goal_id_seq"', 19, true);
+SELECT pg_catalog.setval('public."UsersGoal_user_goal_id_seq"', 1, true);
 
 
 --
@@ -422,10 +460,17 @@ SELECT pg_catalog.setval('public."UsersStats_user_stats_id_seq"', 1, false);
 
 
 --
+-- Name: files_files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.files_files_id_seq', 1, false);
+
+
+--
 -- Name: notes_note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.notes_note_id_seq', 1, true);
+SELECT pg_catalog.setval('public.notes_note_id_seq', 21, true);
 
 
 --
@@ -465,6 +510,14 @@ ALTER TABLE ONLY public."UsersGoal"
 
 ALTER TABLE ONLY public."UsersStats"
     ADD CONSTRAINT "UsersStats_pkey" PRIMARY KEY (user_stats_id);
+
+
+--
+-- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files
+    ADD CONSTRAINT files_pkey PRIMARY KEY (files_id);
 
 
 --

@@ -38,8 +38,10 @@ class MapJob extends React.Component {
     let coordinate = { lat: 33.683414, lng: -117 };
 
     if (this.props.savedJobs !== undefined) {
-      const jobInfo = this.props.savedJobs[0].job_info;
-      coordinate = { lat: jobInfo.latitude, lng: jobInfo.longitude };
+      if (this.props.savedJobs.length !== 0) {
+        const jobInfo = this.props.savedJobs[0].job_info;
+        coordinate = { lat: jobInfo.latitude, lng: jobInfo.longitude };
+      }
     }
     // eslint-disable-next-line no-undef
     this.map = new google.maps.Map(this.googleMapRef.current, {
