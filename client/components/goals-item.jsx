@@ -34,7 +34,7 @@ class GoalItems extends React.Component {
     const backgroundColor = this.createBackground();
     const starColor = this.createStarColor();
     return (
-      <div className={`${backgroundColor} goalItems my-2 d-flex flex-column align-items-center`}>
+      <div className={`${backgroundColor} w-100 my-2 d-flex flex-column align-items-center`}>
         <i className={`${starColor} align-self-end p-2`}></i>
         <h4 className='text-center'>{this.props.title}</h4>
         <div className='w-100 p-3 d-flex justify-content-between'>

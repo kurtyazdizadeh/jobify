@@ -22,6 +22,10 @@ class AddNewJob extends React.Component {
     this.resetForm = this.resetForm.bind(this);
   }
 
+  componentDidMount() {
+    this.props.setView('Add Job');
+  }
+
   handleClickInterviewYes() {
     event.preventDefault();
 
@@ -105,7 +109,6 @@ class AddNewJob extends React.Component {
       isInterviewScheduled: isInterviewScheduled,
       notes: notes
     };
-    // this.props.setView('Add New Job', newJob);
     this.resetForm();
   }
 
@@ -225,12 +228,12 @@ class AddNewJob extends React.Component {
           <label className='heading'>
             Interview Scheduled?<br></br>
             <button
-              className='button btn col'
+              className='btn button bg-grey col'
               onClick={this.handleClickInterviewYes}>
               Yes
             </button>
             <button
-              className='button btn col'
+              className='btn button bg-grey col'
               onClick={this.handleClickInterviewNo}>
               No
             </button>
@@ -239,7 +242,7 @@ class AddNewJob extends React.Component {
             Notes:
             <textarea
               id='notes'
-              className='text light-gray'
+              className='text light-gray p-2'
               name='Notes'
               cols='40'
               rows='2'
@@ -249,12 +252,12 @@ class AddNewJob extends React.Component {
           </div>
           <div>
             <button
-              className='button btn col'
+              className='btn button bg-grey col'
               onSubmit={this.handleSubmit}>
             Submit
             </button>
             <button
-              className='button btn col'
+              className='btn button bg-grey col'
               onClick={this.resetForm }>
               Cancel
             </button>

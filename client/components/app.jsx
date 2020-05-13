@@ -15,6 +15,7 @@ import Notes from './notes';
 import NotesView from './notes-view';
 import Goals from './goals';
 import AddNewGoal from './add-new-goal';
+import Splash from './splash';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -134,9 +135,14 @@ export default class App extends React.Component {
     const { name, params } = this.state.view;
     const { goals, savedJobs } = this.state;
     return (
-      <div>
+      <>
         <Header title={name} setView={this.setView}/>
         <Switch>
+          <Route path="/login"
+            render={props =>
+              <Splash {...props}
+                setView={this.setView}
+              />} />
           <Route path="/map"
             render={props =>
               <MapJob {...props}
@@ -214,7 +220,7 @@ export default class App extends React.Component {
               />} />
         </Switch>
         <FooterMenu setView={this.setView} />
-      </div>
+      </>
     );
   }
 }
