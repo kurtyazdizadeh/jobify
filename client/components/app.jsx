@@ -15,6 +15,7 @@ import Notes from './notes';
 import NotesView from './notes-view';
 import Goals from './goals';
 import AddNewGoal from './add-new-goal';
+import Splash from './splash';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,6 +36,9 @@ export default class App extends React.Component {
     this.getGoals = this.getGoals.bind(this);
     this.postGoal = this.postGoal.bind(this);
     this.saveJob = this.saveJob.bind(this);
+    this.plusGoal = this.plusGoal.bind(this);
+    this.minusGoal = this.minusGoal.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
     this.manualAddJob = this.manualAddJob.bind(this);
   }
 
@@ -129,8 +133,49 @@ export default class App extends React.Component {
       .then(data => {
         const goal = this.state.goals.slice();
         goal.push(data.rows[0]);
-
         this.setState({ goals: goal });
+      });
+  }
+
+  plusGoal(id) {
+    const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
+    if (updateGoal.current_progress < updateGoal.end_goal) {
+      updateGoal.current_progress++;
+      if (updateGoal.current_progress === updateGoal.end_goal) {
+        updateGoal.goal_achieved = true;
+      }
+      this.updateProgress(updateGoal);
+    }
+  }
+
+  minusGoal(id) {
+    const updateGoal = this.state.goals.find(goal => goal.user_goal_id === id);
+    if (updateGoal.current_progress === updateGoal.end_goal) {
+      updateGoal.goal_achieved = false;
+    }
+    if (updateGoal.current_progress > 0) {
+      updateGoal.current_progress--;
+      this.updateProgress(updateGoal);
+    }
+  }
+
+  updateProgress(updateGoal) {
+    const request = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updateGoal)
+    };
+    fetch('/api/goals', request)
+      .then(response => response.json())
+      .then(data => {
+        const goals = this.state.goals.slice();
+        const index = goals.findIndex(goals => goals.id === updateGoal.user_goal_id);
+        goals[index] = data.row;
+        this.setState({
+          goals: goals
+        });
       });
   }
 
@@ -155,9 +200,14 @@ export default class App extends React.Component {
     const { name, params } = this.state.view;
     const { goals, savedJobs } = this.state;
     return (
-      <div>
+      <>
         <Header title={name} setView={this.setView}/>
         <Switch>
+          <Route path="/login"
+            render={props =>
+              <Splash {...props}
+                setView={this.setView}
+              />} />
           <Route path="/map"
             render={props =>
               <MapJob {...props}
@@ -175,6 +225,8 @@ export default class App extends React.Component {
               <Goals {...props}
                 goals={goals}
                 setView={this.setView}
+                plusGoal={this.plusGoal}
+                minusGoal={this.minusGoal}
               />} />
           <Route path="/add-job"
             render={props =>
@@ -236,7 +288,7 @@ export default class App extends React.Component {
               />} />
         </Switch>
         <FooterMenu setView={this.setView} />
-      </div>
+      </>
     );
   }
 }

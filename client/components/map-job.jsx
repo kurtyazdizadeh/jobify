@@ -17,6 +17,7 @@ class MapJob extends React.Component {
   }
 
   componentDidMount() {
+    this.props.setView('Map');
     this.createGoogleMap();
     this.createMarker();
   }
@@ -91,20 +92,20 @@ class MapJob extends React.Component {
     if (this.props.savedJobs !== undefined) {
       return (
         <div>
-          <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto'>
+          <div className='centerButtons-row d-flex flex-wrap row justify-content-around mx-auto scroll'>
             {this.props.savedJobs.map((job, index) => {
               const words = job.job_info.company.split(' ');
               // eslint-disable-next-line no-prototype-builtins
               if (job.job_info.hasOwnProperty('latitude') && job.job_info.hasOwnProperty('longitude')) {
                 return (
-                  <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton btn btn-secondary col-3 m-2'>
+                  <button onClick={() => this.centerMap(job.job_info.latitude, job.job_info.longitude)} key={index} className='centerButton bg-grey col-3 p-1 m-2'>
                     {words[0]}
                   </button>
                 );
               }
             })}
           </div>
-        </div>
+        </>
       );
     }
   }
@@ -120,8 +121,7 @@ class MapJob extends React.Component {
     }
     const centerButton = this.createCenterButton();
     return (
-      <div className=' d-flex flex-column align-items-center'>
-        <h1 className='mt-5'>Your Jobs</h1>
+      <div className='d-flex flex-column align-items-center mt-5 pt-3'>
         <div ref={this.googleMapRef} className='mapJobs'></div>
         {centerButton}
       </div>

@@ -27,6 +27,10 @@ class AddNewJob extends React.Component {
     this.setInterview = this.setInterview.bind(this);
   }
 
+  componentDidMount() {
+    this.props.setView('Add Job');
+  }
+
   handleClickInterviewYes() {
     if (this.state.isInterviewScheduled === false) {
       this.setState(state => ({
@@ -263,14 +267,27 @@ class AddNewJob extends React.Component {
             Interview Scheduled?<br></br>
             {this.scheduleInterview()}
           </label>
+          <div className='heading'>
+            Notes:
+            <textarea
+              id='notes'
+              className='text light-gray p-2'
+              name='Notes'
+              cols='40'
+              rows='2'
+              value={this.state.notes}
+              onChange={this.handleChange}>
+            </textarea>
+          </div>
           <div>
             <button
-              className='button btn col'>
+              className='btn button bg-grey col'
+              onSubmit={this.handleSubmit}>
             Submit
             </button>
             <button
-              className='button btn col'
-              onClick={this.resetForm }>
+              className='btn button bg-grey col'
+              onClick={this.resetForm}>
               Cancel
             </button>
           </div>
