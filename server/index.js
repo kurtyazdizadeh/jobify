@@ -136,7 +136,6 @@ app.get('/api/specific-job/:id', (req, res, next) => {
   SELECT "job_status",
          "date_saved",
          "job_priority",
-         "files_id",
          "interview_date",
          "job_info",
          "follow_up_date"
