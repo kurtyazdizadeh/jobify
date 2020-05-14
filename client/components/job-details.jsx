@@ -298,9 +298,8 @@ class JobDetails extends React.Component {
     let city = '';
     const location = this.state.job.job_info;
     if (location.city) {
-      city = `${location.city} `;
-    }
-    if (location.county) {
+      city = `${location.city}, `;
+    } else {
       city += `${location.county}, `;
     }
     if (location.state) {
@@ -371,17 +370,17 @@ class JobDetails extends React.Component {
           <h4>Follow up by:</h4>
           {this.toggleFollowUp()}
         </div>
-        <div className='d-flex justify-content-around py-2 light-gray'>
-          <div className='d-flex flex-column'>
+        <div className='d-flex justify-content-around p-3 light-gray'>
+          <div className='d-flex flex-column w-50 ml-1'>
             <h4 className='m-1'>Documents</h4>
-            <button className='m-1 btn bg-grey' onClick={() => this.viewDocs()}>Upload Docs</button>
+            <button className='m-1 btn bg-grey w-75' onClick={() => this.viewDocs()}>Upload Docs</button>
             <h6 className='m-1'><i className={`${this.state.resume ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Resume</h6>
             <h6 className='m-1'><i className={`${this.state.coverLetter ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Cover Letter</h6>
             <h6 className='m-1'><i className={`${this.state.letterOfRec ? 'fas fa-check green' : 'fas fa-times red'} mr-2`}></i>Letter of Rec</h6>
           </div>
-          <div>
+          <div className='d-flex flex-column w-50'>
             <h4 className='m-1'>Notes</h4>
-            <button className='m-1 btn bg-grey'
+            <button className='m-1 btn bg-grey w-75'
               onClick={() => this.viewJobNotes()}>
               See All Notes
             </button>
