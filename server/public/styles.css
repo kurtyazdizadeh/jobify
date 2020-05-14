@@ -100,7 +100,7 @@ nav, footer {
 }
 
 .scroll {
-  overflow: scroll;
+  overflow: auto;
 }
 
 /* ********************* */
