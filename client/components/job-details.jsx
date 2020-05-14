@@ -313,6 +313,7 @@ class JobDetails extends React.Component {
     let { title } = this.state.job.job_info;
     title = title.replace(/(<([^>]+)>)/ig, '');
     const info = this.state.job.job_info;
+
     return (
       <>
         <div className='text-center mt-5 py-2 light-gray'>
