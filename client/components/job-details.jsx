@@ -297,8 +297,11 @@ class JobDetails extends React.Component {
   getCity() {
     let city = '';
     const location = this.state.job.job_info;
-    if (location.city || location.county) {
-      city = `${location.city} ${location.county}, `;
+    if (location.city) {
+      city = `${location.city} `;
+    }
+    if (location.county) {
+      city += `${location.county}, `;
     }
     if (location.state) {
       city += location.state;
