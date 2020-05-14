@@ -58,9 +58,9 @@ class SearchResults extends React.Component {
         break;
     }
 
-    const dbQuery = new URLSearchParams(params);
+    const backendQuery = new URLSearchParams(params);
 
-    fetch(`/api/search-jobs/${dbQuery}`)
+    fetch(`/api/search-jobs/${backendQuery}`)
       .then(res => res.json())
       .then(listings => {
         const newState = {
@@ -68,7 +68,7 @@ class SearchResults extends React.Component {
         };
         if (listings.count > 10) {
           newState.resultsPage = resultsPage;
-          if (!newState.maxPage) {
+          if (!this.state.maxPage) {
             newState.maxPage = Math.ceil(listings.count / 10);
           }
         }
