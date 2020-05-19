@@ -71,7 +71,7 @@ Try the application live at [https://jobify.kurtyazdizadeh.com](https://jobify.k
 5. Import the database to PostgreSQL.
 
     ```shell
-    npm db:import
+    npm run db:import
     ```
 
 6. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
