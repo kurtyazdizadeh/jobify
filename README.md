@@ -50,14 +50,31 @@ Try the application live at [https://jobify.kurtyazdizadeh.com](https://jobify.k
     ```shell
     npm install
     ```
+    
+3. Register for API keys here: [Adzuna](https://developer.adzuna.com/signup) and [Google Maps](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
-3. Import the database to PostgreSQL.
+4. Create a ```.env``` file and add your API keys using the template below:
+
+    ```shell
+    PORT=3001
+    DEV_SERVER_PORT=3000
+    DATABASE_URL=postgres://dev:lfz@localhost/jobify
+    SESSION_SECRET=secret
+    SESSION_EXPIRY=28800000
+
+    GOOGLE_MAPS_API=your_key_here
+    ADZUNA_ID=your_id_here
+    ADZUNA_KEY=your_key_here
+
+    ```
+
+5. Import the database to PostgreSQL.
 
     ```shell
     npm db:import
     ```
 
-4. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
+6. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
 
     ```shell
     npm run dev
