@@ -41,7 +41,7 @@ Try the application live at [https://jobify.kurtyazdizadeh.com](https://jobify.k
 1. Clone the repository.
 
     ```shell
-    git clone https://github.com/kurtyazdizadeh.jobify
+    git clone https://github.com/kurtyazdizadeh/jobify
     cd jobify
     ```
 
